@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 // use this component to see palette examples
 const ThemeExamples = () => {
   return (
-    <>
+    <div>
       <Paper sx={{padding: "20px"}}>
         <h4>paper background color</h4>
         <Stack direction="row" spacing={2}>
@@ -82,7 +82,7 @@ const ThemeExamples = () => {
       <Typography variant="overline" display="block" gutterBottom>
         overline text
       </Typography>
-    </>
+    </div>
   );
 };
 export default ThemeExamples;
