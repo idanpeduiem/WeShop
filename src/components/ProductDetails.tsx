@@ -4,7 +4,7 @@ const ProductDetails = () => {
   return (
     <>
       <h1>Product details</h1>
-      <a href={Routes.HOME}></a>
+      <a href={Routes.HOME}>home</a>
     </>
   );
 };

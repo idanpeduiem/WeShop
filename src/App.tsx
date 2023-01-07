@@ -1,12 +1,11 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./components/Home";
 import Profile from "./components/Profile";
 import ProductDetails from "./components/ProductDetails";
 import Cart from "./components/Cart";
 
+// use this enum to make links to pages
 export enum Routes {
   HOME = "/",
   CART = "/cart",
@@ -34,6 +33,7 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+  //TODO: add here the appBar and route only the inner component (to make the appBar stay while moving among pages)
   return <RouterProvider router={router} />;
 };
 
