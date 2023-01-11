@@ -5,7 +5,6 @@ import mongoose from 'mongoose';
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT;
 
 const {PORT, DB_CONNECTION_STR = ''} = process.env;
 
@@ -21,6 +20,6 @@ app.get('/',async (req: Request, res: Response) => {
   res.send('WeShop awesome server');
 });
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
 });
