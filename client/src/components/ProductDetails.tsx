@@ -1,10 +1,10 @@
-import { Routes } from "../App";
+import { RoutePaths } from "../App";
 
 const ProductDetails = () => {
   return (
     <>
       <h1>Product details</h1>
-      <a href={Routes.HOME}>home</a>
+      <a href={RoutePaths.HOME}>home</a>
     </>
   );
 };

@@ -1,47 +1,52 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./components/Home";
+import Home from "./components/Home";
 import Profile from "./components/Profile";
 import ProductDetails from "./components/ProductDetails";
 import Cart from "./components/Cart";
-import { ThemeProvider } from "@mui/material";
+import { Container, ThemeProvider } from "@mui/material";
 import theme from "./overrieds/MuiTheme";
 import Navbar from "./components/AppBar";
-import Stack from "@mui/material/Stack";
+import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import PersonalDetails from "./components/PersonalDetails";
+import PersonalOrders from "./components/PersonalOrders";
 
 // use this enum to make links to pages
-export enum Routes {
+export enum RoutePaths {
   HOME = "/",
-  CART = "/cart",
-  PROFILE = "/profile",
-  PRODUCT_DETAILS = "/product-details",
+  CART = "cart",
+  PROFILE = "profile",
+  PRODUCT_DETAILS = "product-details",
+  PERSONAL_DETAILS = "personal-details",
+  PERSONAL_ORDER = "persona-orders",
 }
-
-const router = createBrowserRouter([
-  {
-    path: Routes.HOME,
-    element: <HomePage />,
-  },
-  {
-    path: Routes.CART,
-    element: <Cart />,
-  },
-  {
-    path: Routes.PROFILE,
-    element: <Profile />,
-  },
-  {
-    path: Routes.PRODUCT_DETAILS,
-    element: <ProductDetails />,
-  },
-]);
 
 const App = () => {
   //TODO: add here the appBar and route only the inner component (to make the appBar stay while moving among pages)
   return (
     <ThemeProvider theme={theme}>
       <Navbar />
-      <RouterProvider router={router} />
+      <Container>
+        <Router>
+          <Routes>
+            <Route path={RoutePaths.HOME} element={<Home />} />
+            <Route path={RoutePaths.CART} element={<Cart />} />
+            <Route
+              path={RoutePaths.PRODUCT_DETAILS}
+              element={<ProductDetails />}
+            />
+            <Route path={RoutePaths.PROFILE} element={<Profile />}>
+              <Route
+                path={RoutePaths.PERSONAL_DETAILS}
+                element={<PersonalDetails />}
+              />
+              <Route
+                path={RoutePaths.PERSONAL_ORDER}
+                element={<PersonalOrders />}
+              />
+            </Route>
+          </Routes>
+        </Router>
+      </Container>
     </ThemeProvider>
   );
 };

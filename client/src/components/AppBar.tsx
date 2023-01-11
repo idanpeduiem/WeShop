@@ -1,20 +1,6 @@
-import AppBar from "@mui/material/AppBar";
-import Typography from "@mui/material/Typography";
-import {
-  Button,
-  FilledInput,
-  Grid,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Toolbar,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import { Routes } from "../App";
+import { FilledInput, Grid, IconButton, InputAdornment } from "@mui/material";
+import { RoutePaths } from "../App";
 import { Image, Search } from "@mui/icons-material";
-import AspectRatio from "@mui/joy/AspectRatio";
-import Stack from "@mui/material/Stack";
 import logo from "../assets/logo.png";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
@@ -28,7 +14,7 @@ const Navbar = () => {
       sx={(theme) => ({ background: theme.palette.primary.main })}
     >
       <Grid item xs={3}>
-        <a href={Routes.HOME}>
+        <a href={RoutePaths.HOME}>
           <img
             style={{ height: "10vh", width: "10=7vh" }}
             src={logo}
@@ -52,7 +38,7 @@ const Navbar = () => {
           edge="start"
           color="inherit"
           aria-label="menu"
-          href={Routes.CART}
+          href={RoutePaths.CART}
         >
           <ShoppingCartIcon />
         </IconButton>
@@ -61,7 +47,7 @@ const Navbar = () => {
           edge="start"
           color="inherit"
           aria-label="menu"
-          href={Routes.PROFILE}
+          href={RoutePaths.PROFILE}
         >
           <PersonIcon />
         </IconButton>
