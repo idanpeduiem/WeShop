@@ -16,7 +16,7 @@ db.once("open", function () {
   console.log("Connected successfully");
 });
 
-app.get('/',async (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response) => {
   res.send('WeShop awesome server');
 });
 
