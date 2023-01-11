@@ -6,6 +6,8 @@ import ProductDetails from "./components/ProductDetails";
 import Cart from "./components/Cart";
 import { ThemeProvider } from "@mui/material";
 import theme from "./overrieds/MuiTheme";
+import Navbar from "./components/AppBar";
+import Stack from "@mui/material/Stack";
 
 // use this enum to make links to pages
 export enum Routes {
@@ -38,6 +40,7 @@ const App = () => {
   //TODO: add here the appBar and route only the inner component (to make the appBar stay while moving among pages)
   return (
     <ThemeProvider theme={theme}>
+      <Navbar />
       <RouterProvider router={router} />
     </ThemeProvider>
   );
