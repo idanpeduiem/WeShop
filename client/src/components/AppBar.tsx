@@ -1,20 +1,6 @@
-import AppBar from "@mui/material/AppBar";
-import Typography from "@mui/material/Typography";
-import {
-  Button,
-  FilledInput,
-  Grid,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Toolbar,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
+import { FilledInput, Grid, IconButton, InputAdornment } from "@mui/material";
 import { Routes } from "../App";
-import { Image, Search } from "@mui/icons-material";
-import AspectRatio from "@mui/joy/AspectRatio";
-import Stack from "@mui/material/Stack";
+import { Search } from "@mui/icons-material";
 import logo from "../assets/logo.png";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
