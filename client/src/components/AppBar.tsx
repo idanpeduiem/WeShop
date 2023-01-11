@@ -30,7 +30,7 @@ const Navbar = () => {
       <Grid item xs={3}>
         <a href={Routes.HOME}>
           <img
-            style={{ height: "100%", width: "100%" }}
+            style={{ height: "10vh", width: "10=7vh" }}
             src={logo}
             alt="fireSpot"
           />
