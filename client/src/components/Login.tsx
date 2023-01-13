@@ -16,6 +16,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { useUserContext } from "../controller/userController/userContext";
+
 const loginUser = async (
   email: React.MutableRefObject<any>,
   password: React.MutableRefObject<any>,
@@ -39,6 +40,7 @@ const loginUser = async (
     enqueueSnackbar(error.message, { variant: "error" });
   }
 };
+
 const Login = () => {
   const theme = useTheme();
   const { setUser } = useUserContext();

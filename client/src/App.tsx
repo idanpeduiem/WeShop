@@ -3,12 +3,11 @@ import Home from "./components/Home";
 import Profile from "./components/Profile";
 import ProductDetails from "./components/ProductDetails";
 import Cart from "./components/Cart";
-import { Container, ThemeProvider } from "@mui/material";
-import theme from "./overrieds/MuiTheme";
+import { Container } from "@mui/material";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Navbar from "./components/AppBar";
-import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import PersonalDetails from "./components/PersonalDetails";
 import PersonalOrders from "./components/PersonalOrders";
 
@@ -26,34 +25,32 @@ export enum RoutePaths {
 
 const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <Navbar />
-        <Container>
-          <Routes>
-            <Route path={RoutePaths.LOGIN} element={<Login/>}/>
-            <Route path={RoutePaths.SIGNUP} element={<Signup/>}/>
-            <Route path={RoutePaths.HOME} element={<Home />} />
-            <Route path={RoutePaths.CART} element={<Cart />} />
+    <Router>
+      <Navbar />
+      <Container>
+        <Routes>
+          <Route path={RoutePaths.LOGIN} element={<Login />} />
+          <Route path={RoutePaths.SIGNUP} element={<Signup />} />
+          <Route path={RoutePaths.HOME} element={<Home />} />
+          <Route path={RoutePaths.CART} element={<Cart />} />
+          <Route
+            path={RoutePaths.PRODUCT_DETAILS}
+            element={<ProductDetails />}
+          />
+          <Route path={RoutePaths.PROFILE} element={<Profile />}>
+            <Route index element={<PersonalDetails />} />
             <Route
-              path={RoutePaths.PRODUCT_DETAILS}
-              element={<ProductDetails />}
+              path={RoutePaths.PERSONAL_DETAILS}
+              element={<PersonalDetails />}
             />
-            <Route path={RoutePaths.PROFILE} element={<Profile />}>
-              <Route index element={<PersonalDetails/>}/>
-              <Route
-                path={RoutePaths.PERSONAL_DETAILS}
-                element={<PersonalDetails />}
-              />
-              <Route
-                path={RoutePaths.PERSONAL_ORDER}
-                element={<PersonalOrders />}
-              />
-            </Route>
-          </Routes>
-        </Container>
-      </Router>
-    </ThemeProvider>
+            <Route
+              path={RoutePaths.PERSONAL_ORDER}
+              element={<PersonalOrders />}
+            />
+          </Route>
+        </Routes>
+      </Container>
+    </Router>
   );
 };
 
