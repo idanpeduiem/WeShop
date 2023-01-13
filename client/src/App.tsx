@@ -21,12 +21,11 @@ export enum RoutePaths {
 }
 
 const App = () => {
-  //TODO: add here the appBar and route only the inner component (to make the appBar stay while moving among pages)
   return (
     <ThemeProvider theme={theme}>
-      <Navbar />
-      <Container>
-        <Router>
+      <Router>
+        <Navbar />
+        <Container>
           <Routes>
             <Route path={RoutePaths.HOME} element={<Home />} />
             <Route path={RoutePaths.CART} element={<Cart />} />
@@ -35,6 +34,7 @@ const App = () => {
               element={<ProductDetails />}
             />
             <Route path={RoutePaths.PROFILE} element={<Profile />}>
+              <Route index element={<PersonalDetails/>}/>
               <Route
                 path={RoutePaths.PERSONAL_DETAILS}
                 element={<PersonalDetails />}
@@ -45,8 +45,8 @@ const App = () => {
               />
             </Route>
           </Routes>
-        </Router>
-      </Container>
+        </Container>
+      </Router>
     </ThemeProvider>
   );
 };

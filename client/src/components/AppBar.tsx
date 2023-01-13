@@ -4,8 +4,10 @@ import { Image, Search } from "@mui/icons-material";
 import logo from "../assets/logo.png";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <Grid
       container
@@ -14,13 +16,12 @@ const Navbar = () => {
       sx={(theme) => ({ background: theme.palette.primary.main })}
     >
       <Grid item xs={3}>
-        <a href={RoutePaths.HOME}>
-          <img
-            style={{ height: "10vh", width: "10=7vh" }}
-            src={logo}
-            alt="fireSpot"
-          />
-        </a>
+        <img
+          style={{ height: "10vh", width: "10=7vh" }}
+          src={logo}
+          alt="fireSpot"
+          onClick={() => navigate(RoutePaths.HOME)}
+        />
       </Grid>
       <Grid item xs container justifyContent={"center"}>
         <FilledInput
@@ -38,7 +39,7 @@ const Navbar = () => {
           edge="start"
           color="inherit"
           aria-label="menu"
-          href={RoutePaths.CART}
+          onClick={() => navigate(RoutePaths.CART)}
         >
           <ShoppingCartIcon />
         </IconButton>
@@ -47,7 +48,7 @@ const Navbar = () => {
           edge="start"
           color="inherit"
           aria-label="menu"
-          href={RoutePaths.PROFILE}
+          onClick={() => navigate(RoutePaths.PROFILE)}
         >
           <PersonIcon />
         </IconButton>
