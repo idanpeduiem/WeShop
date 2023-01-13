@@ -1,9 +1,9 @@
-import { useMemo, useState } from "react";
+import { PropsWithChildren, useMemo, useState } from "react";
 import { UserContext, IUserContext } from "./userContext";
-import { UserCredential } from "@firebase/auth-types";
 
-export const UserProvider: React.FC<any> = ({ children }) => {
-  const [user, setUser] = useState<UserCredential | undefined>(undefined);
+export const UserProvider = ({ children }: PropsWithChildren<{}>) => {
+  const [user, setUser] = useState<IUserContext["user"]>();
+
   const memoValue: IUserContext = useMemo(
     () => ({
       user,
