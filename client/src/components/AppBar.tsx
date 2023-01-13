@@ -1,6 +1,6 @@
 import { FilledInput, Grid, IconButton, InputAdornment } from "@mui/material";
 import { RoutePaths } from "../App";
-import { Image, Search } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import logo from "../assets/logo.png";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";

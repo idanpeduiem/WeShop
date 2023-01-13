@@ -5,6 +5,8 @@ import ProductDetails from "./components/ProductDetails";
 import Cart from "./components/Cart";
 import { Container, ThemeProvider } from "@mui/material";
 import theme from "./overrieds/MuiTheme";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 import Navbar from "./components/AppBar";
 import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import PersonalDetails from "./components/PersonalDetails";
@@ -14,6 +16,8 @@ import PersonalOrders from "./components/PersonalOrders";
 export enum RoutePaths {
   HOME = "/",
   CART = "cart",
+  LOGIN = "login",
+  SIGNUP = "signup",
   PROFILE = "profile",
   PRODUCT_DETAILS = "product-details",
   PERSONAL_DETAILS = "personal-details",
@@ -27,6 +31,8 @@ const App = () => {
         <Navbar />
         <Container>
           <Routes>
+            <Route path={RoutePaths.LOGIN} element={<Login/>}/>
+            <Route path={RoutePaths.SIGNUP} element={<Signup/>}/>
             <Route path={RoutePaths.HOME} element={<Home />} />
             <Route path={RoutePaths.CART} element={<Cart />} />
             <Route
