@@ -8,7 +8,7 @@ const Profile = () => {
   return (
     <Grid container alignItems={"stretch"} columnSpacing={2}>
       <Grid item xs={3}>
-        <Paper>
+        <Paper variant={"outlined"}>
           <Stack>
             <Button onClick={() => navigate(RoutePaths.PERSONAL_DETAILS)}>
               Personal Details
