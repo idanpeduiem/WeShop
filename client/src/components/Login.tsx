@@ -61,7 +61,7 @@ const Login = () => {
   };
   return (
     <Grid>
-      <Paper elevation={10} style={paperStyle}>
+      <Paper elevation={3} style={paperStyle}>
         <Grid>
           <Avatar sx={{ backgroundColor: theme.palette.primary.main }}>
             <LockOutlinedIcon />
