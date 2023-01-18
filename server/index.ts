@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import initRoutes from "./utils/initRoutes";
+import { validateToken } from "./utils/middlewares";
 
 const admin = require("firebase-admin");
 dotenv.config();
@@ -25,7 +26,7 @@ admin.initializeApp({
   }),
 });
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", validateToken, (req: Request, res: Response) => {
   res.send("WeShop awesome server");
 });
 
