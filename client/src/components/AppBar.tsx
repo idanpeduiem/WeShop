@@ -1,13 +1,27 @@
-import { FilledInput, Grid, IconButton, InputAdornment } from "@mui/material";
+import {
+  Badge,
+  FilledInput,
+  Grid,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
 import { RoutePaths } from "../App";
-import { Search } from "@mui/icons-material";
+import { Logout, Search } from "@mui/icons-material";
 import logo from "../assets/logo.png";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const itemsInCart = 4;
+
   const navigate = useNavigate();
+
+  const logout = () => {
+    // TODO: logout from user
+    navigate(RoutePaths.LOGIN);
+  };
+
   return (
     <Grid
       container
@@ -41,7 +55,9 @@ const Navbar = () => {
           aria-label="menu"
           onClick={() => navigate(RoutePaths.CART)}
         >
-          <ShoppingCartIcon />
+          <Badge badgeContent={itemsInCart} color="secondary">
+            <ShoppingCartIcon />
+          </Badge>
         </IconButton>
         <IconButton
           size="large"
@@ -51,6 +67,15 @@ const Navbar = () => {
           onClick={() => navigate(RoutePaths.PROFILE)}
         >
           <PersonIcon />
+        </IconButton>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={logout}
+        >
+          <Logout />
         </IconButton>
       </Grid>
     </Grid>

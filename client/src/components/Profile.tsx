@@ -1,10 +1,9 @@
 import { Button, Grid, Paper } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { Outlet, Link, redirect, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { RoutePaths } from "../App";
 
 const Profile = () => {
-
   const navigate = useNavigate();
   return (
     <Grid container alignItems={"stretch"} columnSpacing={2}>
@@ -21,9 +20,7 @@ const Profile = () => {
         </Paper>
       </Grid>
       <Grid item xs={9}>
-        <Paper>
-          <Outlet />
-        </Paper>
+        <Outlet />
       </Grid>
     </Grid>
   );
