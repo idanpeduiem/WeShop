@@ -1,4 +1,4 @@
-import mongoose, { Document } from "mongoose";
+import mongoose  from "mongoose";
 
 interface User {
   personalId: string;
