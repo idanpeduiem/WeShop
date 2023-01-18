@@ -1,8 +1,11 @@
 import { Button, Divider, Grid, Paper, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
+import {useNavigate} from "react-router-dom";
+import {RoutePaths} from "../App";
 
 const Cart = () => {
   const totalAmount = 1000;
+  const navigate = useNavigate()
 
   return (
     <Grid container spacing={2}>
@@ -24,6 +27,7 @@ const Cart = () => {
                   color={"secondary"}
                   size={"small"}
                   fullWidth
+                  onClick={() => navigate(RoutePaths.HOME)}
                 >
                   continue shopping
                 </Button>
