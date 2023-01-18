@@ -12,30 +12,34 @@ import LockOutlinedIcon from "@mui/icons-material/Lock";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useTheme } from "@mui/material/styles";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  User,
+  UserCredential,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { useUserContext } from "../controller/userController/userContext";
 import { RoutePaths } from "../App";
-import { UserCredential } from "firebase/auth";
 
 const loginUser = async (
   email: React.MutableRefObject<any>,
   password: React.MutableRefObject<any>,
-  onSuccess: (user: UserCredential) => void,
+  onSuccess: (user: User) => void,
   onError: (error: any) => void
 ) => {
   try {
     const auth = getAuth();
 
-    const user = await signInWithEmailAndPassword(
+    const user: UserCredential = await signInWithEmailAndPassword(
       auth,
       email.current.value,
       password.current.value
     );
 
     if (user.user == null) throw new Error();
-    onSuccess(user);
+    onSuccess(user.user);
   } catch (error: any) {
     onError(error);
   }
@@ -55,7 +59,6 @@ const Login = () => {
     margin: "auto",
     backgroundColor: theme.palette.background.paper,
   };
-
   return (
     <Grid>
       <Paper elevation={3} style={paperStyle}>
@@ -95,7 +98,7 @@ const Login = () => {
               email,
               password,
               (user) => {
-                setUser(user.user);
+                setUser(user);
                 enqueueSnackbar("Successful login!", { variant: "success" });
                 navigate(RoutePaths.HOME);
               },

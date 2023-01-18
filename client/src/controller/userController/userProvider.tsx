@@ -2,7 +2,7 @@ import { PropsWithChildren, useMemo, useState } from "react";
 import { UserContext, IUserContext } from "./userContext";
 
 export const UserProvider = ({ children }: PropsWithChildren<{}>) => {
-  const [user, setUser] = useState<IUserContext["user"]>();
+  const [user, setUser] = useState<IUserContext["user"] | undefined>();
 
   const memoValue: IUserContext = useMemo(
     () => ({
