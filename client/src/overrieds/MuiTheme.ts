@@ -1,8 +1,8 @@
 import { createTheme } from "@mui/material/styles";
 
-const primary = '#56779E'
-const secondary = '#EBC87A'
-const backgroundPaper = '#d5d5d5'
+const primary = "#56779E";
+const secondary = "#EBC87A";
+const backgroundPaper = "#ffffff";
 
 // const primary = '#1f1e1e'
 // const secondary = '#d92335'

@@ -1,11 +1,27 @@
-import { FilledInput, Grid, IconButton, InputAdornment } from "@mui/material";
-import { Routes } from "../App";
-import { Search } from "@mui/icons-material";
+import {
+  Badge,
+  FilledInput,
+  Grid,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
+import { RoutePaths } from "../App";
+import { Logout, Search } from "@mui/icons-material";
 import logo from "../assets/logo.png";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const itemsInCart = 4;
+
+  const navigate = useNavigate();
+
+  const logout = () => {
+    // TODO: logout from user
+    navigate(RoutePaths.LOGIN);
+  };
+
   return (
     <Grid
       container
@@ -14,13 +30,12 @@ const Navbar = () => {
       sx={(theme) => ({ background: theme.palette.primary.main })}
     >
       <Grid item xs={3}>
-        <a href={Routes.HOME}>
-          <img
-            style={{ height: "10vh", width: "10=7vh" }}
-            src={logo}
-            alt="fireSpot"
-          />
-        </a>
+        <img
+          style={{ height: "10vh", width: "10=7vh" }}
+          src={logo}
+          alt="fireSpot"
+          onClick={() => navigate(RoutePaths.HOME)}
+        />
       </Grid>
       <Grid item xs container justifyContent={"center"}>
         <FilledInput
@@ -38,18 +53,29 @@ const Navbar = () => {
           edge="start"
           color="inherit"
           aria-label="menu"
-          href={Routes.CART}
+          onClick={() => navigate(RoutePaths.CART)}
         >
-          <ShoppingCartIcon />
+          <Badge badgeContent={itemsInCart} color="secondary">
+            <ShoppingCartIcon />
+          </Badge>
         </IconButton>
         <IconButton
           size="large"
           edge="start"
           color="inherit"
           aria-label="menu"
-          href={Routes.PROFILE}
+          onClick={() => navigate(RoutePaths.PROFILE)}
         >
           <PersonIcon />
+        </IconButton>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={logout}
+        >
+          <Logout />
         </IconButton>
       </Grid>
     </Grid>
