@@ -1,24 +1,18 @@
-import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
+import express, { Express, Request, Response } from "express";
+import dotenv from "dotenv";
+import initRoutes from "./utils/initRoutes";
 
 dotenv.config();
 
-const app: Express = express();
+const app = express();
 
-const {PORT, DB_CONNECTION_STR = ''} = process.env;
+const { PORT } = process.env;
 
-mongoose.connect(DB_CONNECTION_STR);
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", function () {
-  console.log("Connected successfully");
+app.get("/", (req: Request, res: Response) => {
+  res.send("WeShop awesome server");
 });
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('WeShop awesome server');
-});
+initRoutes(app);
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
