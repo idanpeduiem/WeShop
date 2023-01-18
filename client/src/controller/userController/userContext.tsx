@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
 import { User } from "firebase/auth";
-
+import React, { useContext } from "react";
 export interface IUserContext {
   user: User | undefined;
-  setUser: (user: User) => void;
+  setUser: (user: User | undefined) => void;
 }
 const defaultValue: IUserContext = {
   user: undefined,

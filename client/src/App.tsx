@@ -1,5 +1,12 @@
 import React from "react";
 import Home from "./components/Home";
+import {
+  createBrowserRouter,
+  Navigate,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
+import HomePage from "./components/Home";
 import Profile from "./components/Profile";
 import ProductDetails from "./components/ProductDetails";
 import Cart from "./components/Cart";
@@ -10,7 +17,7 @@ import Navbar from "./components/AppBar";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import PersonalDetails from "./components/PersonalDetails";
 import PersonalOrders from "./components/PersonalOrders";
-
+import { useUserContext } from "./controller/userController/userContext";
 // use this enum to make links to pages
 export enum RoutePaths {
   HOME = "/",
@@ -24,6 +31,8 @@ export enum RoutePaths {
 }
 
 const App = () => {
+  const { user } = useUserContext();
+
   return (
     <Router>
       <Navbar />
@@ -32,21 +41,30 @@ const App = () => {
           <Routes>
             <Route path={RoutePaths.LOGIN} element={<Login />} />
             <Route path={RoutePaths.SIGNUP} element={<Signup />} />
-            <Route path={RoutePaths.HOME} element={<Home />} />
-            <Route path={RoutePaths.CART} element={<Cart />} />
+            <Route
+              path={RoutePaths.HOME}
+              element={user ? <Home /> : <Login />}
+            />
+            <Route
+              path={RoutePaths.CART}
+              element={user ? <Cart /> : <Login />}
+            />
             <Route
               path={RoutePaths.PRODUCT_DETAILS}
-              element={<ProductDetails />}
+              element={user ? <ProductDetails /> : <Login />}
             />
-            <Route path={RoutePaths.PROFILE} element={<Profile />}>
-              <Route index element={<PersonalDetails />} />
+            <Route
+              path={RoutePaths.PROFILE}
+              element={user ? <Profile /> : <Login />}
+            >
+              <Route index element={user ? <PersonalDetails /> : <Login />} />
               <Route
                 path={RoutePaths.PERSONAL_DETAILS}
-                element={<PersonalDetails />}
+                element={user ? <PersonalDetails /> : <Login />}
               />
               <Route
                 path={RoutePaths.PERSONAL_ORDER}
-                element={<PersonalOrders />}
+                element={user ? <PersonalOrders /> : <Login />}
               />
             </Route>
           </Routes>
