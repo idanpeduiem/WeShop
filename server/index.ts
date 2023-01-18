@@ -1,10 +1,10 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
-import { validateToken } from "./utils/middlewares";
-var admin = require("firebase-admin");
+import initRoutes from "./utils/initRoutes";
+
+const admin = require("firebase-admin");
 dotenv.config();
-const { PORT, DB_CONNECTION_STR = "" } = process.env;
+const { PORT = "" } = process.env;
 
 const cors = require("cors");
 
@@ -25,17 +25,11 @@ admin.initializeApp({
   }),
 });
 
-mongoose.connect(DB_CONNECTION_STR);
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", function () {
-  console.log("Connected successfully");
-});
-
-app.get("/", validateToken, (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("WeShop awesome server");
 });
+
+initRoutes(app);
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
