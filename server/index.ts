@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import initRoutes from "./utils/initRoutes";
 import { validateToken } from "./utils/middlewares";
+import setUpMongo from "./utils/mongoDbManager";
 
 const admin = require("firebase-admin");
 dotenv.config();
@@ -26,10 +27,12 @@ admin.initializeApp({
   }),
 });
 
+
 app.get("/", validateToken, (req: Request, res: Response) => {
   res.send("WeShop awesome server");
 });
 
+setUpMongo();
 initRoutes(app);
 
 app.listen(PORT, () => {
