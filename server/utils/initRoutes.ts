@@ -1,6 +1,4 @@
 import { Express } from "express";
-import { mongoDbManager } from "./mongoDbManager";
-import { validateToken } from "./middlewares";
 import cartsRouter from "../routes/carts-router";
 import wishListsRouter from "../routes/wish-lists-router";
 import ordersRouter from "../routes/orders-router";
