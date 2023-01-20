@@ -11,10 +11,19 @@ const ItemSchema = new mongoose.Schema({
       required: true,
       ref: 'department'
     },
+    categoty: {
+      type: ObjectID,
+      required: true,
+      ref: 'itemCategory'
+    },
     price: {
       type: Number,
       required: true,
-    }
+    },
+   image: {
+    type: String,
+    required: true
+   }
   });
 
   const Item = mongoose.model("item", ItemSchema);

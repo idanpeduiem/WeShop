@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
-import { ObjectID } from "../utils/types";
+import { ObjectID, UUID } from "../utils/types";
 
 const CartSchema = new mongoose.Schema({
-    user: {
-      type: ObjectID,
+    userId: {
+      type: UUID,
        required: true,
-       ref: 'user'
      },
     items: [{
       itemId: {
