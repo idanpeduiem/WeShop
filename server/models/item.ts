@@ -11,7 +11,7 @@ const ItemSchema = new mongoose.Schema({
       required: true,
       ref: 'department'
     },
-    categoty: {
+    category: {
       type: ObjectID,
       required: true,
       ref: 'itemCategory'
