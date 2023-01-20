@@ -2,8 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import initRoutes from "./utils/initRoutes";
 import { validateToken } from "./utils/middlewares";
-
-import mongoose from "mongoose";
+import setUpMongo from "./utils/mongoDbManager";
 
 const admin = require("firebase-admin");
 dotenv.config();
@@ -28,20 +27,12 @@ admin.initializeApp({
   }),
 });
 
+
 app.get("/", validateToken, (req: Request, res: Response) => {
   res.send("WeShop awesome server");
 });
 
-
-const { DB_CONNECTION_STR = "" } = process.env;
-mongoose.connect(DB_CONNECTION_STR);
-const db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", function () {
-  console.log("Connected successfully");
-});
-
+setUpMongo();
 initRoutes(app);
 
 app.listen(PORT, () => {

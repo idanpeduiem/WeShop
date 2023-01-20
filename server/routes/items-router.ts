@@ -1,8 +1,6 @@
 import { Request, Response, Router } from "express";
 import mongoose from "mongoose";
 import Item from "../models/item";
-import { mongoDbManager } from "../utils/mongoDbManager";
-import { ObjectID } from "../utils/types";
 
 
 const itemsRoute = Router();
