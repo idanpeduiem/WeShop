@@ -24,12 +24,11 @@ const signUpUser = async (
   try {
     const auth = getAuth();
 
-    const user = await createUserWithEmailAndPassword(
+    await createUserWithEmailAndPassword(
       auth,
       email.current.value,
       password.current.value
     );
-    console.log(user);
     enqueueSnackbar("Successful sign up!", { variant: "success" });
     navigate("/login");
   } catch (error: any) {

@@ -2,11 +2,14 @@ import Stack from "@mui/material/Stack";
 import { RoutePaths } from "../App";
 import { useUserContext } from "../controller/userController/userContext";
 import AxiosInstance from "../utils/axiosInstance";
+import { approveService } from "../utils/services";
 
 const Home = () => {
   const { user } = useUserContext();
   console.log(user);
   console.log("callApi");
+  const { data, isSuccess, isLoading, isError } = approveService.getExample();
+  console.log(data);
   const getData = async () => {
     try {
       const data = await AxiosInstance.get("/");

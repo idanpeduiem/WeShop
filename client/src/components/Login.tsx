@@ -47,7 +47,6 @@ const loginUser = async (
 
 const Login = () => {
   const theme = useTheme();
-  const { setUser } = useUserContext();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const email: React.MutableRefObject<any> = useRef(null);
@@ -97,8 +96,7 @@ const Login = () => {
             loginUser(
               email,
               password,
-              (user) => {
-                setUser(user);
+              () => {
                 enqueueSnackbar("Successful login!", { variant: "success" });
                 navigate(RoutePaths.HOME);
               },

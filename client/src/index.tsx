@@ -32,13 +32,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <UserProvider>
-      <SnackbarProvider maxSnack={3}>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </SnackbarProvider>
-    </UserProvider>
+    <SnackbarProvider maxSnack={3}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </SnackbarProvider>
   </React.StrictMode>
 );
 
