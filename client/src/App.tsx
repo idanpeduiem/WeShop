@@ -34,31 +34,59 @@ const App = () => {
             <Route path={RoutePaths.SIGNUP} element={<Signup />} />
             <Route
               path={RoutePaths.HOME}
-              element={<PrivateRoute component={<Home />} />}
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }
             />
             <Route
               path={RoutePaths.CART}
-              element={<PrivateRoute component={<Cart />} />}
+              element={
+                <PrivateRoute>
+                  <Cart />
+                </PrivateRoute>
+              }
             />
             <Route
               path={RoutePaths.PRODUCT_DETAILS}
-              element={<PrivateRoute component={<ProductDetails />} />}
+              element={
+                <PrivateRoute>
+                  <ProductDetails />
+                </PrivateRoute>
+              }
             />
             <Route
               path={RoutePaths.PROFILE}
-              element={<PrivateRoute component={<Profile />} />}
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
             >
               <Route
                 index
-                element={<PrivateRoute component={<PersonalDetails />} />}
+                element={
+                  <PrivateRoute>
+                    <PersonalDetails />
+                  </PrivateRoute>
+                }
               />
               <Route
                 path={RoutePaths.PERSONAL_DETAILS}
-                element={<PrivateRoute component={<PersonalDetails />} />}
+                element={
+                  <PrivateRoute>
+                    <PersonalDetails />
+                  </PrivateRoute>
+                }
               />
               <Route
                 path={RoutePaths.PERSONAL_ORDER}
-                element={<PrivateRoute component={<PersonalOrders />} />}
+                element={
+                  <PrivateRoute>
+                    <PersonalOrders />
+                  </PrivateRoute>
+                }
               />
             </Route>
           </Routes>
