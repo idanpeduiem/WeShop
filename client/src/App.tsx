@@ -1,12 +1,4 @@
-import React from "react";
 import Home from "./components/Home";
-import {
-  createBrowserRouter,
-  Navigate,
-  redirect,
-  RouterProvider,
-} from "react-router-dom";
-import HomePage from "./components/Home";
 import Profile from "./components/Profile";
 import ProductDetails from "./components/ProductDetails";
 import Cart from "./components/Cart";
@@ -18,6 +10,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import PersonalDetails from "./components/PersonalDetails";
 import PersonalOrders from "./components/PersonalOrders";
 import { useUserContext } from "./controller/userController/userContext";
+import PrivateRoute from "./utils/PrivateRoute";
 // use this enum to make links to pages
 export enum RoutePaths {
   HOME = "/",
@@ -31,8 +24,6 @@ export enum RoutePaths {
 }
 
 const App = () => {
-  const { user } = useUserContext();
-
   return (
     <Router>
       <Navbar />
@@ -43,28 +34,31 @@ const App = () => {
             <Route path={RoutePaths.SIGNUP} element={<Signup />} />
             <Route
               path={RoutePaths.HOME}
-              element={user ? <Home /> : <Login />}
+              element={<PrivateRoute component={<Home />} />}
             />
             <Route
               path={RoutePaths.CART}
-              element={user ? <Cart /> : <Login />}
+              element={<PrivateRoute component={<Cart />} />}
             />
             <Route
               path={RoutePaths.PRODUCT_DETAILS}
-              element={user ? <ProductDetails /> : <Login />}
+              element={<PrivateRoute component={<ProductDetails />} />}
             />
             <Route
               path={RoutePaths.PROFILE}
-              element={user ? <Profile /> : <Login />}
+              element={<PrivateRoute component={<Profile />} />}
             >
-              <Route index element={user ? <PersonalDetails /> : <Login />} />
+              <Route
+                index
+                element={<PrivateRoute component={<PersonalDetails />} />}
+              />
               <Route
                 path={RoutePaths.PERSONAL_DETAILS}
-                element={user ? <PersonalDetails /> : <Login />}
+                element={<PrivateRoute component={<PersonalDetails />} />}
               />
               <Route
                 path={RoutePaths.PERSONAL_ORDER}
-                element={user ? <PersonalOrders /> : <Login />}
+                element={<PrivateRoute component={<PersonalOrders />} />}
               />
             </Route>
           </Routes>
