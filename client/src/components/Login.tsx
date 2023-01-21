@@ -13,7 +13,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useTheme } from "@mui/material/styles";
 import {
+  browserSessionPersistence,
   getAuth,
+  setPersistence,
   signInWithEmailAndPassword,
   User,
   UserCredential,
@@ -31,6 +33,7 @@ const loginUser = async (
 ) => {
   try {
     const auth = getAuth();
+    await setPersistence(auth, browserSessionPersistence);
 
     const user: UserCredential = await signInWithEmailAndPassword(
       auth,
@@ -47,7 +50,6 @@ const loginUser = async (
 
 const Login = () => {
   const theme = useTheme();
-  const { setUser } = useUserContext();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const email: React.MutableRefObject<any> = useRef(null);
@@ -97,8 +99,7 @@ const Login = () => {
             loginUser(
               email,
               password,
-              (user) => {
-                setUser(user);
+              () => {
                 enqueueSnackbar("Successful login!", { variant: "success" });
                 navigate(RoutePaths.HOME);
               },

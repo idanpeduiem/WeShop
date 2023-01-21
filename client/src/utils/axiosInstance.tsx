@@ -1,4 +1,4 @@
-import { getAuth, getIdToken, onAuthStateChanged, User } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import axios from "axios";
 
 const AxiosInstance = axios.create({
@@ -6,7 +6,9 @@ const AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_BACKEND_URL,
 });
 AxiosInstance.interceptors.request.use(async (request: any) => {
-  const token = await getUserToken();
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+  const token = await currentUser?.getIdToken();
 
   if (token) {
     request.headers = {
@@ -18,18 +20,4 @@ AxiosInstance.interceptors.request.use(async (request: any) => {
 
   return request;
 });
-const getUserToken = async () => {
-  return new Promise((resolve, reject) => {
-    const unsub = onAuthStateChanged(getAuth(), async (user) => {
-      if (user) {
-        const token = await getIdToken(user);
-        resolve(token);
-      } else {
-        console.log("User not logged in");
-        resolve(null);
-      }
-      unsub();
-    });
-  });
-};
 export default AxiosInstance;
