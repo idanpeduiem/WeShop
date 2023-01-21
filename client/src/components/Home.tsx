@@ -1,33 +1,46 @@
-import Stack from "@mui/material/Stack";
-import { RoutePaths } from "../App";
-import { useUserContext } from "../controller/userController/userContext";
-import AxiosInstance from "../utils/axiosInstance";
-import { approveService } from "../utils/services";
+import { useState } from 'react';
+import { Card } from "@mui/material";
+import { useQuery } from "react-query";
+
+import ItemCard from "./common/ItemCard";
+import './Home.css';
+import { getAllItems } from "../queries";
+import { ItemDetails } from "../utils/types";
+import FilterProducts from './FilterProducts';
 
 const Home = () => {
-  const { user } = useUserContext();
-  console.log(user);
-  console.log("callApi");
-  const { data, isSuccess, isLoading, isError } = approveService.getExample();
-  console.log(data);
-  const getData = async () => {
-    try {
-      const data = await AxiosInstance.get("/");
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  getData();
+  const [filteredItems, setFilteredItems] = useState<ItemDetails[]>();
+
+  const { data: items, isLoading } = useQuery("users", getAllItems, {
+    onSuccess: (items) => setFilteredItems(items),
+  });
+  console.log(items);
+
   return (
     <>
-      <h1>Home Page</h1>
-      <Stack>
-        <a href={RoutePaths.CART}>cart</a>
-        <a href={RoutePaths.LOGIN}>login</a>
-        <a href={RoutePaths.PROFILE}>profile</a>
-        <a href={RoutePaths.PRODUCT_DETAILS}>product details</a>
-      </Stack>
+    {
+      isLoading ? 
+      <div>Loading</div> 
+      :
+      <div className="HomeContainer">
+        <div className="title">Welcome to WeShop</div>
+        <div className="content">
+          <FilterProducts allItems={items} setFilteredItems={setFilteredItems}/>
+          <Card className="itemsContainer">
+            {filteredItems?.map((item: ItemDetails) => {
+              const {_id, description, price, image} = item;
+              return( 
+                <ItemCard 
+                  key={_id}
+                  name={description}
+                  price={price}
+                  imageUrl={image}/>
+              )
+            })}
+          </Card>
+        </div>
+      </div>
+    }
     </>
   );
 };

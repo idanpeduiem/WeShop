@@ -5,6 +5,7 @@ const AxiosInstance = axios.create({
   responseType: "json",
   baseURL: process.env.REACT_APP_BACKEND_URL,
 });
+
 AxiosInstance.interceptors.request.use(async (request: any) => {
   const auth = firebase.getFirebaseAuth();
   const currentUser = auth.currentUser;

@@ -6,20 +6,27 @@ import reportWebVitals from "./reportWebVitals";
 import { SnackbarProvider } from "notistack";
 import theme from "./overrieds/MuiTheme";
 import { ThemeProvider } from "@mui/material";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { firebase } from "./utils/firebase";
+import { UserProvider } from "./controller/userController/userProvider";
 
 firebase.init();
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+const queryClient = new QueryClient();
 
 root.render(
   <React.StrictMode>
-    <SnackbarProvider maxSnack={3}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </SnackbarProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserProvider>
+        <SnackbarProvider maxSnack={3}>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </SnackbarProvider>
+      </UserProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
