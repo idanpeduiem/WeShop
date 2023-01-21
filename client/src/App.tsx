@@ -25,7 +25,7 @@ export enum RoutePaths {
   LOGIN = "login",
   SIGNUP = "signup",
   PROFILE = "profile",
-  PRODUCT_DETAILS = "product-details",
+  PRODUCT_DETAILS = "product-details/:id",
   PERSONAL_DETAILS = "personal-details",
   PERSONAL_ORDER = "persona-orders",
 }
@@ -51,7 +51,7 @@ const App = () => {
             />
             <Route
               path={RoutePaths.PRODUCT_DETAILS}
-              element={user ? <ProductDetails /> : <Login />}
+              element={<ProductDetails />}
             />
             <Route
               path={RoutePaths.PROFILE}
