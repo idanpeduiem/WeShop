@@ -22,6 +22,14 @@ itemsRoute.get('/:id', async (req: Request,res: Response) => {
       },
     },
     {
+      $lookup: {
+        from: 'sizes',
+        localField: 'stock.size',
+        foreignField: '_id',
+        as: 'stock'
+      }
+    },
+    {
         $lookup: {
           from: "departments",
           localField: "department",
@@ -40,7 +48,11 @@ itemsRoute.get('/:id', async (req: Request,res: Response) => {
       {
       $project: {
         department: { $arrayElemAt: ["$department", 0] },
-        category: { $arrayElemAt: ["$category", 0] }
+        category: { $arrayElemAt: ["$category", 0] },
+        price:1,
+        description:1,
+        image:1,
+        stock: 1
     }}
   ]).exec()
 
