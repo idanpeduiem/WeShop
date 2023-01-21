@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import initRoutes from "./utils/initRoutes";
 import { validateToken } from "./utils/middlewares";
+import {createWebSocket} from "./utils/wsManager";
 
 const admin = require("firebase-admin");
 dotenv.config();
@@ -31,6 +32,7 @@ app.get("/", validateToken, (req: Request, res: Response) => {
 });
 
 initRoutes(app);
+createWebSocket();
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
