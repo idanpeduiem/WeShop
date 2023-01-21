@@ -13,7 +13,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useTheme } from "@mui/material/styles";
 import {
+  browserSessionPersistence,
   getAuth,
+  setPersistence,
   signInWithEmailAndPassword,
   User,
   UserCredential,
@@ -31,6 +33,7 @@ const loginUser = async (
 ) => {
   try {
     const auth = getAuth();
+    await setPersistence(auth, browserSessionPersistence);
 
     const user: UserCredential = await signInWithEmailAndPassword(
       auth,

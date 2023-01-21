@@ -1,13 +1,20 @@
-import { getAuth } from "firebase/auth";
 import { Navigate, Route, useLocation } from "react-router-dom";
+import { useUserContext } from "../controller/userController/userContext";
 const PrivateRoute = ({ children }: { children: JSX.Element }): any => {
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const { user, isLoading } = useUserContext();
   let location = useLocation();
-
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} />;
-  }
-  return children;
+  return (
+    <>
+      {!isLoading ? (
+        !user ? (
+          <Navigate to="/login" state={{ from: location }} />
+        ) : (
+          { ...children }
+        )
+      ) : (
+        <h1>loading...</h1>
+      )}
+    </>
+  );
 };
 export default PrivateRoute;
