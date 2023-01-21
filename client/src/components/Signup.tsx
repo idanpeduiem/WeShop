@@ -11,9 +11,13 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/Lock";
 import { useTheme } from "@mui/material/styles";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
+import { firebase } from "../utils/firebase";
+import GoogleButton from "react-google-button";
+import { RoutePaths } from "../App";
+import { loginUserWithGoogle } from "./Login";
 
 const signUpUser = async (
   email: React.MutableRefObject<any>,
@@ -22,7 +26,7 @@ const signUpUser = async (
   navigate: any
 ) => {
   try {
-    const auth = getAuth();
+    const auth = firebase.getFirebaseAuth();
 
     await createUserWithEmailAndPassword(
       auth,
@@ -43,8 +47,8 @@ const Signup = () => {
   const theme = useTheme();
   const paperStyle = {
     padding: 20,
-    height: "55vh",
-    width: "35vh",
+    height: "50vh",
+    width: "40vh",
     margin: "auto",
     backgroundColor: theme.palette.background.paper,
   };
@@ -60,6 +64,7 @@ const Signup = () => {
           <h2>Sign Up</h2>
         </Grid>
         <TextField
+          sx={{ margin: "8px 0" }}
           inputRef={email}
           label="Email"
           placeholder="Enter email"
@@ -67,6 +72,7 @@ const Signup = () => {
           required
         />
         <TextField
+          sx={{ margin: "8px 0" }}
           inputRef={password}
           label="Password"
           placeholder="Enter password"
@@ -83,6 +89,22 @@ const Signup = () => {
         >
           Sign up
         </Button>
+        <GoogleButton
+          label="Sign up with google"
+          color="primary"
+          style={{ width: "100%" }}
+          onClick={() =>
+            loginUserWithGoogle(
+              () => {
+                enqueueSnackbar("Successful login!", { variant: "success" });
+                navigate(RoutePaths.HOME);
+              },
+              (error) => {
+                enqueueSnackbar(error.message, { variant: "error" });
+              }
+            )
+          }
+        />
         <Typography>
           {" "}
           Already have an account ?<Link href="/Login">Login</Link>
