@@ -1,4 +1,4 @@
-import { getAuth, getIdToken, onAuthStateChanged, User } from "firebase/auth";
+import { getAuth, getIdToken, onAuthStateChanged } from "firebase/auth";
 import axios from "axios";
 
 const AxiosInstance = axios.create({
