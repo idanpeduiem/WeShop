@@ -11,23 +11,20 @@ import logo from "../assets/logo.png";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signOut } from "firebase/auth";
+import { firebase } from "../utils/firebase";
 
 const Navbar = () => {
   const itemsInCart = 4;
 
   const navigate = useNavigate();
 
-  const logout = () => {
-    signOut(getAuth())
-      .then(() => {
-        // Sign-out successful.
-        navigate(RoutePaths.LOGIN);
-      })
-      .catch((error) => {
-        // An error happened.
-        console.log(error);
-      });
+  const logout = async () => {
+    try {
+      await firebase.signOut();
+      navigate(RoutePaths.LOGIN);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
