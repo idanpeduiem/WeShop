@@ -1,5 +1,4 @@
 import {WebSocketServer} from "ws";
-import Cart from "../models/cart";
 
 export const createWebSocket = () => {
     const {WEB_SOCKET_PORT = 1000} = process.env;
