@@ -1,15 +1,10 @@
-import {
-  Button,
-  Grid,
-  Paper,
-  TextField,
-} from "@mui/material";
+import { Button, Grid, Paper, TextField } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { useRef, useState } from "react";
 import { Clear, ResetTv, Save } from "@mui/icons-material";
 import { useUserContext } from "../controller/userController/userContext";
 const PersonalDetails = () => {
-  const { user, setUser } = useUserContext();
+  const { user } = useUserContext();
 
   const [displayName, setDisplayName] = useState(user?.displayName);
   const [email, setEmail] = useState(user?.email);

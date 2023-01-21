@@ -9,8 +9,8 @@ import Navbar from "./components/AppBar";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import PersonalDetails from "./components/PersonalDetails";
 import PersonalOrders from "./components/PersonalOrders";
-import { useUserContext } from "./controller/userController/userContext";
 import PrivateRoute from "./utils/PrivateRoute";
+
 // use this enum to make links to pages
 export enum RoutePaths {
   HOME = "/",

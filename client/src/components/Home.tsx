@@ -9,8 +9,11 @@ import { ItemDetails } from "../utils/types";
 import FilterProducts from './FilterProducts';
 
 const Home = () => {
-  const { data: items, isLoading, isError } = useQuery("users", getAllItems);
-  const [filteredItems, setFilteredItems] = useState<ItemDetails[]>(items);
+  const [filteredItems, setFilteredItems] = useState<ItemDetails[]>();
+
+  const { data: items, isLoading } = useQuery("users", getAllItems, {
+    onSuccess: (items) => setFilteredItems(items),
+  });
   console.log(items);
 
   return (

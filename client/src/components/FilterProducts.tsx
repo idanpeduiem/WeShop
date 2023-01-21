@@ -31,7 +31,7 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
             <div>Filter By Gender</div>
             <div className="genderFilter">
                 {
-                    departments.map((department: Department) => 
+                    departments?.map((department: Department) => 
                         <Button 
                             variant="text" 
                             key={department._id}
@@ -46,7 +46,7 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
             <div>Filter By Category</div>
             <div className="genderFilter">
                 {
-                    categories.map((category: ItemCategory) => 
+                    categories?.map((category: ItemCategory) => 
                         <Button 
                             variant="text" 
                             key={category._id}

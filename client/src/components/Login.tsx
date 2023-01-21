@@ -12,17 +12,24 @@ import LockOutlinedIcon from "@mui/icons-material/Lock";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useTheme } from "@mui/material/styles";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  User,
-  UserCredential,
-} from "firebase/auth";
+import { User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import { useUserContext } from "../controller/userController/userContext";
 import { RoutePaths } from "../App";
+import { firebase } from "../utils/firebase";
+import GoogleButton from "react-google-button";
 
+export const loginUserWithGoogle = async (
+  onSuccess: (user: User) => void,
+  onError: (error: any) => void
+) => {
+  try {
+    const user = await firebase.signInWithGoogle();
+    onSuccess(user);
+  } catch (error: any) {
+    onError(error);
+  }
+};
 const loginUser = async (
   email: React.MutableRefObject<any>,
   password: React.MutableRefObject<any>,
@@ -30,16 +37,13 @@ const loginUser = async (
   onError: (error: any) => void
 ) => {
   try {
-    const auth = getAuth();
-
-    const user: UserCredential = await signInWithEmailAndPassword(
-      auth,
+    const user = await firebase.signInWithEmailAndPassword(
       email.current.value,
       password.current.value
     );
 
-    if (user.user == null) throw new Error();
-    onSuccess(user.user);
+    if (user == null) throw new Error();
+    onSuccess(user);
   } catch (error: any) {
     onError(error);
   }
@@ -47,7 +51,6 @@ const loginUser = async (
 
 const Login = () => {
   const theme = useTheme();
-  const { setUser } = useUserContext();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const email: React.MutableRefObject<any> = useRef(null);
@@ -55,7 +58,7 @@ const Login = () => {
   const paperStyle = {
     padding: 20,
     height: "60vh",
-    width: "35vh",
+    width: "40vh",
     margin: "auto",
     backgroundColor: theme.palette.background.paper,
   };
@@ -69,6 +72,7 @@ const Login = () => {
           <h2>Sign In</h2>
         </Grid>
         <TextField
+          sx={{ margin: "8px 0" }}
           inputRef={email}
           label="Email"
           placeholder="Enter email"
@@ -76,6 +80,7 @@ const Login = () => {
           required
         />
         <TextField
+          sx={{ margin: "8px 0" }}
           inputRef={password}
           label="Password"
           placeholder="Enter password"
@@ -91,14 +96,12 @@ const Login = () => {
           type="submit"
           color="primary"
           variant="contained"
-          sx={{ margin: "8px 0" }}
           fullWidth
           onClick={() =>
             loginUser(
               email,
               password,
-              (user) => {
-                setUser(user);
+              () => {
                 enqueueSnackbar("Successful login!", { variant: "success" });
                 navigate(RoutePaths.HOME);
               },
@@ -110,6 +113,21 @@ const Login = () => {
         >
           Sign in
         </Button>
+        <GoogleButton
+          color="primary"
+          style={{ width: "100%", margin: "8px 0" }}
+          onClick={() =>
+            loginUserWithGoogle(
+              () => {
+                enqueueSnackbar("Successful login!", { variant: "success" });
+                navigate(RoutePaths.HOME);
+              },
+              (error) => {
+                enqueueSnackbar(error.message, { variant: "error" });
+              }
+            )
+          }
+        />
         <Typography>
           <Link href="#">Forgot password ?</Link>
         </Typography>
