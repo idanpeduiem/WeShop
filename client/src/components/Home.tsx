@@ -1,6 +1,8 @@
 import { Button, Card } from "@mui/material";
 import { useUserContext } from "../controller/userController/userContext";
 import ItemCard from "./common/ItemCard";
+import AxiosInstance from "../utils/axiosInstance";
+
 import './Home.css';
 
 const data = [
@@ -64,6 +66,16 @@ const data = [
 const Home = () => {
   const { user } = useUserContext();
   console.log(user);
+  console.log("callApi");
+  const getData = async () => {
+    try {
+      const data = await AxiosInstance.get("/");
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  getData();
 
   return (
     <div className="HomeContainer">

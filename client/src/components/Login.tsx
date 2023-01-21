@@ -12,33 +12,39 @@ import LockOutlinedIcon from "@mui/icons-material/Lock";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useTheme } from "@mui/material/styles";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  User,
+  UserCredential,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { useUserContext } from "../controller/userController/userContext";
+import { RoutePaths } from "../App";
+
 const loginUser = async (
   email: React.MutableRefObject<any>,
   password: React.MutableRefObject<any>,
-  enqueueSnackbar: any,
-  navigate: any,
-  setUser: any
+  onSuccess: (user: User) => void,
+  onError: (error: any) => void
 ) => {
   try {
     const auth = getAuth();
 
-    const user = await signInWithEmailAndPassword(
+    const user: UserCredential = await signInWithEmailAndPassword(
       auth,
       email.current.value,
       password.current.value
     );
-    console.log(user);
-    setUser(user.user);
-    enqueueSnackbar("Successful login!", { variant: "success" });
-    navigate("/");
+
+    if (user.user == null) throw new Error();
+    onSuccess(user.user);
   } catch (error: any) {
-    enqueueSnackbar(error.message, { variant: "error" });
+    onError(error);
   }
 };
+
 const Login = () => {
   const theme = useTheme();
   const { setUser } = useUserContext();
@@ -53,13 +59,11 @@ const Login = () => {
     margin: "auto",
     backgroundColor: theme.palette.background.paper,
   };
-  const avatarStyle = { backgroundColor: theme.palette.primary.main };
-  const btnstyle = { margin: "8px 0" };
   return (
     <Grid>
-      <Paper elevation={10} style={paperStyle}>
+      <Paper elevation={3} style={paperStyle}>
         <Grid>
-          <Avatar style={avatarStyle}>
+          <Avatar sx={{ backgroundColor: theme.palette.primary.main }}>
             <LockOutlinedIcon />
           </Avatar>
           <h2>Sign In</h2>
@@ -87,10 +91,21 @@ const Login = () => {
           type="submit"
           color="primary"
           variant="contained"
-          style={btnstyle}
+          sx={{ margin: "8px 0" }}
           fullWidth
           onClick={() =>
-            loginUser(email, password, enqueueSnackbar, navigate, setUser)
+            loginUser(
+              email,
+              password,
+              (user) => {
+                setUser(user);
+                enqueueSnackbar("Successful login!", { variant: "success" });
+                navigate(RoutePaths.HOME);
+              },
+              (error) => {
+                enqueueSnackbar(error.message, { variant: "error" });
+              }
+            )
           }
         >
           Sign in

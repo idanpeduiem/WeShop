@@ -7,6 +7,8 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { UserProvider } from "./controller/userController/userProvider";
 import { SnackbarProvider } from "notistack";
+import theme from "./overrieds/MuiTheme";
+import { ThemeProvider } from "@mui/material";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -23,14 +25,18 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <UserProvider>
       <SnackbarProvider maxSnack={3}>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </SnackbarProvider>
     </UserProvider>
   </React.StrictMode>
