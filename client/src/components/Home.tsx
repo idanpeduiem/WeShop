@@ -17,10 +17,10 @@ const Home = () => {
     <>
     {
       isLoading ? 
-      <div>טוען פריטים</div> 
+      <div>Loading</div> 
       :
       <div className="HomeContainer">
-        <div className="title">פריטים לרכישה</div>
+        <div className="title">Welcome to WeShop</div>
         <div className="content">
           <FilterProducts allItems={items} setFilteredItems={setFilteredItems}/>
           <Card className="itemsContainer">

@@ -28,7 +28,7 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
 
   return (
           <Card className="filtersContainer">
-            <div>מסננים:</div>
+            <div>Filter By Gender</div>
             <div className="genderFilter">
                 {
                     departments.map((department: Department) => 
@@ -43,7 +43,7 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
                 }
             </div>
 
-            <div>סינונים נוספים:</div>
+            <div>Filter By Category</div>
             <div className="genderFilter">
                 {
                     categories.map((category: ItemCategory) => 
