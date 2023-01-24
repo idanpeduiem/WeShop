@@ -9,9 +9,8 @@ import Navbar from "./components/AppBar";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import PersonalDetails from "./components/PersonalDetails";
 import PersonalOrders from "./components/PersonalOrders";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PrivateRoute from "./utils/PrivateRoute";
-import { UserProvider } from "./controller/userController/userProvider";
+
 // use this enum to make links to pages
 export enum RoutePaths {
   HOME = "/",
@@ -19,86 +18,81 @@ export enum RoutePaths {
   LOGIN = "login",
   SIGNUP = "signup",
   PROFILE = "profile",
-  PRODUCT_DETAILS = "product-details",
+  PRODUCT_DETAILS = "product-details/:id",
   PERSONAL_DETAILS = "personal-details",
   PERSONAL_ORDER = "persona-orders",
 }
-const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <UserProvider>
-      <QueryClientProvider client={queryClient}>
-        <Router>
-          <Navbar />
-          <Box marginTop={5}>
-            <Container>
-              <Routes>
-                <Route path={RoutePaths.LOGIN} element={<Login />} />
-                <Route path={RoutePaths.SIGNUP} element={<Signup />} />
-                <Route
-                  path={RoutePaths.HOME}
-                  element={
-                    <PrivateRoute>
-                      <Home />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path={RoutePaths.CART}
-                  element={
-                    <PrivateRoute>
-                      <Cart />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path={RoutePaths.PRODUCT_DETAILS}
-                  element={
-                    <PrivateRoute>
-                      <ProductDetails />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path={RoutePaths.PROFILE}
-                  element={
-                    <PrivateRoute>
-                      <Profile />
-                    </PrivateRoute>
-                  }
-                >
-                  <Route
-                    index
-                    element={
-                      <PrivateRoute>
-                        <PersonalDetails />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path={RoutePaths.PERSONAL_DETAILS}
-                    element={
-                      <PrivateRoute>
-                        <PersonalDetails />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path={RoutePaths.PERSONAL_ORDER}
-                    element={
-                      <PrivateRoute>
-                        <PersonalOrders />
-                      </PrivateRoute>
-                    }
-                  />
-                </Route>
-              </Routes>
-            </Container>
-          </Box>
-        </Router>
-      </QueryClientProvider>
-    </UserProvider>
+    <Router>
+      <Navbar />
+      <Box marginTop={5}>
+        <Container>
+          <Routes>
+            <Route path={RoutePaths.LOGIN} element={<Login />} />
+            <Route path={RoutePaths.SIGNUP} element={<Signup />} />
+            <Route
+              path={RoutePaths.HOME}
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path={RoutePaths.CART}
+              element={
+                <PrivateRoute>
+                  <Cart />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path={RoutePaths.PRODUCT_DETAILS}
+              element={
+                <PrivateRoute>
+                  <ProductDetails />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path={RoutePaths.PROFILE}
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            >
+              <Route
+                index
+                element={
+                  <PrivateRoute>
+                    <PersonalDetails />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={RoutePaths.PERSONAL_DETAILS}
+                element={
+                  <PrivateRoute>
+                    <PersonalDetails />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={RoutePaths.PERSONAL_ORDER}
+                element={
+                  <PrivateRoute>
+                    <PersonalOrders />
+                  </PrivateRoute>
+                }
+              />
+            </Route>
+          </Routes>
+        </Container>
+      </Box>
+    </Router>
   );
 };
 
