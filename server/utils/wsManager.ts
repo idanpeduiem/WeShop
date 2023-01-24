@@ -16,7 +16,7 @@ export const createWebSocket = () => {
             console.log("Some Error occurred");
         }
 
-        ws.send("helo")
+        ws.emit("helo", 123)
     })
 
     return ws
