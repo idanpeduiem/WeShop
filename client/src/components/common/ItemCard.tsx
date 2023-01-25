@@ -1,23 +1,21 @@
-import {Button, Card} from '@mui/material';
-import './ItemCard.css';
-import {useCartContext} from "../../controller/cartController/cartContext";
+import { Button, Card } from "@mui/material";
+import "./ItemCard.css";
+import { useCartContext } from "../../controller/cartController/cartContext";
+import {ItemDetails} from "../../utils/types";
 
 interface ItemCardProps {
-    name: string;
-    price: number;
-    imageUrl: string;
+  item: ItemDetails;
 }
 
-const ItemCard = (props: ItemCardProps) => {
-    const {name, price, imageUrl} = props;
-    const {addItemToCart} = useCartContext();
+const ItemCard = ({ item: { _id, description, price, image } }: ItemCardProps) => {
+  const { addItem } = useCartContext();
   return (
     <Card className="itemContainer">
-      <img src={imageUrl} alt='תמונת הפריט' className="img"/>
-      <div className='firstRow'>
-        <div>{name}</div>
+      <img src={image} alt="תמונת הפריט" className="img" />
+      <div className="firstRow">
+        <div>{description}</div>
         <div>{price}</div>
-          <Button onClick={() => addItemToCart({id: "1"})}></Button>
+        <Button color={'secondary'} onClick={() => addItem(_id)}>Add to cart</Button>
       </div>
     </Card>
   );

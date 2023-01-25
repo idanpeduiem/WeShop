@@ -12,10 +12,10 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 import { firebase } from "../utils/firebase";
+import {useCartContext} from "../controller/cartController/cartContext";
 
 const Navbar = () => {
-  const itemsInCart = 4;
-
+  const {cartItems} = useCartContext();
   const navigate = useNavigate();
 
   const logout = async () => {
@@ -60,7 +60,7 @@ const Navbar = () => {
           aria-label="menu"
           onClick={() => navigate(RoutePaths.CART)}
         >
-          <Badge badgeContent={itemsInCart} color="secondary">
+          <Badge badgeContent={cartItems.length} color="secondary">
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
