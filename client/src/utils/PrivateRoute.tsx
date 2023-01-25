@@ -1,5 +1,6 @@
 import { Navigate, Route, useLocation } from "react-router-dom";
 import { useUserContext } from "../controller/userController/userContext";
+import Spinner from "./spinner";
 const PrivateRoute = ({ children }: { children: JSX.Element }): any => {
   const { user, isLoading } = useUserContext();
   let location = useLocation();
@@ -12,7 +13,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }): any => {
           { ...children }
         )
       ) : (
-        <h1>loading...</h1>
+        <Spinner />
       )}
     </>
   );
