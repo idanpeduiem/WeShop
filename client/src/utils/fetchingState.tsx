@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import React from "react";
 import Spinner from "./spinner";
 
@@ -13,8 +14,11 @@ const FetchingState: React.FunctionComponent<FetchingStateProps> = ({
   isSuccess = false,
   children,
 }) => {
+  const { enqueueSnackbar } = useSnackbar();
+
   if (isError) {
-    return <h1> error! </h1>;
+    enqueueSnackbar("error!", { variant: "error" });
+    return <></>;
   }
 
   if (isLoading) {
@@ -24,7 +28,7 @@ const FetchingState: React.FunctionComponent<FetchingStateProps> = ({
   if (isSuccess) {
     return <>{children}</>;
   }
-
-  return <h1> משהו בעייתי קרה</h1>;
+  enqueueSnackbar("Something bad happened!", { variant: "error" });
+  return <></>;
 };
 export default FetchingState;
