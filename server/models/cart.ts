@@ -15,7 +15,7 @@ const CartSchema = new mongoose.Schema(
           required: true,
         },
         size: {
-          type: ObjectID,
+          type: String,
           ref: "size",
           required: true,
         },

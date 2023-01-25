@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import Cart from "../models/cart";
+import mongoose from "mongoose";
 const x = {
   userId: "9T4RHNlVF4ekLvLXKuv8UOdtqmM2",
   itemId: "63ca9999682b0aa452c43ac5",
@@ -8,21 +9,26 @@ const x = {
 const cartsRouter = Router();
 
 cartsRouter.post("/addItem", async (req: Request, res: Response) => {
-  console.log(req.body);
-  const { userId, itemId, size } = req.body;
-  const newItem = { itemId, size };
+  let item;
 
-  const item = await Cart.updateOne(
-    {
-      userId,
-    },
-    {
-      $push: { items: newItem },
-    },
-    {
-      upsert: true,
-    }
-  );
+  try {
+    const { userId, itemId, size } = req.body;
+    const newItem = { itemId: new mongoose.Types.ObjectId(itemId), size };
+
+    item = await Cart.updateOne(
+      {
+        userId,
+      },
+      {
+        $push: { items: newItem },
+      },
+      {
+        upsert: true,
+      }
+    );
+  } catch (e) {
+    res.status(500).send(e);
+  }
 
   res.status(200).json(item);
 });
