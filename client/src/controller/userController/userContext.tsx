@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import React, { useContext } from "react";
+import { createContext, useContext } from "react";
 export interface IUserContext {
   user: User | undefined;
   setUser: (user: User | undefined) => void;
@@ -13,5 +13,5 @@ const defaultValue: IUserContext = {
   setIsLoading: () => {},
 };
 
-export const UserContext = React.createContext(defaultValue);
+export const UserContext = createContext(defaultValue);
 export const useUserContext = (): IUserContext => useContext(UserContext);
