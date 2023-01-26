@@ -19,17 +19,19 @@ itemsRoute.get('/:id', async (req: Request,res: Response) => {
         localField: "_id",
         foreignField: "item",
         as: "stock",
+        pipeline: [
+          {
+            $lookup: {
+              from: 'sizes',
+              localField: 'size',
+              foreignField: '_id',
+              as: 'size'
+            }
+          },
+        ]
       },
     },
-    {
-      $lookup: {
-        from: 'sizes',
-        localField: 'stock.size',
-        foreignField: '_id',
-        as: 'stock'
-      }
-    },
-    {
+       {
         $lookup: {
           from: "departments",
           localField: "department",
@@ -52,7 +54,7 @@ itemsRoute.get('/:id', async (req: Request,res: Response) => {
         price:1,
         description:1,
         image:1,
-        stock: 1
+        stock:1,
     }}
   ]).exec()
 

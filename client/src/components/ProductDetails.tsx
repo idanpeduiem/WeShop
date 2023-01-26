@@ -2,15 +2,15 @@ import { useParams } from "react-router";
 import { useQuery } from 'react-query'
 import { Button, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup } from "@mui/material";
 import { getItemQuery } from "../queries";
-import { ItemDetails, Size } from "../utils/types";
+import { ItemDetails, ItemStock, Size } from "../utils/types";
 import React, { useState } from "react";
 
 interface ItemSizesProps {
-  sizeStocks: Size[];
+  itemStocks: ItemStock;
   onSelectItem: (value: string) => void;
 }
 
-const ItemSizes: React.FC<ItemSizesProps> = ({sizeStocks, onSelectItem}) => (
+const ItemSizes: React.FC<ItemSizesProps> = ({itemStocks: sizeStocks, onSelectItem}) => (
     <FormControl>
       <FormLabel id="demo-row-radio-buttons-group-label">Size</FormLabel>
         <RadioGroup
@@ -22,9 +22,10 @@ const ItemSizes: React.FC<ItemSizesProps> = ({sizeStocks, onSelectItem}) => (
         {
           sizeStocks.map(sizeStock =>
            <FormControlLabel 
-           value={sizeStock._id} 
+           disabled={sizeStock.quantity===0}
+           value={sizeStock.size[0]._id} 
            control={<Radio />} 
-           label={sizeStock.description} />)
+           label={sizeStock.size[0].description} />)
         }
       </RadioGroup>
     </FormControl>
@@ -57,7 +58,7 @@ const ProductDetails:React.FC = () => {
           <h1>{description}</h1>
           <h2>{category.description} - {department.description}</h2>
           <h1>{price}₪</h1>
-          <ItemSizes sizeStocks={stock} onSelectItem={onSizeSelect}/>
+          <ItemSizes itemStocks={stock} onSelectItem={onSizeSelect}/>
           <Button>Add to cart</Button>
           <Button>Add to ♥</Button>
         </Grid>
