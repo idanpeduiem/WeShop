@@ -7,6 +7,7 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import { getItemQuery } from "../queries";
 import { ItemDetails, ItemStock, Size } from "../utils/types";
 import React, { useState } from "react";
+import FetchingState from "../utils/fetchingState";
 
 interface ItemSizesProps {
   itemStocks: ItemStock;
@@ -41,7 +42,7 @@ const ProductDetails:React.FC = () => {
   const [selectedSize, setSelectedSize] = useState<Size['_id']>();
   const [quantity, setQuantity] = useState(1);
   const [isSizeError, setIsSizeError] = useState(false);
-  const {data: item ,isLoading, isError} = useQuery<ItemDetails>(['item',id], () => getItemQuery(id));
+  const {data: item ,isLoading, isError, isSuccess} = useQuery<ItemDetails>(['item',id], () => getItemQuery(id));
 
   const onSizeSelect = (sizeId: string) => {
     setSelectedSize(sizeId);
@@ -51,10 +52,11 @@ const ProductDetails:React.FC = () => {
   const onAddToCart = () => {
     if(!selectedSize)
      setIsSizeError(true);
+     //TOFO: ADD TO CART
   }
 
   const onAddToWishList = () => {
-
+    //TODO: ADD TO WISHLIST
   }
 
   const onChangeQuantity = (isIncrement: boolean) => {
@@ -77,24 +79,15 @@ const ProductDetails:React.FC = () => {
      </IconButton>
    </div>
   )
-
-  if (isLoading) {
-    return <span>Loading...</span>
-  }
-
-  if (!item || isError) {
-    return <span>Error</span>
-  }
-
-  const {description,price,image,department,category,stock} = item;
+ 
   return (
-    <>
-      <Grid container>
+    <FetchingState isLoading={isLoading} isError={isError} isSuccess={isSuccess}>
+      { item && (<Grid container>
         <Grid item xs={6} justifyContent='center'>
-          <h1>{description}</h1>
-          <h2>{category.description} - {department.description}</h2>
-          <h1>{price}₪</h1>
-          <ItemSizes itemStocks={stock} onSelectItem={onSizeSelect}/>
+          <h1>{item.description}</h1>
+          <h2>{item.category.description} - {item.department.description}</h2>
+          <h1>{item.price}₪</h1>
+          <ItemSizes itemStocks={item.stock} onSelectItem={onSizeSelect}/>
           <QuantityBox/>
           <div style={{marginTop: '30px'}}>
             <Button variant="outlined"  onClick={onAddToCart}>Add to cart</Button>
@@ -102,21 +95,21 @@ const ProductDetails:React.FC = () => {
           </div>
         </Grid>
         <Grid item xs={6} justifyItems='flex-end'>
-          <img style={{height: "60vh", width:"60vh"}} alt ='' src={image}/>
+          <img style={{height: "60vh", width:"60vh"}} alt ='' src={item.image}/>
         </Grid>
         <Grid item xs={12}>
-        <Snackbar
-        open={isSizeError}
-        onClose={() => setIsSizeError(false)}
-        autoHideDuration={3000}
-      >
-         <Alert onClose={() => setIsSizeError(false)} severity="error" sx={{ width: '100%' }}>
-           Please select size
-        </Alert>
-      </Snackbar>
+          <Snackbar
+          open={isSizeError}
+          onClose={() => setIsSizeError(false)}
+          autoHideDuration={3000}
+          >
+           <Alert onClose={() => setIsSizeError(false)} severity="error" sx={{ width: '100%' }}>
+             Please select size
+          </Alert>
+        </Snackbar>
         </Grid>
-      </Grid>
-    </>
+      </Grid>)}
+   </FetchingState>
   );
 };
 export default ProductDetails;
