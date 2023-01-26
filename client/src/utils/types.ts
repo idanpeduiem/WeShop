@@ -13,13 +13,19 @@ export  type Size = {
     description:string
   }
   
+export  type ItemStock = {
+    _id: string,
+    item: string,
+    size: Size[],
+    quantity: number
+  }[];
   
-export type ItemDetails = {
+export  type ItemDetails = {
     _id: string,
     description: string,
     price: number,
     image: string,
     department: Department,
     category: ItemCategory,
-    stock: Size[],
+    stock: ItemStock,
   }
