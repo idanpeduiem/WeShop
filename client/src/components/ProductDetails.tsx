@@ -1,6 +1,9 @@
 import { useParams } from "react-router";
 import { useQuery } from 'react-query'
-import { Alert, Button, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, Snackbar } from "@mui/material";
+import { Alert, Button, FormControl, FormControlLabel, FormLabel, Grid, IconButton, Radio, RadioGroup, Snackbar } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import { getItemQuery } from "../queries";
 import { ItemDetails, ItemStock, Size } from "../utils/types";
 import React, { useState } from "react";
@@ -65,9 +68,13 @@ const ProductDetails:React.FC = () => {
 
   const QuantityBox = () => (
     <div style={{display:'flex', flexDirection:'row'}}>
-    <Button disabled={quantity === 1}  onClick={() => onChangeQuantity(false)} >-</Button>
-    <p>{quantity}</p>
-    <Button onClick={() => onChangeQuantity(true)}>+</Button>
+     <IconButton onClick={() => onChangeQuantity(false)} aria-label="remove" disabled={quantity === 1} color="primary">
+      <RemoveCircleOutlineIcon/>
+     </IconButton>
+     <p style={{fontSize: '20px'}}>{quantity}</p>
+     <IconButton onClick={() => onChangeQuantity(true)} aria-label="remove"  color="primary">
+      <ControlPointIcon/>
+     </IconButton>
    </div>
   )
 
@@ -87,12 +94,8 @@ const ProductDetails:React.FC = () => {
           <h1>{description}</h1>
           <h2>{category.description} - {department.description}</h2>
           <h1>{price}₪</h1>
-          <div>
           <ItemSizes itemStocks={stock} onSelectItem={onSizeSelect}/>
-          </div>
-          <div>
           <QuantityBox/>
-          </div>
           <div style={{marginTop: '30px'}}>
             <Button variant="outlined"  onClick={onAddToCart}>Add to cart</Button>
             <Button variant="outlined"  onClick={onAddToWishList}>Add to ♥</Button>
