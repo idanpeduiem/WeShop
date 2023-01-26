@@ -1,11 +1,11 @@
 import { Button, Divider, Grid, Paper, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import {useNavigate} from "react-router-dom";
-import {RoutePaths} from "../App";
+import { useNavigate } from "react-router-dom";
+import { RoutePaths } from "../App";
 
 const Cart = () => {
   const totalAmount = 1000;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <Grid container spacing={2}>
