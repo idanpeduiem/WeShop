@@ -1,6 +1,7 @@
 import AxiosInstance from "./utils/axiosInstance";
 import { ItemDetails } from "./utils/types";
 import { User } from "firebase/auth";
+import { CartItem } from "./controller/cartController/cartProvider";
 
 // items
 
@@ -21,11 +22,8 @@ export const getItemsFromCart = async (
     .then((itemData) => itemData.data)
     .catch(() => new Error("something went wrong"));
 
-export const addItemToCart = async (
-  userId: User["uid"],
-  itemId: ItemDetails["_id"]
-) =>
-  await AxiosInstance.post(`/carts/addItem`, { userId, itemId }).catch(
+export const addItemToCart = async (cartItem: CartItem) =>
+  await AxiosInstance.post(`/carts/addItem`, {...cartItem}).catch(
     () => new Error("something went wrong")
   );
 
