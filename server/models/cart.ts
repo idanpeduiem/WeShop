@@ -3,7 +3,7 @@ import { ObjectID, UUID } from "../utils/types";
 
 const CartSchema = new mongoose.Schema({
     userId: {
-      type: UUID,
+      type: String,
        required: true,
      },
     items: [{

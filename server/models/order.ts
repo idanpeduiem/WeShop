@@ -3,9 +3,9 @@ import { UUID } from "../utils/types";
 
 const OrderSchema = new mongoose.Schema({
     userId: {
-    type: UUID,
-     required: true,
-   },
+      type: String,
+      required: true
+    },
     cart: {
        type:  SchemaTypes.ObjectId,
        required: true,
