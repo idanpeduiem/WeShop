@@ -12,7 +12,7 @@ const ItemStockSchema = new mongoose.Schema({
     required: true,
     ref: 'size'
    },
-   qunatity: {
+   qunantity: {
     type: Number,
     required: true
    }

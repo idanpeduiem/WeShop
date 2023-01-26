@@ -54,43 +54,44 @@ itemsRoute.get("/:id", async (req: Request, res: Response) => {
         localField: "_id",
         foreignField: "item",
         as: "stock",
+        pipeline: [
+          {
+            $lookup: {
+              from: 'sizes',
+              localField: 'size',
+              foreignField: '_id',
+              as: 'size'
+            }
+          },
+        ]
       },
     },
-    {
-      $lookup: {
-        from: "sizes",
-        localField: "stock.size",
-        foreignField: "_id",
-        as: "stock",
+       {
+        $lookup: {
+          from: "departments",
+          localField: "department",
+          foreignField: "_id",
+          as: "department",
+        },
       },
-    },
-    {
-      $lookup: {
-        from: "departments",
-        localField: "department",
-        foreignField: "_id",
-        as: "department",
+      {
+        $lookup: {
+          from: "item-categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "category",
+        },
       },
-    },
-    {
-      $lookup: {
-        from: "item-categories",
-        localField: "category",
-        foreignField: "_id",
-        as: "category",
-      },
-    },
-    {
+      {
       $project: {
         department: { $arrayElemAt: ["$department", 0] },
         category: { $arrayElemAt: ["$category", 0] },
-        price: 1,
-        description: 1,
-        image: 1,
-        stock: 1,
-      },
-    },
-  ]).exec();
+        price:1,
+        description:1,
+        image:1,
+        stock:1,
+    }}
+  ]).exec()
 
   if (!item.length) {
     res.status(404).json({ message: "Item not found" });
