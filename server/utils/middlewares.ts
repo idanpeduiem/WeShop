@@ -13,6 +13,7 @@ export async function validateToken(
       .auth()
       .verifyIdToken(idToken)
       .then(function (decodedToken) {
+        req.userId = decodedToken.user_id;
         next();
       })
       .catch(function (error) {
