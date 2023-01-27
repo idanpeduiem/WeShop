@@ -10,20 +10,23 @@ export const getAllItems = async () =>
     .then((itemsRes) => itemsRes.data)
     .catch(() => new Error(`Failed getting all products`));
 
+export const getAllItemsDesc = async () =>
+  await AxiosInstance.get(`/items/desc`)
+    .then((itemsRes) => itemsRes.data)
+    .catch(() => new Error(`Failed getting all products description`));
+
 export const getItemQuery = async (id: string): Promise<ItemDetails> =>
   await AxiosInstance.get(`/items/${id}`)
     .then((itemData) => itemData.data)
     .catch(() => new Error("something went wrong"));
 
-export const getItemsFromCart = (
-  userId: User["uid"]
-): Promise<ItemDetails[]> =>
+export const getItemsFromCart = (userId: User["uid"]): Promise<ItemDetails[]> =>
   AxiosInstance.get(`/carts/items/${userId}`)
     .then((itemData) => itemData.data)
     .catch(() => new Error("something went wrong"));
 
 export const addItemToCart = async (cartItem: CartItem) =>
-  await AxiosInstance.post(`/carts/addItem`, {...cartItem}).catch(
+  await AxiosInstance.post(`/carts/addItem`, { ...cartItem }).catch(
     () => new Error("something went wrong")
   );
 

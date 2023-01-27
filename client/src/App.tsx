@@ -19,6 +19,7 @@ export enum RoutePaths {
   SIGNUP = "signup",
   PROFILE = "profile",
   PRODUCT_DETAILS = "product-details/:id",
+  PRODUCT_DETAILS_NO_ID = "product-details",
   PERSONAL_DETAILS = "personal-details",
   PERSONAL_ORDER = "persona-orders",
 }
