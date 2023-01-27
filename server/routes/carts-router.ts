@@ -1,11 +1,7 @@
 import { Request, Response, Router } from "express";
 import Cart from "../models/cart";
 import mongoose from "mongoose";
-const x = {
-  userId: "9T4RHNlVF4ekLvLXKuv8UOdtqmM2",
-  itemId: "63ca9999682b0aa452c43ac5",
-  size: "BIG",
-};
+
 const cartsRouter = Router();
 
 cartsRouter.post("/addItem", async (req: Request, res: Response) => {
