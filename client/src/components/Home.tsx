@@ -10,17 +10,16 @@ import FilterProducts from "./FilterProducts";
 import FetchingState from "../utils/fetchingState";
 
 const Home = () => {
-  const [filteredItems, setFilteredItems] = useState<ItemDetails[]>();
+  const [filteredItems, setFilteredItems] = useState<ItemDetails[]>([]);
 
   const {
-    data: items,
+    data: items = [],
     isLoading,
     isError,
     isSuccess,
-  } = useQuery("users", getAllItems, {
-    onSuccess: (items) => setFilteredItems(items),
+  } = useQuery<ItemDetails[]>("users", getAllItems, {
+    onSuccess: (items = []) => setFilteredItems(items),
   });
-  console.log(items);
 
   return (
     <FetchingState
@@ -37,15 +36,7 @@ const Home = () => {
           />
           <Card className="itemsContainer">
             {filteredItems?.map((item: ItemDetails) => {
-              const { _id, description, price, image } = item;
-              return (
-                <ItemCard
-                  key={_id}
-                  name={description}
-                  price={price}
-                  imageUrl={image}
-                />
-              );
+              return <ItemCard key={item._id} item={item} />;
             })}
           </Card>
         </div>
