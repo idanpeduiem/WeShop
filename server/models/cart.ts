@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import { ObjectID, UUID } from "../utils/types";
 
-const CartSchema = new mongoose.Schema(
-  {
+const CartSchema = new mongoose.Schema({
     userId: {
       type: String,
       required: true,

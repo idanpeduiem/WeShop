@@ -15,10 +15,10 @@ export const getItemQuery = async (id: string): Promise<ItemDetails> =>
     .then((itemData) => itemData.data)
     .catch(() => new Error("something went wrong"));
 
-export const getItemsFromCart = async (
+export const getItemsFromCart = (
   userId: User["uid"]
 ): Promise<ItemDetails[]> =>
-  await AxiosInstance.get(`/carts/items`, { params: userId })
+  AxiosInstance.get(`/carts/items/${userId}`)
     .then((itemData) => itemData.data)
     .catch(() => new Error("something went wrong"));
 

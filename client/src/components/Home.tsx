@@ -6,7 +6,7 @@ import ItemCard from "./common/ItemCard";
 import "./Home.css";
 import { getAllItems } from "../queries";
 import { ItemDetails } from "../utils/types";
-import FilterProducts from './FilterProducts';
+import FilterProducts from "./FilterProducts";
 import FetchingState from "../utils/fetchingState";
 
 const Home = () => {
@@ -22,30 +22,26 @@ const Home = () => {
   });
 
   return (
-      <FetchingState
-          isError={isError}
-          isSuccess={isSuccess}
-          isLoading={isLoading}
-      >
+    <FetchingState
+      isError={isError}
+      isSuccess={isSuccess}
+      isLoading={isLoading}
+    >
       <div className="HomeContainer">
         <div className="title">Welcome to WeShop</div>
         <div className="content">
-          <FilterProducts allItems={items} setFilteredItems={setFilteredItems}/>
+          <FilterProducts
+            allItems={items}
+            setFilteredItems={setFilteredItems}
+          />
           <Card className="itemsContainer">
             {filteredItems?.map((item: ItemDetails) => {
-              const {_id, description, price, image} = item;
-              return(
-                <ItemCard
-                  key={_id}
-                  name={description}
-                  price={price}
-                  imageUrl={image}/>
-              )
+              return <ItemCard key={item._id} item={item} />;
             })}
           </Card>
         </div>
       </div>
-      </FetchingState>
+    </FetchingState>
   );
 };
 

@@ -3,6 +3,8 @@ import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "../App";
 import { useCartContext } from "../controller/cartController/cartContext";
+import { ItemDetails } from "../utils/types";
+import ItemCard from "./common/ItemCard";
 
 const Cart = () => {
   const totalAmount = 1000;
@@ -40,11 +42,18 @@ const Cart = () => {
       </Grid>
       <Grid item xs={12} sm={9}>
         <Paper variant={"outlined"}>
-          <>
-            {cartItems.map(({ _id }, index) => (
-              <div key={index}>{_id}</div>
+          <Grid container>
+            {cartItems.map((item: ItemDetails) => (
+              <Grid item xs={3}>
+                <ItemCard
+                  key={item._id}
+                  item={item}
+                  disableAddToCart
+                  enableRemoveFromCart
+                />
+              </Grid>
             ))}
-          </>
+          </Grid>
         </Paper>
       </Grid>
     </Grid>

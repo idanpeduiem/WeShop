@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-// Import the functions you need from the SDKs you need
 import { SnackbarProvider } from "notistack";
 import theme from "./overrieds/MuiTheme";
 import { ThemeProvider } from "@mui/material";
