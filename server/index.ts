@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import initRoutes from "./utils/initRoutes";
 import { validateToken } from "./utils/middlewares";
-import setUpMongo from "./utils/mongoDbManager";
+import setUpMongo from './utils/mongoDbManager';
 import bodyParser from "body-parser";
 
 const admin = require("firebase-admin");
@@ -35,8 +35,11 @@ app.get("/", validateToken, (req: Request, res: Response) => {
 });
 
 setUpMongo();
+
+app.use(validateToken);
 initRoutes(app);
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
 });
+
