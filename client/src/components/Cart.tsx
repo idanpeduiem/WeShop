@@ -2,10 +2,14 @@ import { Button, Divider, Grid, Paper, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "../App";
+import { useCartContext } from "../controller/cartController/cartContext";
+import { ItemDetails } from "../utils/types";
+import ItemCard from "./common/ItemCard";
 
 const Cart = () => {
   const totalAmount = 1000;
   const navigate = useNavigate();
+  const { cartItems } = useCartContext();
 
   return (
     <Grid container spacing={2}>
@@ -38,7 +42,18 @@ const Cart = () => {
       </Grid>
       <Grid item xs={12} sm={9}>
         <Paper variant={"outlined"}>
-          <Button>here we need to add items from cart provider</Button>
+          <Grid container>
+            {cartItems.map((item: ItemDetails) => (
+              <Grid item xs={3}>
+                <ItemCard
+                  key={item._id}
+                  item={item}
+                  disableAddToCart
+                  enableRemoveFromCart
+                />
+              </Grid>
+            ))}
+          </Grid>
         </Paper>
       </Grid>
     </Grid>

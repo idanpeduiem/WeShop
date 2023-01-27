@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import initRoutes from "./utils/initRoutes";
 import { validateToken } from "./utils/middlewares";
 import setUpMongo from './utils/mongoDbManager';
-
+import bodyParser from "body-parser";
 
 const admin = require("firebase-admin");
 dotenv.config();
@@ -13,6 +13,7 @@ const cors = require("cors");
 
 const app: Express = express();
 app.use(cors());
+app.use(bodyParser.json());
 admin.initializeApp({
   credential: admin.credential.cert({
     type: process.env.FIREBASE_ADMIN_TYPE,
