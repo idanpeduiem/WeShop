@@ -7,11 +7,10 @@ import Cart from '../models/cart';
 const ordersRouter = Router();
 
 ordersRouter.get('/', async (req:Request, res:Response) => {
-      Size.base;
-     Cart.base;
+    await Size.base;
     const userOrders = await Order.find({userId: 'BvKFf5Fc8KUcnEh63DJ19NqHVkh2'},{lean: true})
-    .populate({path: 'cart', model: 'cart',
-     populate: [{path: 'items.itemId', model: 'item'},{path: 'items.size'}]})
+    .populate([{path: 'items.item', model: 'item'},{path: 'items.size', model: 'size'}])
+    .select(['items','address','createdAt','totalPrice'])
     .lean();
 
     res.status(200).json(userOrders);

@@ -43,3 +43,10 @@ export const getAllCategories = async () =>
   await AxiosInstance.get("/categories")
     .then((categoriesRes) => categoriesRes.data)
     .catch(() => new Error(`Failed getting all categories`));
+
+
+// orders
+  export const getAllUserOrders = async () =>
+   await AxiosInstance.get("/orders")
+    .then((ordersRes) => ordersRes.data)
+    .catch(() => new Error(`Failed getting all user orders`));
