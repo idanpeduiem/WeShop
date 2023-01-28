@@ -3,6 +3,7 @@ import { Button, Card } from "@mui/material";
 import { useQuery } from "react-query";
 import { Department, ItemCategory, ItemDetails } from "../utils/types";
 import { getAllCategories, getAllDepartments } from "../queries";
+import InputSlider from "./InputSlider";
 
 interface FilterProductsProps {
   allItems: ItemDetails[];
@@ -89,6 +90,8 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
         ))}
       </div>
 
+      <div>Max Price</div>
+      <InputSlider/>
     </Card>
   );
 };
