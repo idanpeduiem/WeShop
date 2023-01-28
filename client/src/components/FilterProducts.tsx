@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card } from "@mui/material";
 import { useQuery } from "react-query";
 import { Department, ItemCategory, ItemDetails } from "../utils/types";
@@ -9,6 +9,11 @@ interface FilterProductsProps {
   setFilteredItems: (items: ItemDetails[]) => void;
 }
 
+interface Filter {
+  filterSubject: string;
+  filterValue: string;
+}
+
 const FILTER_SUBJECTS = {
   DEPARTMENT: "department",
   CATEGORY: "category",
@@ -16,18 +21,39 @@ const FILTER_SUBJECTS = {
 
 const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
   const { setFilteredItems, allItems } = props;
+
+  const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
+
   const { data: departments } = useQuery("departments", getAllDepartments);
   const { data: categories } = useQuery("categories", getAllCategories);
 
-  const getFilteredProducts = (filterSubject: string, filterValue: string) => {
-    // @ts-ignore
-      setFilteredItems(
-      allItems.filter(
-          // @ts-ignore
-        (item: ItemDetails) => item[filterSubject]._id === filterValue
-      )
-    );
+  console.log(activeFilters)
+;
+  const handleChangeFilter = (newFilter: Filter) => {
+    setActiveFilters(prevActiveFilters => {
+      let index = prevActiveFilters.findIndex((filter: Filter) => filter.filterSubject === newFilter.filterSubject);
+      if(index === -1){
+        return [...prevActiveFilters, newFilter];
+      } else {
+        return prevActiveFilters.map((filter: Filter)=> filter.filterSubject === newFilter.filterSubject ? newFilter : filter );
+      }
+  });
   };
+
+  useEffect(() => {
+    if(activeFilters.length) {
+      const itemsAfterFilter = allItems.reduce((acc: ItemDetails[], currItem: ItemDetails) => {
+        return activeFilters.every((activeFilter: Filter) => 
+          (currItem[activeFilter.filterSubject as keyof ItemDetails] as ItemCategory | Department)._id === activeFilter.filterValue) ?
+        [...acc,currItem] :
+        acc
+      }, [] as ItemDetails[]);
+      setFilteredItems(itemsAfterFilter);
+    } else {
+      // for deleting all fiters - TODO
+      setFilteredItems(allItems);
+    }
+  },[activeFilters]);
 
   return (
     <Card className="filtersContainer">
@@ -35,10 +61,11 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
       <div className="genderFilter">
         {departments?.map((department: Department) => (
           <Button
-            variant="text"
+            variant={activeFilters.some(filter => filter.filterSubject === FILTER_SUBJECTS.DEPARTMENT &&
+                      filter.filterValue === department._id) ? "contained" : "text"}
             key={department._id}
             onClick={() =>
-              getFilteredProducts(FILTER_SUBJECTS.DEPARTMENT, department._id)
+              handleChangeFilter({filterSubject: FILTER_SUBJECTS.DEPARTMENT, filterValue: department._id})
             }
           >
             {department.description}
@@ -50,16 +77,18 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
       <div className="genderFilter">
         {categories?.map((category: ItemCategory) => (
           <Button
-            variant="text"
+            variant={activeFilters.some(filter => filter.filterSubject === FILTER_SUBJECTS.CATEGORY &&
+                      filter.filterValue === category._id) ? "contained" : "text"}
             key={category._id}
             onClick={() =>
-              getFilteredProducts(FILTER_SUBJECTS.CATEGORY, category._id)
+              handleChangeFilter({filterSubject: FILTER_SUBJECTS.CATEGORY, filterValue: category._id})
             }
           >
             {category.description}
           </Button>
         ))}
       </div>
+
     </Card>
   );
 };
