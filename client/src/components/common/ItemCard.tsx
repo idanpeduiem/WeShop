@@ -1,9 +1,11 @@
+import * as React from "react";
+import { useNavigate } from "react-router";
 import { Badge, Button, Card, IconButton } from "@mui/material";
 import "./ItemCard.css";
 import { useCartContext } from "../../controller/cartController/cartContext";
 import { ItemDetails } from "../../utils/types";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
-import * as React from "react";
+import { RoutePaths } from "../../App";
 
 interface ItemCardProps {
   item: ItemDetails;
@@ -11,12 +13,13 @@ interface ItemCardProps {
   enableRemoveFromCart?: boolean;
 }
 
-const ItemCard = ({
+const ItemCard: React.FC<ItemCardProps> = ({
   item: { _id, description, price, image },
   disableAddToCart,
   enableRemoveFromCart,
-}: ItemCardProps) => {
+}: ItemCardProps): JSX.Element => {
   const { addItem, removeItem } = useCartContext();
+  const navigate = useNavigate();
 
   return (
     <Badge
@@ -31,7 +34,7 @@ const ItemCard = ({
         </IconButton>
       }
     >
-      <Card className="itemContainer">
+      <Card className="itemContainer" onClick={() => navigate(RoutePaths.PRODUCT_DETAILS_NO_ID + "/" + _id)}>
         <img src={image} alt="תמונת הפריט" className="img" />
         <div className="firstRow">
           <div>{description}</div>
