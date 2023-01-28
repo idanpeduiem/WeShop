@@ -6,15 +6,9 @@ const CartSchema = new mongoose.Schema({
       type: String,
        required: true,
      },
-    items: [{
-      itemId: {
-       type: ObjectID,
-       ref: 'item',
-       required: true
-    },
     items: [
       {
-        itemId: {
+        item: {
           type: ObjectID,
           ref: "item",
           required: true,
