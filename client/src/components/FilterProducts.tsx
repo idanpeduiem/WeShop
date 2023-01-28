@@ -24,12 +24,11 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
   const { setFilteredItems, allItems } = props;
 
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
+  const [maxPriceFilter, setMaxPriceFilter] = useState<number| number[]>(1000);
 
   const { data: departments } = useQuery("departments", getAllDepartments);
   const { data: categories } = useQuery("categories", getAllCategories);
 
-  console.log(activeFilters)
-;
   const handleChangeFilter = (newFilter: Filter) => {
     setActiveFilters(prevActiveFilters => {
       let index = prevActiveFilters.findIndex((filter: Filter) => filter.filterSubject === newFilter.filterSubject);
@@ -42,19 +41,21 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
   };
 
   useEffect(() => {
+    let itemsAfterFilter: ItemDetails[];
     if(activeFilters.length) {
-      const itemsAfterFilter = allItems.reduce((acc: ItemDetails[], currItem: ItemDetails) => {
+      itemsAfterFilter = allItems.reduce((acc: ItemDetails[], currItem: ItemDetails) => {
         return activeFilters.every((activeFilter: Filter) => 
           (currItem[activeFilter.filterSubject as keyof ItemDetails] as ItemCategory | Department)._id === activeFilter.filterValue) ?
         [...acc,currItem] :
         acc
       }, [] as ItemDetails[]);
-      setFilteredItems(itemsAfterFilter);
     } else {
       // for deleting all fiters - TODO
-      setFilteredItems(allItems);
+      itemsAfterFilter = allItems;
     }
-  },[activeFilters]);
+    itemsAfterFilter = itemsAfterFilter.filter((item: ItemDetails) => item.price <= maxPriceFilter);
+    setFilteredItems(itemsAfterFilter);
+  },[activeFilters, maxPriceFilter]);
 
   return (
     <Card className="filtersContainer">
@@ -91,7 +92,7 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
       </div>
 
       <div>Max Price</div>
-      <InputSlider/>
+      <InputSlider changeMaxPrice={setMaxPriceFilter}/>
     </Card>
   );
 };

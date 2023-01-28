@@ -6,28 +6,32 @@ import Slider from '@mui/material/Slider';
 import debounce from "lodash/debounce";
 import { Typography } from '@mui/material';
 
+interface InputSliderProps {
+  changeMaxPrice: (newMaxPrice: number | number[]) => void;
+}
+
 const CustomSlider = styled(Slider)`
   max-width: 80%;
 `;
 
-const callHttpRequest = (eventSrcDesc: string, newValue: number | number[]) => {
-    console.log({ eventSrcDesc, newValue });
-  };
-  const topLevelDebounceCallHttpRequest = debounce(callHttpRequest, 300, {
-    leading: false,
-    trailing: true
-  });
-
-const InputSlider: React.FC = () => {
+const InputSlider: React.FC<InputSliderProps> = (props) => {
+  const {changeMaxPrice} = props;
+  
   const [value, setValue] = React.useState<number | string | Array<number | string>>(
     1000,
+    );
+    
+    const [stateDebounceCallHttpRequest] = React.useState(() =>
+    debounce(changeMaxPrice, 300, {
+      leading: false,
+      trailing: true
+    })
   );
 
-  const handleChangeUsingTopLevelDebounce = (event: Event, newValue: number | number[]) => {
+  const handleChangeUsingStateDebounce = (event: Event, newValue: number | number[]) => {
     setValue(newValue);
-    topLevelDebounceCallHttpRequest("volume-top-level", newValue);
+    stateDebounceCallHttpRequest(newValue);
   };
-
 
   return (
     <Box sx={{ width: 250 }}>
@@ -40,7 +44,7 @@ const InputSlider: React.FC = () => {
             value={typeof value === 'number' ? value : 0}
             min={0}
             max={1000}
-            onChange={handleChangeUsingTopLevelDebounce}
+            onChange={handleChangeUsingStateDebounce}
             aria-labelledby="input-slider"
           />
         </Grid>
