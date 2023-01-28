@@ -19,8 +19,17 @@ export  type ItemStock = {
     size: Size[],
     quantity: number
   }[];
-  
-export  type ItemDetails = {
+
+export type Item = {
+  _id: string,
+  description: string,
+  price: number,
+  image: string,
+  department: string,
+  category: string,
+}
+
+export type ItemDetails = {
     _id: string,
     description: string,
     price: number,
@@ -28,4 +37,19 @@ export  type ItemDetails = {
     department: Department,
     category: ItemCategory,
     stock: ItemStock,
+  }
+
+  export type Order = {
+    _id: string,
+    address: string,
+    totalPrice: Number,
+    items:
+      {
+        item: Item,
+        size: Size,
+        quantity: Number
+      }[]
+    ,
+    createdAt: Date,
+    updatedAt: Date,
   }

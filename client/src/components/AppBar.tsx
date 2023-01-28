@@ -12,11 +12,40 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 import { firebase } from "../utils/firebase";
-import {useCartContext} from "../controller/cartController/cartContext";
+import { useCartContext } from "../controller/cartController/cartContext";
+import * as React from "react";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { getAllItemsDesc } from "../queries";
+
+interface Item {
+  _id: string;
+  description: string;
+}
 
 const Navbar = () => {
-  const {cartItems} = useCartContext();
+  const { cartItems } = useCartContext();
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const { data, isLoading, isError, isSuccess } = useQuery<Item[] | undefined>(
+    "itemsDesc",
+    getAllItemsDesc,
+    { enabled: open }
+  );
+  const [options, setOptions] = useState<readonly Item[] | undefined>([]);
+
+  useEffect(() => {
+    if (data) {
+      setOptions([...data]);
+    }
+    if (!open) {
+      setOptions([]);
+    }
+  }, [open, data]);
 
   const logout = async () => {
     try {
@@ -26,7 +55,6 @@ const Navbar = () => {
       console.log(err);
     }
   };
-
   return (
     <Grid
       container
@@ -43,13 +71,48 @@ const Navbar = () => {
         />
       </Grid>
       <Grid item xs container justifyContent={"center"}>
-        <FilledInput
-          disableUnderline
-          startAdornment={
-            <InputAdornment position="start">
-              <Search />
-            </InputAdornment>
+        <Autocomplete
+          id="asynchronous-demo"
+          sx={{ width: 300 }}
+          open={open}
+          onChange={(e, value) => {
+            value?._id
+              ? navigate(RoutePaths.PRODUCT_DETAILS_NO_ID + "/" + value?._id)
+              : navigate(RoutePaths.HOME);
+          }}
+          onOpen={() => {
+            setOpen(true);
+          }}
+          onClose={() => {
+            setOpen(false);
+          }}
+          isOptionEqualToValue={(option, value) =>
+            option.description === value.description
           }
+          getOptionLabel={(option) => option.description}
+          options={options ? options : [{ _id: "", description: "No Data" }]}
+          loading={isLoading}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <React.Fragment>
+                    {isLoading ? (
+                      <CircularProgress color="inherit" size={20} />
+                    ) : null}
+                    {params.InputProps.endAdornment}
+                  </React.Fragment>
+                ),
+              }}
+            />
+          )}
         />
       </Grid>
       <Grid item xs={2} container justifyContent={"end"}>

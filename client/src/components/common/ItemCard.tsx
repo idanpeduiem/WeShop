@@ -1,7 +1,9 @@
-import { Badge, Button, Card } from "@mui/material";
+import { Badge, Button, Card, IconButton } from "@mui/material";
 import "./ItemCard.css";
 import { useCartContext } from "../../controller/cartController/cartContext";
 import { ItemDetails } from "../../utils/types";
+import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
+import * as React from "react";
 
 interface ItemCardProps {
   item: ItemDetails;
@@ -18,9 +20,16 @@ const ItemCard = ({
 
   return (
     <Badge
-      badgeContent={enableRemoveFromCart && "X"}
-      color="secondary"
-      onClick={() => removeItem(_id)}
+      invisible={!enableRemoveFromCart}
+      badgeContent={
+        <IconButton
+          size="large"
+          color="inherit"
+          onClick={() => removeItem(_id)}
+        >
+          <RemoveShoppingCartIcon />
+        </IconButton>
+      }
     >
       <Card className="itemContainer">
         <img src={image} alt="תמונת הפריט" className="img" />

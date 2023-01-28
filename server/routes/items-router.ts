@@ -39,7 +39,15 @@ itemsRoute.get("/", async (req: Request, res: Response) => {
     res.status(500).send(error);
   }
 });
+itemsRoute.get("/desc", async (req: Request, res: Response) => {
+  const items = await Item.find({}, { _id: 1, description: 1 });
 
+  try {
+    res.send(items);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 itemsRoute.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   const item = await Item.aggregate([
@@ -57,41 +65,42 @@ itemsRoute.get("/:id", async (req: Request, res: Response) => {
         pipeline: [
           {
             $lookup: {
-              from: 'sizes',
-              localField: 'size',
-              foreignField: '_id',
-              as: 'size'
-            }
+              from: "sizes",
+              localField: "size",
+              foreignField: "_id",
+              as: "size",
+            },
           },
-        ]
+        ],
       },
     },
-       {
-        $lookup: {
-          from: "departments",
-          localField: "department",
-          foreignField: "_id",
-          as: "department",
-        },
+    {
+      $lookup: {
+        from: "departments",
+        localField: "department",
+        foreignField: "_id",
+        as: "department",
       },
-      {
-        $lookup: {
-          from: "item-categories",
-          localField: "category",
-          foreignField: "_id",
-          as: "category",
-        },
+    },
+    {
+      $lookup: {
+        from: "item-categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
       },
-      {
+    },
+    {
       $project: {
         department: { $arrayElemAt: ["$department", 0] },
         category: { $arrayElemAt: ["$category", 0] },
-        price:1,
-        description:1,
-        image:1,
-        stock:1,
-    }}
-  ]).exec()
+        price: 1,
+        description: 1,
+        image: 1,
+        stock: 1,
+      },
+    },
+  ]).exec();
 
   if (!item.length) {
     res.status(404).json({ message: "Item not found" });
