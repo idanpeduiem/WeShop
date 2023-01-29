@@ -8,7 +8,7 @@ const ordersRouter = Router();
 
 ordersRouter.get('/', async (req:Request, res:Response) => {
     await Size.base;
-    const userOrders = await Order.find({userId: 'BvKFf5Fc8KUcnEh63DJ19NqHVkh2'},{lean: true})
+    const userOrders = await Order.find({userId: req.userId},{lean: true})
     .populate([{path: 'items.item', model: 'item'},{path: 'items.size', model: 'size'}])
     .select(['items','address','createdAt','totalPrice'])
     .lean();
