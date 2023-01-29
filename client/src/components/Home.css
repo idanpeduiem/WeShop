@@ -19,14 +19,14 @@
     width: 20%;
     /* border: 1px solid black; */
     margin-left: 50px;
-    height: 50vh;
+    height: 60vh;
     padding: 20px;
     background-color: white;
 }
 
 .itemsContainer {
     /* border: 1px solid black; */
-    overflow-y: auto;
+    overflow-y: auto !important;
     width: 70%;
     height: 70vh;
     display: grid;
