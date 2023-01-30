@@ -12,6 +12,7 @@ import {
   signOut,
   UserCredential,
 } from "@firebase/auth";
+import { updatePassword, updateProfile } from "firebase/auth";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 class Firebase {
@@ -35,6 +36,34 @@ class Firebase {
   signOut = async () => {
     try {
       await signOut(firebase.getFirebaseAuth());
+    } catch (error) {
+      console.log(error);
+      throw new Error(error?.toString());
+    }
+  };
+  updatePassword = async (newPass: string) => {
+    try {
+      const auth = firebase.getFirebaseAuth();
+      if (auth.currentUser) {
+        await updatePassword(auth.currentUser, newPass);
+      } else {
+        console.log("the user is not logged in");
+        throw new Error("the user is not logged in");
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error(error?.toString());
+    }
+  };
+  updateProfile = async (displayName: string) => {
+    try {
+      const auth = firebase.getFirebaseAuth();
+      if (auth.currentUser) {
+        await updateProfile(auth.currentUser, { displayName });
+      } else {
+        console.log("the user is not logged in");
+        throw new Error("the user is not logged in");
+      }
     } catch (error) {
       console.log(error);
       throw new Error(error?.toString());
