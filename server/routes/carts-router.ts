@@ -29,6 +29,30 @@ cartsRouter.post("/addItem", async (req: Request, res: Response) => {
   res.status(200).json(item);
 });
 
+cartsRouter.post("/removeItem", async (req: Request, res: Response) => {
+  let item;
+
+  try {
+    const { userId, itemId } = req.body;
+    console.log(userId);
+    console.log(itemId);
+    item = await Cart.updateOne(
+      {
+        userId,
+      },
+      {
+        $pullAll: {
+          items: { itemId: new mongoose.Types.ObjectId(itemId) },
+        },
+      }
+    );
+  } catch (e) {
+    res.status(500).send(e);
+  }
+
+  res.status(200).json(item);
+});
+
 cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
   const { userId } = req.params;
   const item = await Cart.aggregate([
