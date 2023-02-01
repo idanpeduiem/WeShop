@@ -3,18 +3,17 @@ import { Cart, CartItem, ItemDetails } from "./utils/types";
 import { User } from "firebase/auth";
 import { wishlistItem } from "./controller/wishlistController/wishlistProvider";
 
-
 // items
 
 export const getAllItems = async () =>
   await AxiosInstance.get("/items")
     .then((itemsRes) => itemsRes.data)
     .catch(() => []);
-
-export const getAllItemsDesc = async () =>
-  await AxiosInstance.get(`/items/desc`)
-    .then((itemsRes) => itemsRes.data)
-    .catch(() => []);
+export const getAllItemsDesc = async (searchStr: string) => {
+  console.log(searchStr);
+  const { data } = await AxiosInstance.get(`/items/desc?search=` + searchStr);
+  return data;
+};
 
 export const getItemQuery = async (id: string): Promise<ItemDetails> =>
   await AxiosInstance.get(`/items/${id}`)
@@ -23,7 +22,7 @@ export const getItemQuery = async (id: string): Promise<ItemDetails> =>
 
 // cart
 
-export const getItemsFromCart = (userId: User["uid"]): Promise<Cart['items']> =>
+export const getItemsFromCart = (userId: User["uid"]): Promise<Cart["items"]> =>
   AxiosInstance.get(`/carts/items/${userId}`)
     .then((itemData) => itemData.data)
     .catch(() => []);

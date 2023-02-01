@@ -40,7 +40,11 @@ itemsRoute.get("/", async (req: Request, res: Response) => {
   }
 });
 itemsRoute.get("/desc", async (req: Request, res: Response) => {
-  const items = await Item.find({}, { _id: 1, description: 1 });
+  const { search } = req.query;
+  const items = await Item.find(
+    { description: new RegExp(".*" + search + ".*") },
+    { _id: 1, description: 1 }
+  ).limit(10);
 
   try {
     res.send(items);
