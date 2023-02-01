@@ -1,11 +1,20 @@
 import * as React from "react";
 import { useNavigate } from "react-router";
-import { Badge, Button, Card, IconButton } from "@mui/material";
-import "./ItemCard.css";
+import {
+  Badge,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { useCartContext } from "../../controller/cartController/cartContext";
 import { ItemDetails } from "../../utils/types";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import { RoutePaths } from "../../App";
+import Stack from "@mui/material/Stack";
 
 interface ItemCardProps {
   item: ItemDetails;
@@ -34,11 +43,19 @@ const ItemCard: React.FC<ItemCardProps> = ({
         </IconButton>
       }
     >
-      <Card className="itemContainer" onClick={() => navigate(RoutePaths.PRODUCT_DETAILS_NO_ID + "/" + _id)}>
-        <img src={image} alt="תמונת הפריט" className="img" />
-        <div className="firstRow">
-          <div>{description}</div>
-          <div>{price}</div>
+      <Card
+        onClick={() => navigate(RoutePaths.PRODUCT_DETAILS_NO_ID + "/" + _id)}
+      >
+        <CardMedia image={image} sx={{ height: 140 }}/>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {description}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {price}
+          </Typography>
+        </CardContent>
+        <CardActions>
           {!disableAddToCart && (
             <Button
               color={"secondary"}
@@ -51,7 +68,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
               Add to cart
             </Button>
           )}
-        </div>
+        </CardActions>
       </Card>
     </Badge>
   );
