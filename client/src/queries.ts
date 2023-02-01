@@ -1,8 +1,8 @@
 import AxiosInstance from "./utils/axiosInstance";
-import { ItemDetails } from "./utils/types";
+import { Cart, CartItem, ItemDetails } from "./utils/types";
 import { User } from "firebase/auth";
-import { CartItem } from "./controller/cartController/cartProvider";
 import { wishlistItem } from "./controller/wishlistController/wishlistProvider";
+
 
 // items
 
@@ -23,7 +23,7 @@ export const getItemQuery = async (id: string): Promise<ItemDetails> =>
 
 // cart
 
-export const getItemsFromCart = (userId: User["uid"]): Promise<ItemDetails[]> =>
+export const getItemsFromCart = (userId: User["uid"]): Promise<Cart['items']> =>
   AxiosInstance.get(`/carts/items/${userId}`)
     .then((itemData) => itemData.data)
     .catch(() => []);

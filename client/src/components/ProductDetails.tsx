@@ -87,7 +87,7 @@ const ProductDetails:React.FC = () => {
           <h1>{item.description}</h1>
           <h2>{item.category.description} - {item.department.description}</h2>
           <h1>{item.price}₪</h1>
-          <ItemSizes itemStocks={item.stock} onSelectItem={onSizeSelect}/>
+          <ItemSizes itemStocks={item.stock!} onSelectItem={onSizeSelect}/>
           <QuantityBox/>
           <div style={{marginTop: '30px'}}>
             <Button variant="outlined"  onClick={onAddToCart}>Add to cart</Button>
