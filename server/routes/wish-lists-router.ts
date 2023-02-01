@@ -1,5 +1,58 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
+import WishList from "../models/wish-list";
+import mongoose from "mongoose";
 
-const wishListsRouter = Router();
+const wishListsRoute = Router();
 
-export default wishListsRouter;
+wishListsRoute.get("/items/:userId", async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const items = await WishList.aggregate([
+    {
+      $match: {
+        userId,
+      },
+    },
+    {
+      $lookup: {
+        from: "items",
+        localField: "items",
+        foreignField: "_id",
+        as: "wishlist_items",
+      },
+    },
+    {
+      $project: {
+        wishlist_items: 1,
+      },
+    },
+  ]).exec();
+
+  res.status(200).json(items[0]?.wishlist_items || []);
+
+});
+
+wishListsRoute.post("/addItem", async (req: Request, res: Response) => {
+  let item;
+
+  try {
+    const { userId, itemId } = req.body;
+
+    item = await WishList.updateOne(
+      {
+        userId,
+      },
+      {
+        $push: { items: new mongoose.Types.ObjectId(itemId) },
+      },
+      {
+        upsert: true,
+      }
+    );
+  } catch (e) {
+    res.status(500).send(e);
+  }
+
+  res.status(200).json(item);
+});
+
+export default wishListsRoute;
