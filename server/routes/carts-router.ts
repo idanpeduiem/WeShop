@@ -8,15 +8,15 @@ cartsRouter.post("/addItem", async (req: Request, res: Response) => {
   let item;
 
   try {
-    const { userId, itemId, size } = req.body;
-    const newItem = { itemId: new mongoose.Types.ObjectId(itemId), size };
+    const { userId, itemId, size, quantity } = req.body;
+    const newItem = { item: new mongoose.Types.ObjectId(itemId), size, quantity };
 
     item = await Cart.updateOne(
       {
         userId,
       },
       {
-        $push: { items: newItem },
+        $push: { items: newItem, quantity, size },
       },
       {
         upsert: true,
@@ -30,29 +30,13 @@ cartsRouter.post("/addItem", async (req: Request, res: Response) => {
 });
 
 cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  const item = await Cart.aggregate([
-    {
-      $match: {
-        userId,
-      },
-    },
-    {
-      $lookup: {
-        from: "items",
-        localField: "items.itemId",
-        foreignField: "_id",
-        as: "cart_items",
-      },
-    },
-    {
-      $project: {
-        cart_items: 1,
-      },
-    },
-  ]).exec();
+  const cart = await Cart.find({uesrId: req.userId})
+  .populate([{path: 'items.item'},{path: 'items.size'}])
+  .populate([{path:'items.item.category'},{path:'items.item.department'}])
+  .lean()
+  .exec();
 
-  res.status(200).json(item[0]?.cart_items || []);
+  res.status(200).json(cart[0].items);
 });
 
 export default cartsRouter;

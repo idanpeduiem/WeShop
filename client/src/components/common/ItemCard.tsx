@@ -2,7 +2,6 @@ import * as React from "react";
 import { useNavigate } from "react-router";
 import {
   Badge,
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -73,18 +72,6 @@ const ItemCard: React.FC<ItemCardProps> = ({
         </CardContent>
         <CardActions>
           <Grid container justifyContent={"space-between"}>
-            {!disableAddToCart && (
-              <Button
-                color="secondary"
-                variant="contained"
-                onClick={(event) => {
-                  addItemToCart(_id);
-                  event.stopPropagation();
-                }}
-              >
-                Add to cart
-              </Button>
-            )}
             {!disableAddToWishlist && (
               <IconButton
                 color="secondary"
