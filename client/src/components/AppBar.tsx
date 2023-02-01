@@ -135,7 +135,7 @@ const Navbar = () => {
           edge="start"
           color="inherit"
           aria-label="menu"
-          onClick={() => navigate(RoutePaths.CART)}
+          onClick={() => navigate(RoutePaths.WISHLIST)}
         >
           <Badge badgeContent={wishlistItems.length} color="secondary">
             <FavoriteIcon />

@@ -11,11 +11,13 @@ import PersonalDetails from "./components/PersonalDetails";
 import PersonalOrders from "./components/PersonalOrders";
 import PrivateRoute from "./utils/PrivateRoute";
 import {useUserContext} from "./controller/userController/userContext";
+import Wishlist from "./components/Wishlist";
 
 // use this enum to make links to pages
 export enum RoutePaths {
   HOME = "/",
   CART = "cart",
+  WISHLIST = "wishlist",
   LOGIN = "login",
   SIGNUP = "signup",
   PROFILE = "profile",
@@ -49,6 +51,14 @@ const App = () => {
               element={
                 <PrivateRoute>
                   <Cart />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path={RoutePaths.WISHLIST}
+              element={
+                <PrivateRoute>
+                  <Wishlist />
                 </PrivateRoute>
               }
             />
