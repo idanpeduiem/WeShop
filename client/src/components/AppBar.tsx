@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getAllItemsDesc } from "../queries";
 import { useWishlistContext } from "../controller/wishlistController/wishlistContext";
+import useDebounce from "../hooks/useDebounce";
 
 interface Item {
   _id: string;
@@ -34,10 +35,11 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedValue = useDebounce<string>(searchInput, 500);
   const { data, isLoading, isError, isSuccess } = useQuery<Item[] | undefined>(
-    "itemsDesc",
-    getAllItemsDesc,
-    { enabled: open }
+    ["itemsDesc", debouncedValue],
+    () => getAllItemsDesc(debouncedValue)
   );
   const [options, setOptions] = useState<readonly Item[] | undefined>([]);
 
@@ -88,6 +90,9 @@ const Navbar = () => {
           }}
           onClose={() => {
             setOpen(false);
+          }}
+          onInputChange={(event, newInputValue) => {
+            setSearchInput(newInputValue);
           }}
           isOptionEqualToValue={(option, value) =>
             option.description === value.description
