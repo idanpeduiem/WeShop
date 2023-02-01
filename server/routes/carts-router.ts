@@ -6,14 +6,14 @@ const cartsRouter = Router();
 
 cartsRouter.post("/addItem", async (req: Request, res: Response) => {
   let item;
-
+ 
   try {
-    const { userId, itemId, size, quantity } = req.body;
-    const newItem = { item: new mongoose.Types.ObjectId(itemId), size, quantity };
+    const { item: itemToAdd, size, quantity } = req.body;
+    const newItem = { item: new mongoose.Types.ObjectId(itemToAdd._id), size, quantity };
 
     item = await Cart.updateOne(
       {
-        userId,
+        userId: req.userId,
       },
       {
         $push: { items: newItem, quantity, size },
@@ -31,12 +31,11 @@ cartsRouter.post("/addItem", async (req: Request, res: Response) => {
 
 cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
   const cart = await Cart.find({uesrId: req.userId})
-  .populate([{path: 'items.item'},{path: 'items.size'}])
-  .populate([{path:'items.item.category'},{path:'items.item.department'}])
+  .populate([{path: 'items.item', model: 'item'},{path: 'items.size'}])
   .lean()
   .exec();
-
-  res.status(200).json(cart[0].items);
+  console.log(cart[0]?.items);
+  res.status(200).json(cart[0]?.items ||[]);
 });
 
 export default cartsRouter;
