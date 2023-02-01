@@ -1,30 +1,33 @@
+import { wishlistContext } from "./wishlistContext";
 import { PropsWithChildren } from "react";
-import { CartContext } from "./cartContext";
 import { useSnackbar } from "notistack";
-import { ItemDetails } from "../../utils/types";
-import { useQuery } from "react-query";
-import { addItemToCart, getItemsFromCart } from "../../queries";
 import { useUserContext } from "../userController/userContext";
+import { ItemDetails } from "../../utils/types";
+import { addItemToWishlist, getItemsFromWishlist } from "../../queries";
+import { useQuery } from "react-query";
 import { User } from "firebase/auth";
 
-export interface CartItem {
+export interface wishlistItem {
   userId: User["uid"];
   itemId: ItemDetails["_id"];
-  size: string; // TODO: add quantity
 }
 
-export const CartProvider = ({ children }: PropsWithChildren) => {
+const WishlistProvider = ({ children }: PropsWithChildren) => {
   const snackbar = useSnackbar();
   const { user } = useUserContext();
 
-  const { data: cartItems = [], refetch: fetchGetItems } = useQuery<
+  const { data: wishlistItems = [], refetch: fetchGetItems } = useQuery<
     ItemDetails[]
-  >(["cartItems"], () => getItemsFromCart(user?.uid!), { enabled: !!user });
+  >(["wishlistItems"], () => getItemsFromWishlist(user?.uid!), {
+    enabled: !!user,
+  });
 
   const addItem = (itemId: ItemDetails["_id"]) => {
-    addItemToCart({ userId: user!.uid, itemId, size: "Small" })
+    addItemToWishlist({ userId: user!.uid, itemId})
       .then(() => {
-        snackbar.enqueueSnackbar("item added to cart!", { variant: "success" });
+        snackbar.enqueueSnackbar("item added to Wishlist!", {
+          variant: "success",
+        });
         fetchGetItems();
       })
       .catch(() => {
@@ -37,14 +40,16 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <CartContext.Provider
+    <wishlistContext.Provider
       value={{
-        cartItems,
+        wishlistItems,
         addItem,
         removeItem,
       }}
     >
       {children}
-    </CartContext.Provider>
+    </wishlistContext.Provider>
   );
 };
+
+export default WishlistProvider

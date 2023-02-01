@@ -2,6 +2,7 @@ import AxiosInstance from "./utils/axiosInstance";
 import { ItemDetails } from "./utils/types";
 import { User } from "firebase/auth";
 import { CartItem } from "./controller/cartController/cartProvider";
+import {wishlistItem} from "./controller/wishlistController/wishlistProvider";
 
 // items
 
@@ -20,6 +21,8 @@ export const getItemQuery = async (id: string): Promise<ItemDetails> =>
     .then((itemData) => itemData.data)
     .catch(() => new Error("something went wrong"));
 
+// cart
+
 export const getItemsFromCart = (userId: User["uid"]): Promise<ItemDetails[]> =>
   AxiosInstance.get(`/carts/items/${userId}`)
     .then((itemData) => itemData.data)
@@ -29,6 +32,19 @@ export const addItemToCart = async (cartItem: CartItem) =>
   await AxiosInstance.post(`/carts/addItem`, { ...cartItem }).catch(
     () => new Error("something went wrong")
   );
+
+// wishlist
+
+export const getItemsFromWishlist = (userId: User["uid"]): Promise<ItemDetails[]> =>
+    AxiosInstance.get(`/wishlist/items/${userId}`)
+        .then((itemData) => itemData.data)
+        .catch(() => new Error("something went wrong"));
+
+
+export const addItemToWishlist = async (wishlistItem: wishlistItem) =>
+    await AxiosInstance.post(`/wishlist/addItem`, { ...wishlistItem }).catch(
+        () => new Error("something went wrong")
+    );
 
 // departments
 
