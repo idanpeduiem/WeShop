@@ -31,7 +31,6 @@ export type Item = {
 
 export type CartItem = {
   item: ItemDetails,
-  description: string,
   size: Size,
   quantity: number,
 }
