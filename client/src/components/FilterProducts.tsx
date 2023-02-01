@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Paper } from "@mui/material";
+import { Button, Card, Divider, Paper, Typography } from "@mui/material";
 import { useQuery } from "react-query";
 import { Department, ItemCategory, ItemDetails } from "../utils/types";
 import { getAllCategories, getAllDepartments } from "../queries";
 import InputSlider from "./InputSlider";
+import Stack from "@mui/material/Stack";
 
 interface FilterProductsProps {
   allItems: ItemDetails[];
@@ -73,9 +74,9 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
   }, [activeFilters, maxPriceFilter]);
 
   return (
-    <Paper variant="outlined">
-      <div>Filter By Gender</div>
-      <div className="genderFilter">
+    <Paper variant="outlined" sx={{ padding: 2 }}>
+      <Stack spacing={1} alignItems={"stretch"}>
+        <Typography>Filter By Gender</Typography>
         {departments?.map((department: Department) => (
           <Button
             variant={
@@ -98,10 +99,8 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
             {department.description}
           </Button>
         ))}
-      </div>
-
-      <div>Filter By Category</div>
-      <div className="genderFilter">
+        <Divider />
+        <Typography>Filter By Category</Typography>
         {categories?.map((category: ItemCategory) => (
           <Button
             variant={
@@ -124,10 +123,10 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
             {category.description}
           </Button>
         ))}
-      </div>
-
-      <div>Max Price</div>
-      <InputSlider changeMaxPrice={setMaxPriceFilter} />
+        <Divider />
+        <Typography>Max Price</Typography>
+        <InputSlider changeMaxPrice={setMaxPriceFilter} />
+      </Stack>
     </Paper>
   );
 };

@@ -26,11 +26,11 @@ const Home = () => {
       isSuccess={isSuccess}
       isLoading={isLoading}
     >
-      <Typography>Welcome to WeShop</Typography>
+      <Typography variant={'h4'}>Welcome to WeShop!</Typography>
       <Grid container alignItems={"stretch"} columnSpacing={2}>
         <Grid item xs={9}>
           <Paper variant="outlined">
-            <Grid container columnSpacing={2}>
+            <Grid container alignItems={"stretch"} spacing={2} padding={2}>
               {filteredItems?.map((item: ItemDetails) => (
                 <Grid item xs={3}>
                   <ItemCard key={item._id} item={item} />

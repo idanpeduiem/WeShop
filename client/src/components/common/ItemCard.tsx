@@ -7,6 +7,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Grid,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -14,17 +15,19 @@ import { useCartContext } from "../../controller/cartController/cartContext";
 import { ItemDetails } from "../../utils/types";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import { RoutePaths } from "../../App";
-import Stack from "@mui/material/Stack";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 interface ItemCardProps {
   item: ItemDetails;
   disableAddToCart?: boolean;
+  disableAddToWishlist?: boolean;
   enableRemoveFromCart?: boolean;
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({
   item: { _id, description, price, image },
   disableAddToCart,
+  disableAddToWishlist,
   enableRemoveFromCart,
 }: ItemCardProps): JSX.Element => {
   const { addItem, removeItem } = useCartContext();
@@ -33,6 +36,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
   return (
     <Badge
       invisible={!enableRemoveFromCart}
+      component={"div"}
       badgeContent={
         <IconButton
           size="large"
@@ -46,28 +50,37 @@ const ItemCard: React.FC<ItemCardProps> = ({
       <Card
         onClick={() => navigate(RoutePaths.PRODUCT_DETAILS_NO_ID + "/" + _id)}
       >
-        <CardMedia image={image} sx={{ height: 140 }}/>
+        <CardMedia image={image} component="img" />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {description}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {price}
-          </Typography>
+          <Typography variant="h6">{description}</Typography>
+          <Typography variant="body2">{price}</Typography>
         </CardContent>
         <CardActions>
-          {!disableAddToCart && (
-            <Button
-              color={"secondary"}
-              variant={"contained"}
-              onClick={(event) => {
-                addItem(_id);
-                event.stopPropagation();
-              }}
-            >
-              Add to cart
-            </Button>
-          )}
+          <Grid container justifyContent={"space-between"}>
+            {!disableAddToCart && (
+              <Button
+                color="secondary"
+                variant="contained"
+                onClick={(event) => {
+                  addItem(_id);
+                  event.stopPropagation();
+                }}
+              >
+                Add to cart
+              </Button>
+            )}
+            {!disableAddToWishlist && (
+              <IconButton
+                color="secondary"
+                onClick={(event) => {
+                  addItem(_id);
+                  event.stopPropagation();
+                }}
+              >
+                <FavoriteIcon />
+              </IconButton>
+            )}
+          </Grid>
         </CardActions>
       </Card>
     </Badge>
