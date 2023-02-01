@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { CartContext } from "./cartContext";
 import { useSnackbar } from "notistack";
 import { ItemDetails } from "../../utils/types";
@@ -16,10 +16,13 @@ export interface CartItem {
 export const CartProvider = ({ children }: PropsWithChildren) => {
   const snackbar = useSnackbar();
   const { user } = useUserContext();
+  const [cartItems, setCartItems] = useState<ItemDetails[]>([]);
 
-  const { data: cartItems = [], refetch: fetchGetItems } = useQuery<
-    ItemDetails[]
-  >(["cartItems"], () => getItemsFromCart(user?.uid!), { enabled: !!user });
+  const { refetch: fetchGetItems } = useQuery<ItemDetails[]>(
+    ["cartItems"],
+    () => getItemsFromCart(user?.uid!),
+    { enabled: !!user, onSuccess: (data) => setCartItems(data) }
+  );
 
   const addItem = (itemId: ItemDetails["_id"]) => {
     addItemToCart({ userId: user!.uid, itemId, size: "Small" })

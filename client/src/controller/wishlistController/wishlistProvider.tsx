@@ -1,5 +1,5 @@
 import { wishlistContext } from "./wishlistContext";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { useSnackbar } from "notistack";
 import { useUserContext } from "../userController/userContext";
 import { ItemDetails } from "../../utils/types";
@@ -15,15 +15,19 @@ export interface wishlistItem {
 const WishlistProvider = ({ children }: PropsWithChildren) => {
   const snackbar = useSnackbar();
   const { user } = useUserContext();
+  const [wishlistItems, setWishlistItems] = useState<ItemDetails[]>([]);
 
-  const { data: wishlistItems = [], refetch: fetchGetItems } = useQuery<
-    ItemDetails[]
-  >(["wishlistItems"], () => getItemsFromWishlist(user?.uid!), {
-    enabled: !!user,
-  });
+  const { refetch: fetchGetItems } = useQuery<ItemDetails[]>(
+    ["wishlistItems"],
+    () => getItemsFromWishlist(user?.uid!),
+    {
+      enabled: !!user,
+      onSuccess: (data) => setWishlistItems(data),
+    }
+  );
 
   const addItem = (itemId: ItemDetails["_id"]) => {
-    addItemToWishlist({ userId: user!.uid, itemId})
+    addItemToWishlist({ userId: user!.uid, itemId })
       .then(() => {
         snackbar.enqueueSnackbar("item added to Wishlist!", {
           variant: "success",
@@ -52,4 +56,4 @@ const WishlistProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default WishlistProvider
+export default WishlistProvider;

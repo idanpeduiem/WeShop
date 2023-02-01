@@ -43,7 +43,7 @@ export const getItemsFromWishlist = (
     .catch(() => []);
 
 export const addItemToWishlist = (wishlistItem: wishlistItem) =>
-  AxiosInstance.post(`/wishlist/addItem`, { ...wishlistItem }).catch(() => []);
+  AxiosInstance.post(`/wishlist/addItem`, { ...wishlistItem });
 
 // departments
 

@@ -16,6 +16,9 @@ import { ItemDetails } from "../../utils/types";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import { RoutePaths } from "../../App";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useWishlistContext } from "../../controller/wishlistController/wishlistContext";
+import { useState } from "react";
 
 interface ItemCardProps {
   item: ItemDetails;
@@ -30,8 +33,21 @@ const ItemCard: React.FC<ItemCardProps> = ({
   disableAddToWishlist,
   enableRemoveFromCart,
 }: ItemCardProps): JSX.Element => {
-  const { addItem, removeItem } = useCartContext();
+  const { addItem: addItemToCart, removeItem: removeItemFromCart } =
+    useCartContext();
+  const {
+    wishlistItems,
+    addItem: addItemToWishlist,
+    removeItem: removeItemFromWishlist,
+  } = useWishlistContext();
+  const [itemOnWishlist] = useState<boolean>(() =>
+    wishlistItems.some(({ _id: itemId }) => itemId == _id)
+  );
   const navigate = useNavigate();
+
+  const onWishlistIconClicked = () => {
+    itemOnWishlist ? removeItemFromWishlist(_id) : addItemToWishlist(_id);
+  };
 
   return (
     <Badge
@@ -41,7 +57,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
         <IconButton
           size="large"
           color="inherit"
-          onClick={() => removeItem(_id)}
+          onClick={() => removeItemFromCart(_id)}
         >
           <RemoveShoppingCartIcon />
         </IconButton>
@@ -62,7 +78,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
                 color="secondary"
                 variant="contained"
                 onClick={(event) => {
-                  addItem(_id);
+                  addItemToCart(_id);
                   event.stopPropagation();
                 }}
               >
@@ -73,11 +89,11 @@ const ItemCard: React.FC<ItemCardProps> = ({
               <IconButton
                 color="secondary"
                 onClick={(event) => {
-                  addItem(_id);
+                  onWishlistIconClicked();
                   event.stopPropagation();
                 }}
               >
-                <FavoriteIcon />
+                {itemOnWishlist? <FavoriteIcon />: <FavoriteBorderIcon/>}
               </IconButton>
             )}
           </Grid>

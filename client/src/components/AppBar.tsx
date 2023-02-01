@@ -10,6 +10,7 @@ import { Logout, Search } from "@mui/icons-material";
 import logo from "../assets/logo.png";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useNavigate } from "react-router-dom";
 import { firebase } from "../utils/firebase";
 import { useCartContext } from "../controller/cartController/cartContext";
@@ -20,6 +21,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getAllItemsDesc } from "../queries";
+import { useWishlistContext } from "../controller/wishlistController/wishlistContext";
 
 interface Item {
   _id: string;
@@ -28,6 +30,7 @@ interface Item {
 
 const Navbar = () => {
   const { cartItems } = useCartContext();
+  const { wishlistItems } = useWishlistContext();
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -125,6 +128,17 @@ const Navbar = () => {
         >
           <Badge badgeContent={cartItems.length} color="secondary">
             <ShoppingCartIcon />
+          </Badge>
+        </IconButton>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={() => navigate(RoutePaths.CART)}
+        >
+          <Badge badgeContent={wishlistItems.length} color="secondary">
+            <FavoriteIcon />
           </Badge>
         </IconButton>
         <IconButton
