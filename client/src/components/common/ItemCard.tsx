@@ -18,7 +18,7 @@ import { RoutePaths } from "../../App";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useWishlistContext } from "../../controller/wishlistController/wishlistContext";
-import { useState } from "react";
+import {useMemo, useState} from "react";
 
 interface ItemCardProps {
   item: ItemDetails;
@@ -40,8 +40,8 @@ const ItemCard: React.FC<ItemCardProps> = ({
     addItem: addItemToWishlist,
     removeItem: removeItemFromWishlist,
   } = useWishlistContext();
-  const [itemOnWishlist] = useState<boolean>(() =>
-    wishlistItems.some(({ _id: itemId }) => itemId == _id)
+  const itemOnWishlist = useMemo<boolean>(() =>
+    wishlistItems.some(({ _id: itemId }) => itemId == _id), [wishlistItems]
   );
   const navigate = useNavigate();
 

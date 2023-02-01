@@ -52,7 +52,7 @@ cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
     },
   ]).exec();
 
-  res.status(200).json(item[0]?.cart_items || {});
+  res.status(200).json(item[0]?.cart_items || []);
 });
 
 export default cartsRouter;

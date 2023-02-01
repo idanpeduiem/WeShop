@@ -38,12 +38,12 @@ export const addItemToCart = async (cartItem: CartItem) =>
 export const getItemsFromWishlist = (
   userId: User["uid"]
 ): Promise<ItemDetails[]> =>
-  AxiosInstance.get(`/wishlist/items/${userId}`)
+  AxiosInstance.get(`/wish-lists/items/${userId}`)
     .then((itemData) => itemData.data)
     .catch(() => []);
 
 export const addItemToWishlist = (wishlistItem: wishlistItem) =>
-  AxiosInstance.post(`/wishlist/addItem`, { ...wishlistItem });
+  AxiosInstance.post(`/wish-lists/addItem`, { ...wishlistItem });
 
 // departments
 
