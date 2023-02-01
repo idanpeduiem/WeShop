@@ -10,6 +10,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import PersonalDetails from "./components/PersonalDetails";
 import PersonalOrders from "./components/PersonalOrders";
 import PrivateRoute from "./utils/PrivateRoute";
+import {useUserContext} from "./controller/userController/userContext";
 
 // use this enum to make links to pages
 export enum RoutePaths {
@@ -25,9 +26,11 @@ export enum RoutePaths {
 }
 
 const App = () => {
+    const {user} = useUserContext();
+
   return (
     <Router>
-      <Navbar />
+        {user && <Navbar />}
       <Box marginTop={5}>
         <Container>
           <Routes>

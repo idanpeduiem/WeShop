@@ -42,9 +42,9 @@ const Cart = () => {
       </Grid>
       <Grid item xs={12} sm={9}>
         <Paper variant={"outlined"}>
-          <Grid container>
+          <Grid container padding={2}>
             {cartItems.map((item: ItemDetails) => (
-              <Grid item xs={3}>
+              <Grid item xs={3} key={item._id}>
                 <ItemCard
                   key={item._id}
                   item={item}
