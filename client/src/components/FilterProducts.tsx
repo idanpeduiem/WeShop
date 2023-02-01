@@ -126,6 +126,8 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
         <Divider />
         <Typography>Max Price</Typography>
         <InputSlider changeMaxPrice={setMaxPriceFilter} />
+        <Divider/>
+        <Button color={"secondary"} variant={'outlined'} onClick={() => setActiveFilters([])}>Clear</Button>
       </Stack>
     </Paper>
   );
