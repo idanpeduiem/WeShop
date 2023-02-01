@@ -30,8 +30,7 @@ cartsRouter.post("/addItem", async (req: Request, res: Response) => {
 });
 
 cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  const cart = await Cart.find({uesrId: 'BvKFf5Fc8KUcnEh63DJ19NqHVkh2'})
+  const cart = await Cart.find({uesrId: req.userId})
   .populate([{path: 'items.item'},{path: 'items.size'}])
   .populate([{path:'items.item.category'},{path:'items.item.department'}])
   .lean()
