@@ -9,9 +9,15 @@ export const getAllItems = async () =>
   await AxiosInstance.get("/items")
     .then((itemsRes) => itemsRes.data)
     .catch(() => []);
+
 export const getAllItemsDesc = async (searchStr: string) => {
   console.log(searchStr);
   const { data } = await AxiosInstance.get(`/items/desc?search=` + searchStr);
+  return data;
+};
+
+export const getGraphData = async () => {
+  const { data } = await AxiosInstance.get(`/items/graphdata`);
   return data;
 };
 
