@@ -17,14 +17,14 @@ import Graph from "./components/Graph";
 // use this enum to make links to pages
 export enum RoutePaths {
   HOME = "/",
-  CART = "cart",
-  WISHLIST = "wishlist",
-  LOGIN = "login",
-  SIGNUP = "signup",
-  PROFILE = "profile",
   GRAPH = "/graph",
+  CART = "/cart",
+  WISHLIST = "/wishlist",
+  LOGIN = "/login",
+  SIGNUP = "/signup",
+  PROFILE = "/profile",
   PRODUCT_DETAILS = "product-details/:id",
-  PRODUCT_DETAILS_NO_ID = "product-details",
+  PRODUCT_DETAILS_NO_ID = "/product-details",
   PERSONAL_DETAILS = "personal-details",
   PERSONAL_ORDER = "personal-orders",
 }
