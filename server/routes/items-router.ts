@@ -52,6 +52,37 @@ itemsRoute.get("/desc", async (req: Request, res: Response) => {
     res.status(500).send(error);
   }
 });
+itemsRoute.get("/graphdata", async (req: Request, res: Response) => {
+  const items = await Item.aggregate([
+    {
+      $lookup: {
+        from: "item-categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $group: {
+        _id: { $arrayElemAt: ["$category", 0] },
+        count: { $count: {} },
+      },
+    },
+    {
+      $project: {
+        count: 1,
+      },
+    },
+    {
+      $addFields: { description: "$_id.description" },
+    },
+  ]);
+  try {
+    res.send(items);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 itemsRoute.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   const item = await Item.aggregate([

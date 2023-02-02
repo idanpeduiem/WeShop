@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { RoutePaths } from "../App";
 import { Logout, Search } from "@mui/icons-material";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import logo from "../assets/logo.png";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
@@ -124,6 +125,15 @@ const Navbar = () => {
         />
       </Grid>
       <Grid item xs={2} container justifyContent={"end"}>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={() => navigate(RoutePaths.GRAPH)}
+        >
+          <BarChartIcon />
+        </IconButton>
         <IconButton
           size="large"
           edge="start"
