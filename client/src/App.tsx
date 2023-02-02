@@ -16,13 +16,13 @@ import Wishlist from "./components/Wishlist";
 // use this enum to make links to pages
 export enum RoutePaths {
   HOME = "/",
-  CART = "cart",
-  WISHLIST = "wishlist",
-  LOGIN = "login",
-  SIGNUP = "signup",
-  PROFILE = "profile",
+  CART = "/cart",
+  WISHLIST = "/wishlist",
+  LOGIN = "/login",
+  SIGNUP = "/signup",
+  PROFILE = "/profile",
   PRODUCT_DETAILS = "product-details/:id",
-  PRODUCT_DETAILS_NO_ID = "product-details",
+  PRODUCT_DETAILS_NO_ID = "/product-details",
   PERSONAL_DETAILS = "personal-details",
   PERSONAL_ORDER = "personal-orders",
 }
