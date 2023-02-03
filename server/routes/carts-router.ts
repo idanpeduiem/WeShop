@@ -9,21 +9,38 @@ cartsRouter.post("/addItem", async (req: Request, res: Response) => {
  
   try {
     const { item: itemToAdd, size, quantity } = req.body;
-    const newItem = { item: new mongoose.Types.ObjectId(itemToAdd._id), size, quantity };
-
-    item = await Cart.updateOne(
-      {
+    const cart = (await Cart.findOne({userId: req.userId, "items.item": itemToAdd._id, "items.size": size}).populate('items.item').lean());
+    const cartItem = cart?.items.find(item => item.item._id.toString() === itemToAdd._id && item.size.toString() === size._id);
+    
+    if(cartItem ){
+      await Cart.updateOne({
         userId: req.userId,
+        "items.item": itemToAdd._id,
+        "items.size": size._id
       },
       {
-        $push: { items: newItem, quantity, size },
-      },
-      {
-        upsert: true,
+        $set: {
+          "items.$.quantity" : quantity + cartItem.quantity
+        }
+      })
+    } else{
+
+      const newItem = { item: new mongoose.Types.ObjectId(itemToAdd._id), size, quantity };
+      
+      item = await Cart.updateOne(
+        {
+          userId: req.userId,
+        },
+        {
+          $push: { items: newItem, quantity, size },
+        },
+        {
+          upsert: true,
+        }
+        );
       }
-    );
-  } catch (e) {
-    res.status(500).send(e);
+      } catch (e) {
+        res.status(500).send(e);
   }
 
   res.status(200).json(item);
