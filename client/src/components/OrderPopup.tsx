@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions, Fab } from "@mui/material";
 import { loadavg } from "os";
 import { useState } from "react";
@@ -19,7 +20,7 @@ const OrderPopup: React.FC = () => {
    const onSuccess = () => {
      setIsSuccess(true);
      setTimeout(() => {
-        navigate(RoutePaths.HOME);
+        location.reload();
      },700)
    }
 
