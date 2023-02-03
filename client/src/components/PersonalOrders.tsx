@@ -29,7 +29,7 @@ const OrderRow: React.FC<OrderRowProps> = ({order}) => {
         </IconButton>
       </TableCell>
       <TableCell component="th" scope="row">
-        {moment(createdAt).format('DD.MM.YYY')}
+        {moment(createdAt).format('DD.MM.YYYY')}
       </TableCell>
       <TableCell>{address}</TableCell>
       <TableCell>{totalPrice.toString()}</TableCell>

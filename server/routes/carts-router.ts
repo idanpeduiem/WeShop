@@ -1,9 +1,9 @@
 import { Request, Response, Router } from "express";
 import Cart from "../models/cart";
 import mongoose from "mongoose";
+import { CartItem } from "../utils/types";
 
 const cartsRouter = Router();
-
 cartsRouter.post("/addItem", async (req: Request, res: Response) => {
   let item;
  
@@ -30,12 +30,20 @@ cartsRouter.post("/addItem", async (req: Request, res: Response) => {
 });
 
 cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
-  const cart = await Cart.find({uesrId: req.userId})
+  let totalValue = 0;
+  const cart = await Cart.findOne({uesrId: req.userId})
   .populate([{path: 'items.item', model: 'item'},{path: 'items.size'}])
   .lean()
   .exec();
-  console.log(cart[0]?.items);
-  res.status(200).json(cart[0]?.items ||[]);
+
+  if(cart) {
+    const items = cart?.items as unknown as CartItem[];
+    totalValue = items.reduce((currSum,item) =>  (currSum + (item.item.price) * (item.quantity)),0);
+  }
+  
+
+  res.status(200).json({items: cart?.items || {}, value: totalValue});
 });
+
 
 export default cartsRouter;

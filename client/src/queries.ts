@@ -2,6 +2,7 @@ import AxiosInstance from "./utils/axiosInstance";
 import { Cart, CartItem, ItemDetails } from "./utils/types";
 import { User } from "firebase/auth";
 import { wishlistItem } from "./controller/wishlistController/wishlistProvider";
+import { Axios } from "axios";
 
 // items
 
@@ -38,6 +39,12 @@ export const addItemToCart = async (cartItem: CartItem) =>
     () => new Error("something went wrong")
   );
 
+export const getCartTotalValue = () => 
+     AxiosInstance.get('/carts/totalValue')
+    .then(valueResp => valueResp.data)
+    .catch(() =>  new Error('couldnt get cart value'));
+  
+
 // wishlist
 
 export const getItemsFromWishlist = (
@@ -69,3 +76,7 @@ export const getAllUserOrders = async () =>
   await AxiosInstance.get("/orders")
     .then((ordersRes) => ordersRes.data)
     .catch(() => []);
+
+export const saveOrder = async (address: string) => 
+ await AxiosInstance.post("/orders", {address})
+ .catch(() => new Error('couldnt save order'));
