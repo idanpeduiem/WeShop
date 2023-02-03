@@ -82,9 +82,9 @@ const PersonalOrders: React.FC = () => {
   isError,
   isSuccess} = useQuery<Order[]>('userOrders',getAllUserOrders);
 
-   console.log(orders);
     return (
     <FetchingState isLoading={isLoading} isError={isError} isSuccess={isSuccess}>
+      <h1>My Orders</h1>
       <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
