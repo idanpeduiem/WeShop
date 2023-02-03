@@ -6,10 +6,15 @@ import { wishlistItem } from "./controller/wishlistController/wishlistProvider";
 
 // items
 
-export const getAllItems = async () =>
-  await AxiosInstance.get("/items")
+export const getAllItems = async (activePage: number) =>
+  await AxiosInstance.get(`/items?page=${activePage}`)
     .then((itemsRes) => itemsRes.data)
     .catch(() => []);
+
+export const getNumOfPages = async () =>
+await AxiosInstance.get('/items/numOfPages')
+  .then((numOfPagesRes) => numOfPagesRes.data)
+  .catch(() => []);
 
 export const getAllItemsDesc = async () =>
   await AxiosInstance.get(`/items/desc`)

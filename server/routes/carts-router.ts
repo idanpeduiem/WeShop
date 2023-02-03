@@ -34,7 +34,6 @@ cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
   .populate([{path: 'items.item', model: 'item'},{path: 'items.size'}])
   .lean()
   .exec();
-  console.log(cart[0]?.items);
   res.status(200).json(cart[0]?.items ||[]);
 });
 
