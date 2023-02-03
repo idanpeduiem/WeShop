@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useCartContext } from "../../controller/cartController/cartContext";
-import { ItemDetails } from "../../utils/types";
+import { ItemDetails, Size } from "../../utils/types";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import { RoutePaths } from "../../App";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -25,6 +25,10 @@ interface ItemCardProps {
   disableAddToCart?: boolean;
   disableAddToWishlist?: boolean;
   enableRemoveFromCart?: boolean;
+  cartData?: {
+    size: Size,
+    quantity: number
+  };
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({
@@ -32,12 +36,13 @@ const ItemCard: React.FC<ItemCardProps> = ({
   disableAddToCart,
   disableAddToWishlist,
   enableRemoveFromCart,
+  cartData
 }: ItemCardProps): JSX.Element => {
+
   const { addItem: addItemToCart, removeItem: removeItemFromCart } =
     useCartContext();
 
   const navigate = useNavigate();
-
 
   return (
     <Badge
@@ -60,6 +65,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
         <CardContent>
           <Typography variant="h6">{description}</Typography>
           <Typography variant="body2">{price}</Typography>
+          {cartData && <Typography variant="body2">{cartData.size.description} X {cartData.quantity}</Typography> }
         </CardContent>
         <CardActions>
           <Grid container justifyContent={"space-between"}>

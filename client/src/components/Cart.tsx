@@ -11,7 +11,7 @@ import OrderPopup from "./OrderPopup";
 const Cart = () => {
   const navigate = useNavigate();
   const { cartItems, cartValue } = useCartContext();
-
+ 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={3}>
@@ -51,6 +51,7 @@ const Cart = () => {
                   item={item.item}
                   disableAddToCart
                   enableRemoveFromCart
+                  cartData={{size: item.size, quantity: item.quantity}}
                 />
               </Grid>
             ))}
