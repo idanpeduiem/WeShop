@@ -29,7 +29,7 @@ export const getItemQuery = async (id: string): Promise<ItemDetails> =>
 
 // cart
 
-export const getItemsFromCart = (userId: User["uid"]): Promise<Cart["items"]> =>
+export const getItemsFromCart = (userId: User["uid"]) =>
   AxiosInstance.get(`/carts/items/${userId}`)
     .then((itemData) => itemData.data)
     .catch(() => []);
