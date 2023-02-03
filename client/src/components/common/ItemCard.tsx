@@ -18,6 +18,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useWishlistContext } from "../../controller/wishlistController/wishlistContext";
 import {useMemo, useState} from "react";
+import WishlistIcon from "./wishlistIcon";
 
 interface ItemCardProps {
   item: ItemDetails;
@@ -34,19 +35,9 @@ const ItemCard: React.FC<ItemCardProps> = ({
 }: ItemCardProps): JSX.Element => {
   const { addItem: addItemToCart, removeItem: removeItemFromCart } =
     useCartContext();
-  const {
-    wishlistItems,
-    addItem: addItemToWishlist,
-    removeItem: removeItemFromWishlist,
-  } = useWishlistContext();
-  const itemOnWishlist = useMemo<boolean>(() =>
-    wishlistItems.some(({ _id: itemId }) => itemId == _id), [wishlistItems]
-  );
+
   const navigate = useNavigate();
 
-  const onWishlistIconClicked = () => {
-    itemOnWishlist ? removeItemFromWishlist(_id) : addItemToWishlist(_id);
-  };
 
   return (
     <Badge
@@ -63,7 +54,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
       }
     >
       <Card
-        onClick={() => navigate(RoutePaths.PRODUCT_DETAILS_NO_ID + "/" + _id)}
+        onClick={() => navigate(`${RoutePaths.PRODUCT_DETAILS_NO_ID}/${_id}`)}
       >
         <CardMedia image={image} component="img" />
         <CardContent>
@@ -73,15 +64,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
         <CardActions>
           <Grid container justifyContent={"space-between"}>
             {!disableAddToWishlist && (
-              <IconButton
-                color="secondary"
-                onClick={(event) => {
-                  onWishlistIconClicked();
-                  event.stopPropagation();
-                }}
-              >
-                {itemOnWishlist? <FavoriteIcon />: <FavoriteBorderIcon/>}
-              </IconButton>
+              <WishlistIcon itemId={_id}/>
             )}
           </Grid>
         </CardActions>

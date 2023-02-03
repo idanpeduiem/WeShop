@@ -10,29 +10,31 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import PersonalDetails from "./components/PersonalDetails";
 import PersonalOrders from "./components/PersonalOrders";
 import PrivateRoute from "./utils/PrivateRoute";
-import {useUserContext} from "./controller/userController/userContext";
+import { useUserContext } from "./controller/userController/userContext";
 import Wishlist from "./components/Wishlist";
+import Graph from "./components/Graph";
 
 // use this enum to make links to pages
 export enum RoutePaths {
   HOME = "/",
-  CART = "cart",
-  WISHLIST = "wishlist",
-  LOGIN = "login",
-  SIGNUP = "signup",
-  PROFILE = "profile",
+  GRAPH = "/graph",
+  CART = "/cart",
+  WISHLIST = "/wishlist",
+  LOGIN = "/login",
+  SIGNUP = "/signup",
+  PROFILE = "/profile",
   PRODUCT_DETAILS = "product-details/:id",
-  PRODUCT_DETAILS_NO_ID = "product-details",
+  PRODUCT_DETAILS_NO_ID = "/product-details",
   PERSONAL_DETAILS = "personal-details",
   PERSONAL_ORDER = "personal-orders",
 }
 
 const App = () => {
-    const {user} = useUserContext();
+  const { user } = useUserContext();
 
   return (
     <Router>
-        {user && <Navbar />}
+      {user && <Navbar />}
       <Box height='90%' marginTop={5}>
         <Container sx={{height:'inherit'}}>
           <Routes>
@@ -43,6 +45,14 @@ const App = () => {
               element={
                 <PrivateRoute>
                   <Home />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path={RoutePaths.GRAPH}
+              element={
+                <PrivateRoute>
+                  <Graph />
                 </PrivateRoute>
               }
             />

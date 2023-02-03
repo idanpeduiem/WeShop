@@ -34,8 +34,43 @@ itemsRoute.get("/numOfPages", async(req: Request, res:Response) => {
 
 
 itemsRoute.get("/desc", async (req: Request, res: Response) => {
-  const items = await Item.find({}, { _id: 1, description: 1 });
+  const { search } = req.query;
+  const items = await Item.find(
+    { description: new RegExp(".*" + search + ".*") },
+    { _id: 1, description: 1 }
+  ).limit(10);
 
+  try {
+    res.send(items);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+itemsRoute.get("/graphdata", async (req: Request, res: Response) => {
+  const items = await Item.aggregate([
+    {
+      $lookup: {
+        from: "item-categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $group: {
+        _id: { $arrayElemAt: ["$category", 0] },
+        count: { $count: {} },
+      },
+    },
+    {
+      $project: {
+        count: 1,
+      },
+    },
+    {
+      $addFields: { description: "$_id.description" },
+    },
+  ]);
   try {
     res.send(items);
   } catch (error) {
