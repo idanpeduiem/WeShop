@@ -1,17 +1,29 @@
 import { Button, Grid, Paper, TextField } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Clear, ResetTv, Save } from "@mui/icons-material";
 import { useUserContext } from "../controller/userController/userContext";
+import { firebase } from "../utils/firebase";
+import { useSnackbar } from "notistack";
+
 const PersonalDetails = () => {
   const { user } = useUserContext();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [displayName, setDisplayName] = useState(user?.displayName);
   const [email, setEmail] = useState(user?.email);
-  const [newPassword, setNewPassword] = useState(user?.email);
-  const [confirmNewPassword, setConfirmNewPassword] = useState(user?.email);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
-  const onSaveChanges = () => {};
+  const onSaveChanges = async (newPassword: string, displayName: string) => {
+    try {
+      await firebase.updatePassword(newPassword);
+      await firebase.updateProfile(displayName);
+      enqueueSnackbar("Successful update!", { variant: "success" });
+    } catch (e: any) {
+      enqueueSnackbar(e.message, { variant: "error" });
+    }
+  };
 
   const onDiscardChanges = () => {
     setDisplayName(user?.displayName);
@@ -31,6 +43,7 @@ const PersonalDetails = () => {
               variant="outlined"
               label="User name"
               fullWidth
+              error={!displayName}
               required
             />
           </Grid>
@@ -51,6 +64,7 @@ const PersonalDetails = () => {
               label="Password"
               type="password"
               fullWidth
+              error={!newPassword}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -60,7 +74,7 @@ const PersonalDetails = () => {
               label="Confirm password"
               type="password"
               fullWidth
-              error={!!newPassword && newPassword === confirmNewPassword}
+              error={!newPassword || newPassword !== confirmNewPassword}
             />
           </Grid>
         </Grid>
@@ -70,7 +84,14 @@ const PersonalDetails = () => {
           color="secondary"
           variant={"contained"}
           startIcon={<Save />}
-          onClick={onSaveChanges}
+          disabled={
+            !displayName || !newPassword || newPassword !== confirmNewPassword
+          }
+          onClick={() =>
+            confirmNewPassword &&
+            displayName &&
+            onSaveChanges(confirmNewPassword, displayName)
+          }
         >
           Save
         </Button>

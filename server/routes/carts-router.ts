@@ -6,17 +6,17 @@ const cartsRouter = Router();
 
 cartsRouter.post("/addItem", async (req: Request, res: Response) => {
   let item;
-
+ 
   try {
-    const { userId, itemId, size } = req.body;
-    const newItem = { itemId: new mongoose.Types.ObjectId(itemId), size };
+    const { item: itemToAdd, size, quantity } = req.body;
+    const newItem = { item: new mongoose.Types.ObjectId(itemToAdd._id), size, quantity };
 
     item = await Cart.updateOne(
       {
-        userId,
+        userId: req.userId,
       },
       {
-        $push: { items: newItem },
+        $push: { items: newItem, quantity, size },
       },
       {
         upsert: true,
@@ -54,29 +54,12 @@ cartsRouter.post("/removeItem", async (req: Request, res: Response) => {
 });
 
 cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  const item = await Cart.aggregate([
-    {
-      $match: {
-        userId,
-      },
-    },
-    {
-      $lookup: {
-        from: "items",
-        localField: "items.itemId",
-        foreignField: "_id",
-        as: "cart_items",
-      },
-    },
-    {
-      $project: {
-        cart_items: 1,
-      },
-    },
-  ]).exec();
-
-  res.status(200).json(item[0]?.cart_items || {});
+  const cart = await Cart.find({uesrId: req.userId})
+  .populate([{path: 'items.item', model: 'item'},{path: 'items.size'}])
+  .lean()
+  .exec();
+  console.log(cart[0]?.items);
+  res.status(200).json(cart[0]?.items ||[]);
 });
 
 export default cartsRouter;

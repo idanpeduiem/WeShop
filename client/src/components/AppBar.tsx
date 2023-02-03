@@ -7,9 +7,11 @@ import {
 } from "@mui/material";
 import { RoutePaths } from "../App";
 import { Logout, Search } from "@mui/icons-material";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import logo from "../assets/logo.png";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useNavigate } from "react-router-dom";
 import { firebase } from "../utils/firebase";
 import { useCartContext } from "../controller/cartController/cartContext";
@@ -20,6 +22,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getAllItemsDesc } from "../queries";
+import { useWishlistContext } from "../controller/wishlistController/wishlistContext";
+import useDebounce from "../hooks/useDebounce";
 
 interface Item {
   _id: string;
@@ -28,13 +32,15 @@ interface Item {
 
 const Navbar = () => {
   const { cartItems } = useCartContext();
+  const { wishlistItems } = useWishlistContext();
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedValue = useDebounce<string>(searchInput, 500);
   const { data, isLoading, isError, isSuccess } = useQuery<Item[] | undefined>(
-    "itemsDesc",
-    getAllItemsDesc,
-    { enabled: open }
+    ["itemsDesc", debouncedValue],
+    () => getAllItemsDesc(debouncedValue)
   );
   const [options, setOptions] = useState<readonly Item[] | undefined>([]);
 
@@ -86,6 +92,9 @@ const Navbar = () => {
           onClose={() => {
             setOpen(false);
           }}
+          onInputChange={(event, newInputValue) => {
+            setSearchInput(newInputValue);
+          }}
           isOptionEqualToValue={(option, value) =>
             option.description === value.description
           }
@@ -121,10 +130,30 @@ const Navbar = () => {
           edge="start"
           color="inherit"
           aria-label="menu"
+          onClick={() => navigate(RoutePaths.GRAPH)}
+        >
+          <BarChartIcon />
+        </IconButton>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
           onClick={() => navigate(RoutePaths.CART)}
         >
           <Badge badgeContent={cartItems.length} color="secondary">
             <ShoppingCartIcon />
+          </Badge>
+        </IconButton>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={() => navigate(RoutePaths.WISHLIST)}
+        >
+          <Badge badgeContent={wishlistItems.length} color="secondary">
+            <FavoriteIcon />
           </Badge>
         </IconButton>
         <IconButton

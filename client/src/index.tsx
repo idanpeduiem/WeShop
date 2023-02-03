@@ -9,12 +9,19 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { firebase } from "./utils/firebase";
 import { UserProvider } from "./controller/userController/userProvider";
 import { CartProvider } from "./controller/cartController/cartProvider";
+import WishlistProvider from "./controller/wishlistController/wishlistProvider";
 
 firebase.init();
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    },
+  },
+});
 
 root.render(
   <React.StrictMode>
@@ -22,9 +29,11 @@ root.render(
       <UserProvider>
         <SnackbarProvider maxSnack={3}>
           <CartProvider>
+            <WishlistProvider>
             <ThemeProvider theme={theme}>
               <App />
             </ThemeProvider>
+            </WishlistProvider>
           </CartProvider>
         </SnackbarProvider>
       </UserProvider>

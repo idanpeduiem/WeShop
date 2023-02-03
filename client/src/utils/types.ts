@@ -29,6 +29,17 @@ export type Item = {
   category: string,
 }
 
+export type CartItem = {
+  item: ItemDetails,
+  size: Size,
+  quantity: number,
+}
+
+export type Cart = {
+  _id: string,
+  items : CartItem[],
+}
+
 export type ItemDetails = {
     _id: string,
     description: string,
@@ -36,7 +47,7 @@ export type ItemDetails = {
     image: string,
     department: Department,
     category: ItemCategory,
-    stock: ItemStock,
+    stock?: ItemStock,
   }
 
   export type Order = {
