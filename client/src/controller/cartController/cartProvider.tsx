@@ -6,13 +6,22 @@ import { useQuery } from "react-query";
 import { addItemToCart, getItemsFromCart } from "../../queries";
 import { useUserContext } from "../userController/userContext";
 
+type CartResponse = {
+  items: Cart['items'],
+  value: number,
+}
+
 export const CartProvider = ({ children }: PropsWithChildren) => {
   const snackbar = useSnackbar();
   const { user } = useUserContext();
   const [cartItems, setCartItems] = useState<Cart['items']>([]);
+  const [cartValue, setCartValue] = useState(0);
 
-  const { data = [], refetch: fetchGetItems } = useQuery<Cart['items']>(["cartItems"], () => getItemsFromCart(user?.uid!),
-   { enabled: !!user, onSuccess: (data) => setCartItems(data) });
+  const { data , refetch: fetchGetItems } = useQuery<CartResponse>(["cartItems"], () => getItemsFromCart(user?.uid!),
+   { enabled: !!user, onSuccess: (data) => {
+    setCartItems(data.items);
+    setCartValue(data.value);
+  } });
 
   const addItem = (cartItem: CartItem) => {
     addItemToCart(cartItem)
@@ -33,6 +42,7 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
     <CartContext.Provider
       value={{
         cartItems,
+        cartValue,
         addItem,
         removeItem,
       }}
