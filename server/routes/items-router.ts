@@ -2,14 +2,32 @@ import { Request, Response, Router } from "express";
 import mongoose from "mongoose";
 import Item from "../models/item";
 
-const ITEMS_PER_PAGE = 8;
+export interface Filter {
+  filterSubject: string;
+  filterValue: string;
+}
+
+export const ITEMS_PER_PAGE = 8;
 
 const itemsRoute = Router();
 
 itemsRoute.get("/", async (req: Request, res: Response) => {
   try {
     const page: number = parseInt(req.query.page as string);
-    const items = await Item.find({})
+    const departmenId: string = req.query.department as string;
+    const categoryId: string = req.query.category as string;
+    let filters: {category?: string, department?: string, price?: {$lte: number}} = {};
+    if(categoryId){
+      filters.category = categoryId;
+    }
+    if(departmenId) {
+      filters.department = departmenId;
+    }
+
+    const maxPrice: number = parseInt(req.query.maxPrice as string);
+    filters.price = {$lte: maxPrice};
+
+    const items = await Item.find(filters)
       .populate('category')
       .populate('department')
       .limit(ITEMS_PER_PAGE)
@@ -24,7 +42,20 @@ itemsRoute.get("/", async (req: Request, res: Response) => {
 
 itemsRoute.get("/numOfPages", async(req: Request, res:Response) => {
   try {
-    const totalCount: number = await Item.countDocuments({});
+    const departmenId: string = req.query.department as string;
+    const categoryId: string = req.query.category as string;
+    let filters: {category?: string, department?: string, price?: {$lte: number}} = {};
+    if(categoryId){
+      filters.category = categoryId;
+    }
+    if(departmenId) {
+      filters.department = departmenId;
+    }
+
+    const maxPrice: number = parseInt(req.query.maxPrice as string);
+    filters.price = {$lte: maxPrice};
+
+    const totalCount: number = await Item.countDocuments(filters);
     const numOfPages: number = Math.ceil(totalCount / ITEMS_PER_PAGE);
     res.status(200).json(numOfPages);
   } catch (error) {

@@ -4,37 +4,42 @@ import { useQuery } from "react-query";
 
 import ItemCard from "./common/ItemCard";
 import { getAllItems, getNumOfPages } from "../queries";
-import { ItemDetails } from "../utils/types";
+import { Filter, ItemDetails } from "../utils/types";
 import FilterProducts from "./FilterProducts";
 import FetchingState from "../utils/fetchingState";
 
 const Home = () => {
-  const [filteredItems, setFilteredItems] = useState<ItemDetails[]>([]);
+  const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
+  const [maxPriceFilter, setMaxPriceFilter] = useState<number | number[]>(1000);
+
   const [activePage, setActivePage] = useState<number>(0);
 
   const { data: itemsList, isError, isLoading, isSuccess } = 
     useQuery<ItemDetails[]>(
-      ["items", activePage],
-      () => getAllItems(activePage),
-      { keepPreviousData: true }
+      ["items", activePage, activeFilters, maxPriceFilter],
+      () => getAllItems(activePage, activeFilters, maxPriceFilter),
+      { 
+        keepPreviousData: true
+      }
   );
   
-  const { data: totalCount } =
-      useQuery<number>("totalCount", getNumOfPages);
+  const { data: numOfPages } =
+    useQuery<number>(
+      ["numOfPages", activeFilters],
+      () => getNumOfPages(activeFilters, maxPriceFilter),
+      // {
+      //   onSuccess: () => setActivePage(0)
+      // }
+    );
 
    const handlePageChange = (event: ChangeEvent<unknown>, page: number) => {
     setActivePage(page-1);
    }
 
-  // const {
-  //   data: items = [],
-  //   isLoading,
-  //   isError,
-  //   isSuccess,
-  // } = useQuery<ItemDetails[]>("users", getAllItems, {
-  //   onSuccess: (items = []) => setFilteredItems(items),
-  //   // enabled: true
-  // });
+   const handleClearFilters = () => {
+    setActiveFilters([]);
+    setMaxPriceFilter(1000);
+   }
 
   return (
      <FetchingState
@@ -56,15 +61,18 @@ const Home = () => {
           </Grid>
         </Paper>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={3} height='inherit' overflow='auto'>
         <FilterProducts
-          allItems={[]}
-          setFilteredItems={setFilteredItems}
+          maxPriceFilter={maxPriceFilter}
+          activeFilters={activeFilters}
+          setActiveFilters={setActiveFilters}
+          setMaxPriceFilter={setMaxPriceFilter}
+          handleClearFilters={handleClearFilters}
         />
       </Grid>
     </Grid>
 
-    <Pagination count={totalCount} color="primary" onChange={handlePageChange}/>
+    <Pagination count={numOfPages} color="primary" onChange={handlePageChange}/>
   </FetchingState>
   );
 };

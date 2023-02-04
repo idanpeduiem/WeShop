@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Divider, Paper, Typography } from "@mui/material";
 import { useQuery } from "react-query";
-import { Department, ItemCategory, ItemDetails } from "../utils/types";
+import { Department, Filter, ItemCategory, ItemDetails } from "../utils/types";
 import { getAllCategories, getAllDepartments } from "../queries";
 import InputSlider from "./InputSlider";
 import Stack from "@mui/material/Stack";
 
 interface FilterProductsProps {
-  allItems: ItemDetails[];
-  setFilteredItems: (items: ItemDetails[]) => void;
-}
-
-interface Filter {
-  filterSubject: string;
-  filterValue: string;
+  activeFilters: Filter[];
+  setActiveFilters: React.Dispatch<React.SetStateAction<Filter[]>>;
+  setMaxPriceFilter: React.Dispatch<React.SetStateAction<number | number[]>>;
+  handleClearFilters: () => void;
+  maxPriceFilter: number | number[];
 }
 
 const FILTER_SUBJECTS = {
@@ -22,16 +20,24 @@ const FILTER_SUBJECTS = {
 };
 
 const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
-  const { setFilteredItems, allItems } = props;
+  const { activeFilters, setActiveFilters, setMaxPriceFilter, handleClearFilters, maxPriceFilter } = props;
 
-  const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
-  const [maxPriceFilter, setMaxPriceFilter] = useState<number | number[]>(1000);
+  const { 
+    data: departments,
+    isError: isDepartError,
+    isSuccess: isDepartSuccess, 
+    isLoading: isDepartLoading } 
+    = useQuery("departments", getAllDepartments);
 
-  const { data: departments } = useQuery("departments", getAllDepartments);
-  const { data: categories } = useQuery("categories", getAllCategories);
+  const { 
+    data: categories,
+    isError: isCategError,
+    isSuccess: isCategSuccess, 
+    isLoading: isCategLoading } 
+    = useQuery("categories", getAllCategories);
 
   const handleChangeFilter = (newFilter: Filter) => {
-    setActiveFilters((prevActiveFilters) => {
+    setActiveFilters((prevActiveFilters: Filter[]) => {
       let index = prevActiveFilters.findIndex(
         (filter: Filter) => filter.filterSubject === newFilter.filterSubject
       );
@@ -44,34 +50,6 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
       }
     });
   };
-
-  useEffect(() => {
-    let itemsAfterFilter: ItemDetails[];
-    if (activeFilters.length) {
-      itemsAfterFilter = allItems.reduce(
-        (acc: ItemDetails[], currItem: ItemDetails) => {
-          return activeFilters.every(
-            (activeFilter: Filter) =>
-              (
-                currItem[activeFilter.filterSubject as keyof ItemDetails] as
-                  | ItemCategory
-                  | Department
-              )._id === activeFilter.filterValue
-          )
-            ? [...acc, currItem]
-            : acc;
-        },
-        [] as ItemDetails[]
-      );
-    } else {
-      // for deleting all fiters - TODO
-      itemsAfterFilter = allItems;
-    }
-    itemsAfterFilter = itemsAfterFilter.filter(
-      (item: ItemDetails) => item.price <= maxPriceFilter
-    );
-    setFilteredItems(itemsAfterFilter);
-  }, [activeFilters, maxPriceFilter]);
 
   return (
     <Paper variant="outlined" sx={{ padding: 2 }}>
@@ -125,9 +103,12 @@ const FilterProducts: React.FC<FilterProductsProps> = (props): JSX.Element => {
         ))}
         <Divider />
         <Typography>Max Price</Typography>
-        <InputSlider changeMaxPrice={setMaxPriceFilter} />
+        <InputSlider
+          changeMaxPrice={setMaxPriceFilter}
+          maxPriceFilter={maxPriceFilter}
+        />
         <Divider/>
-        <Button color={"secondary"} variant={'outlined'} onClick={() => setActiveFilters([])}>Clear</Button>
+        <Button color={"secondary"} variant={'outlined'} onClick={handleClearFilters}>Clear</Button>
       </Stack>
     </Paper>
   );
