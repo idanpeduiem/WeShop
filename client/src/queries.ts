@@ -1,18 +1,30 @@
 import AxiosInstance from "./utils/axiosInstance";
-import { Cart, CartItem, ItemDetails } from "./utils/types";
+import { Cart, CartItem, Filter, ItemDetails } from "./utils/types";
 import { User } from "firebase/auth";
 import { wishlistItem } from "./controller/wishlistController/wishlistProvider";
 import { Axios } from "axios";
 
 // items
 
-export const getAllItems = async () =>
-  await AxiosInstance.get("/items")
+export const getAllItems = async (activePage: number, activeFilters: Filter[], maxPriceFilter: number | number[]) => {
+  const filtersQuery: string = activeFilters.reduce(
+    (acc: string, filter: Filter) =>  acc.concat(`&${filter.filterSubject}=${filter.filterValue}`), '');
+  
+  return AxiosInstance.get(`/items?page=${activePage}${filtersQuery}&maxPrice=${maxPriceFilter}`)
     .then((itemsRes) => itemsRes.data)
     .catch(() => []);
+}
+
+export const getNumOfPages = async (activeFilters: Filter[], maxPriceFilter: number | number[]) => {
+  const filtersQuery: string = activeFilters.reduce(
+    (acc: string, filter: Filter) => acc.concat(`${filter.filterSubject}=${filter.filterValue}&`), '');
+  
+  return AxiosInstance.get(`/items/numOfPages?${filtersQuery}&maxPrice=${maxPriceFilter}`)
+  .then((numOfPagesRes) => numOfPagesRes.data)
+  .catch(() => []);
+}
 
 export const getAllItemsDesc = async (searchStr: string) => {
-  console.log(searchStr);
   const { data } = await AxiosInstance.get(`/items/desc?search=` + searchStr);
   return data;
 };

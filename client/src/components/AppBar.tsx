@@ -66,7 +66,7 @@ const Navbar = () => {
       container
       justifyContent={"space-between"}
       alignItems={"center"}
-      sx={(theme) => ({ background: theme.palette.primary.main })}
+      sx={(theme) => ({ background: theme.palette.primary.main, height: '10%' })}
     >
       <Grid item xs={3}>
         <img

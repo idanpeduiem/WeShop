@@ -35,8 +35,8 @@ const App = () => {
   return (
     <Router>
       {user && <Navbar />}
-      <Box marginTop={5}>
-        <Container>
+      <Box height='90%' marginTop={5}>
+        <Container sx={{height:'inherit'}}>
           <Routes>
             <Route path={RoutePaths.LOGIN} element={<Login />} />
             <Route path={RoutePaths.SIGNUP} element={<Signup />} />

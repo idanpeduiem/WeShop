@@ -64,3 +64,8 @@ export type ItemDetails = {
     createdAt: Date,
     updatedAt: Date,
   }
+
+export interface Filter {
+  filterSubject: string;
+  filterValue: string;
+}
