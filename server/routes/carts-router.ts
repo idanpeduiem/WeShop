@@ -48,10 +48,11 @@ cartsRouter.post("/addItem", async (req: Request, res: Response) => {
 
 cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
   let totalValue = 0;
-  const cart = await Cart.findOne({uesrId: req.userId})
-  .populate([{path: 'items.item', model: 'item'},{path: 'items.size'}])
+  const cart = await Cart.findOne({userId: req.userId})
+  .populate([{path: 'items.item'},{path: 'items.size'}])
   .lean()
   .exec();
+
 
   if(cart) {
     const items = cart?.items as unknown as CartItem[];
