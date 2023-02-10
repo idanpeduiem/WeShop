@@ -57,14 +57,15 @@ const Login = () => {
   const password: React.MutableRefObject<any> = useRef(null);
   const paperStyle = {
     padding: 20,
-    height: "60vh",
+    height: "52vh",
     width: "40vh",
     margin: "auto",
     backgroundColor: theme.palette.background.paper,
   };
+  const btnstyle = { margin: "8px 0" };
   return (
     <Grid>
-      <Paper elevation={3} style={paperStyle}>
+      <Paper elevation={10} style={paperStyle}>
         <Grid>
           <Avatar sx={{ backgroundColor: theme.palette.primary.main }}>
             <LockOutlinedIcon />
@@ -88,15 +89,12 @@ const Login = () => {
           fullWidth
           required
         />
-        <FormControlLabel
-          control={<Checkbox name="checkedB" color="primary" />}
-          label="Remember me"
-        />
         <Button
           type="submit"
           color="primary"
           variant="contained"
           fullWidth
+          style={btnstyle}
           onClick={() =>
             loginUser(
               email,
@@ -129,11 +127,8 @@ const Login = () => {
           }
         />
         <Typography>
-          <Link href="#">Forgot password ?</Link>
-        </Typography>
-        <Typography>
           {" "}
-          Do you have an account ?<Link href="/Signup">Sign Up</Link>
+          Don't you have an account ?<Link href="/Signup">Sign Up</Link>
         </Typography>
       </Paper>
     </Grid>

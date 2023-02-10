@@ -1,11 +1,10 @@
 import { Button, Grid, Paper, TextField } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { useEffect, useRef, useState } from "react";
-import { Clear, ResetTv, Save } from "@mui/icons-material";
+import { useState } from "react";
+import { Clear, Save } from "@mui/icons-material";
 import { useUserContext } from "../controller/userController/userContext";
 import { firebase } from "../utils/firebase";
 import { useSnackbar } from "notistack";
-
 const PersonalDetails = () => {
   const { user } = useUserContext();
   const { enqueueSnackbar } = useSnackbar();
@@ -31,7 +30,6 @@ const PersonalDetails = () => {
     setNewPassword("");
     setConfirmNewPassword("");
   };
-
   return (
     <Stack spacing={2}>
       <Paper variant={"outlined"}>
@@ -53,6 +51,7 @@ const PersonalDetails = () => {
               onChange={({ target: { value } }) => setEmail(value)}
               label="email"
               type={"email"}
+              disabled={true}
               fullWidth
               required
             />

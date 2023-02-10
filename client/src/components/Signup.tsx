@@ -34,7 +34,7 @@ const signUpUser = async (
       password.current.value
     );
     enqueueSnackbar("Successful sign up!", { variant: "success" });
-    navigate("/login");
+    navigate("/");
   } catch (error: any) {
     enqueueSnackbar(error.message, { variant: "error" });
   }
@@ -47,7 +47,7 @@ const Signup = () => {
   const theme = useTheme();
   const paperStyle = {
     padding: 20,
-    height: "50vh",
+    height: "52vh",
     width: "40vh",
     margin: "auto",
     backgroundColor: theme.palette.background.paper,
@@ -92,7 +92,7 @@ const Signup = () => {
         <GoogleButton
           label="Sign up with google"
           color="primary"
-          style={{ width: "100%" }}
+          style={{ width: "100%", margin: "8px 0" }}
           onClick={() =>
             loginUserWithGoogle(
               () => {
