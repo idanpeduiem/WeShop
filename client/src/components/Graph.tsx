@@ -19,7 +19,9 @@ const Graph = () => {
       isSuccess={isSuccess}
       isLoading={isLoading}
     >
-      <h1>Graph</h1>
+      <h2>Graph of total stock</h2>
+      <hr></hr>
+      <h4>grouped by category:</h4>
       {data && (
         <div>
           <BarChart data={data} />
