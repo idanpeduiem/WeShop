@@ -1,7 +1,7 @@
 import { PropsWithChildren, useState } from "react";
 import { CartContext } from "./cartContext";
 import { useSnackbar } from "notistack";
-import { Cart, CartItem, ItemDetails } from "../../utils/types";
+import {Cart, CartItem, ItemDetails, Size} from "../../utils/types";
 import { useQuery } from "react-query";
 import {
   addItemToCart,
@@ -44,8 +44,8 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
       });
   };
 
-  const removeItem = (itemId: ItemDetails["_id"]) => {
-    removeItemFromCart(itemId)
+  const removeItem = (itemId: ItemDetails["_id"], sizeId: Size['_id']) => {
+    removeItemFromCart(itemId, sizeId)
       .then(() => {
         snackbar.enqueueSnackbar("item removed");
         fetchGetItems();
