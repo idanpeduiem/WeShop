@@ -90,8 +90,6 @@ const ProductDetails: React.FC = () => {
       enqueueSnackbar("Please choose item size", { variant: "info" });
     } else if(!isQuantityValid()){
       enqueueSnackbar("Reached max item quantity!", { variant: "error" });
-      console.log('errr')
-
     } else {
       const size = item!.stock!.find(
         (stock) => stock.size[0]._id === selectedSize
