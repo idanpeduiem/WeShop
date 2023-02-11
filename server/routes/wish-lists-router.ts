@@ -55,4 +55,28 @@ wishListsRoute.post("/addItem", async (req: Request, res: Response) => {
   res.status(200).json(item);
 });
 
+wishListsRoute.post("/removeItem", async (req: Request, res: Response) => {
+  let item;
+
+  try {
+    const { itemId } = req.body;
+    const userId = req.userId;
+
+    item = await WishList.updateOne(
+      {
+        userId,
+      },
+      {
+        $pull: {
+          items: new mongoose.Types.ObjectId(itemId),
+        },
+      }
+    );
+  } catch (e) {
+    res.status(500).send(e);
+  }
+
+  res.status(200).json(item);
+});
+
 export default wishListsRoute;

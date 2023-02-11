@@ -83,6 +83,9 @@ export const getItemsFromWishlist = (): Promise<ItemDetails[]> =>
 export const addItemToWishlist = (wishlistItem: wishlistItem) =>
   AxiosInstance.post(`/wish-lists/addItem`, { ...wishlistItem });
 
+export const removeItemFromWishlist = (itemId: ItemDetails['_id']) =>
+  AxiosInstance.post(`/wish-lists/removeItem`, { itemId });
+
 // departments
 
 export const getAllDepartments = async () =>
