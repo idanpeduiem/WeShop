@@ -30,11 +30,11 @@ const Home = () => {
   );
 
   const { data: numOfPages } = useQuery<number>(
-    ["numOfPages", activeFilters],
-    () => getNumOfPages(activeFilters, maxPriceFilter)
-    // {
-    //   onSuccess: () => setActivePage(0)
-    // }
+    ["numOfPages", activeFilters, maxPriceFilter],
+    () => getNumOfPages(activeFilters, maxPriceFilter),
+    {
+      onSuccess: () => setActivePage(0)
+    }
   );
 
   const handlePageChange = (event: ChangeEvent<unknown>, page: number) => {
@@ -44,6 +44,7 @@ const Home = () => {
   const handleClearFilters = () => {
     setActiveFilters([]);
     setMaxPriceFilter(1000);
+    setActivePage(0);
   };
 
   return (
@@ -81,6 +82,7 @@ const Home = () => {
 
       <Pagination
         count={numOfPages}
+        page={activePage+1}
         color="primary"
         onChange={handlePageChange}
       />
