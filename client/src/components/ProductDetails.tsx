@@ -10,7 +10,7 @@ import {
   IconButton,
   Radio,
   RadioGroup,
-  Snackbar,
+  Snackbar, Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
@@ -155,11 +155,16 @@ const ProductDetails: React.FC = () => {
             <ItemSizes itemStocks={item.stock!} onSelectItem={onSizeSelect} />
             <QuantityBox />
             <div style={{ marginTop: "30px" }}>
-              <Button variant="outlined" onClick={onAddToCart}>
+              <Button variant="outlined" onClick={onAddToCart} disabled={item!.stock!.length === 0}>
                 Add to cart
               </Button>
                 <WishlistIcon itemId={item._id}/>
             </div>
+            {item!.stock!.length === 0 && (
+                <Typography variant={"button"} color={"red"}>
+                  item out of stock...
+                </Typography>
+            )}
           </Grid>
           <Grid item xs={6} justifyItems="flex-end">
             <img
