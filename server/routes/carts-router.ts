@@ -61,7 +61,7 @@ cartsRouter.post("/removeItem", async (req: Request, res: Response) => {
       },
       {
         $pull: {
-          items: { itemId: new mongoose.Types.ObjectId(itemId) },
+          items: { item: new mongoose.Types.ObjectId(itemId) },
         },
       }
     );
