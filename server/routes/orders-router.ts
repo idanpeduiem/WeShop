@@ -21,7 +21,7 @@ ordersRouter.post('/',async (req:Request, res:Response) => {
     const { address } = req.body;
     let totalValue = 0;
     try{
-        const cart = await Cart.findOne({uesrId: req.userId})
+        const cart = await Cart.findOne({userId: req.userId})
         .populate([{path: 'items.item', model: 'item'},{path: 'items.size'}])
         .lean()
         .exec();
