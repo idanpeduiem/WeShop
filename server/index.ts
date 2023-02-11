@@ -4,7 +4,6 @@ import initRoutes from "./utils/initRoutes";
 import { validateToken } from "./utils/middlewares";
 import setUpMongo from './utils/mongoDbManager';
 import bodyParser from "body-parser";
-import { performScraping } from "./utils/scraping";
 
 const admin = require("firebase-admin");
 dotenv.config();
@@ -36,8 +35,6 @@ app.get("/", validateToken, (req: Request, res: Response) => {
 });
 
 setUpMongo();
-
-performScraping();
 
 app.use(validateToken);
 initRoutes(app);
