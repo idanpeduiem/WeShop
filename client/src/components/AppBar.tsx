@@ -71,6 +71,7 @@ const Navbar = () => {
         height: "10%",
         position: "sticky",
         top: 0,
+        cursor: "pointer",
         zIndex: 100,
       })}
     >
