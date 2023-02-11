@@ -40,6 +40,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
 
   return (
     <Card
+      sx={{ cursor: "pointer" }}
       onClick={() => navigate(`${RoutePaths.PRODUCT_DETAILS_NO_ID}/${_id}`)}
     >
       <CardMedia image={image} component="img" />
