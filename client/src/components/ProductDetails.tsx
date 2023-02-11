@@ -22,6 +22,7 @@ import FetchingState from "../utils/fetchingState";
 import { useCartContext } from "../controller/cartController/cartContext";
 import { useWishlistContext } from "../controller/wishlistController/wishlistContext";
 import WishlistIcon from "./common/wishlistIcon";
+import { useSnackbar } from "notistack";
 
 interface ItemSizesProps {
   itemStocks: ItemStock;
@@ -57,11 +58,10 @@ const ItemSizes: React.FC<ItemSizesProps> = ({
 
 const ProductDetails: React.FC = () => {
   const { id = " " } = useParams();
+  const {enqueueSnackbar} = useSnackbar();
   const { addItem, cartItems} = useCartContext();
   const [selectedSize, setSelectedSize] = useState<Size["_id"]>();
   const [quantity, setQuantity] = useState(1);
-  const [isSizeError, setIsSizeError] = useState(false);
-  const [isQuantityError, setIsQuantityError] = useState(false);
   const {
     data: item,
     isLoading,
@@ -87,9 +87,11 @@ const ProductDetails: React.FC = () => {
 
   const onAddToCart = () => {
     if (!selectedSize) {
-      setIsSizeError(true);
+      enqueueSnackbar("Please choose item size", { variant: "info" });
     } else if(!isQuantityValid()){
-       setIsQuantityError(true);
+      enqueueSnackbar("Reached max item quantity!", { variant: "error" });
+      console.log('errr')
+
     } else {
       const size = item!.stock!.find(
         (stock) => stock.size[0]._id === selectedSize
@@ -106,7 +108,7 @@ const ProductDetails: React.FC = () => {
 
   const onChangeQuantity = (isIncrement: boolean) => {
     if (!selectedSize) {
-      setIsSizeError(true);
+      enqueueSnackbar("Please choose item size", { variant: "info" });
       return;
     }
 
@@ -167,34 +169,6 @@ const ProductDetails: React.FC = () => {
               alt=""
               src={item.image}
             />
-          </Grid>
-          <Grid item xs={12}>
-            <Snackbar
-              open={isSizeError}
-              onClose={() => setIsSizeError(false)}
-              autoHideDuration={3000}
-            >
-              <Alert
-                onClose={() => setIsSizeError(false)}
-                severity="error"
-                sx={{ width: "100%" }}
-              >
-                Please select size
-              </Alert>
-            </Snackbar>
-            <Snackbar
-              open={isQuantityError}
-              onClose={() => setIsQuantityError(false)}
-              autoHideDuration={3000}
-            >
-              <Alert
-                onClose={() => setIsQuantityError(false)}
-                severity="error"
-                sx={{ width: "100%" }}
-              >
-                Reached max item quantity
-              </Alert>
-            </Snackbar>
           </Grid>
         </Grid>
       )}
