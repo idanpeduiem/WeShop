@@ -1,4 +1,4 @@
-import {  Button, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Button, Divider, Grid, Paper, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "../App";
@@ -10,7 +10,7 @@ import OrderPopup from "./OrderPopup";
 const Cart = () => {
   const navigate = useNavigate();
   const { cartItems, cartValue } = useCartContext();
- 
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={3}>
@@ -23,7 +23,7 @@ const Cart = () => {
             <Grid item>
               <Stack spacing={2}>
                 <Divider />
-                {cartValue > 0 && <OrderPopup/>}
+                {cartValue > 0 && <OrderPopup />}
                 <Button
                   variant={"text"}
                   color={"secondary"}
@@ -40,24 +40,25 @@ const Cart = () => {
       </Grid>
       <Grid item xs={12} sm={9}>
         <Paper variant={"outlined"}>
-          {cartItems.length > 0 
-           ?
-          (<Grid container padding={2}>
-            {cartItems.map((item: CartItem) => (
-              <Grid item xs={3} key={item.item._id}>
-                <ItemCard
-                  key={item.item._id}
-                  item={item.item}
-                  disableAddToCart
-                  enableRemoveFromCart
-                  cartData={{size: item.size, quantity: item.quantity}}
-                />
-              </Grid>
-            ))}
-            </Grid>)
-            :
-            <h2 style={{textAlign: 'center'}}>No items in cart yet</h2>
-          }
+          {(!!cartItems.length && (
+            <Grid container padding={2} spacing={2}>
+              {cartItems.map((item: CartItem) => (
+                <Grid item xs={3} key={item.item._id}>
+                  <ItemCard
+                    key={item.item._id}
+                    item={item.item}
+                    disableAddToCart
+                    enableRemoveFromCart
+                    cartData={{ size: item.size, quantity: item.quantity }}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          )) || (
+            <Typography variant="h4" align={"center"}>
+              No items in cart yet
+            </Typography>
+          )}
         </Paper>
       </Grid>
     </Grid>
