@@ -57,8 +57,7 @@ const ItemSizes: React.FC<ItemSizesProps> = ({
 
 const ProductDetails: React.FC = () => {
   const { id = " " } = useParams();
-  const { addItem } = useCartContext();
-  const { addItem: addToWishlist } = useWishlistContext();
+  const { addItem, cartItems} = useCartContext();
   const [selectedSize, setSelectedSize] = useState<Size["_id"]>();
   const [quantity, setQuantity] = useState(1);
   const [isSizeError, setIsSizeError] = useState(false);
@@ -72,12 +71,25 @@ const ProductDetails: React.FC = () => {
 
   const onSizeSelect = (sizeId: string) => {
     setSelectedSize(sizeId);
-    console.log(sizeId);
+    setQuantity(1);
   };
+
+  const isQuantityValid = () => {
+    const itemFromCart = cartItems.find(cartItem => cartItem.item._id === item!._id);
+    const itemStock = item!.stock!.find((stock) => stock.size[0]._id === selectedSize)
+
+    if ((itemFromCart && itemFromCart.quantity + quantity > itemStock!.quantity) ||
+        itemStock!.quantity < quantity) {
+        return false;
+      }
+   return true;
+  }
 
   const onAddToCart = () => {
     if (!selectedSize) {
       setIsSizeError(true);
+    } else if(!isQuantityValid()){
+       setIsQuantityError(true);
     } else {
       const size = item!.stock!.find(
         (stock) => stock.size[0]._id === selectedSize
@@ -88,23 +100,18 @@ const ProductDetails: React.FC = () => {
         quantity,
       };
       addItem(cartItem);
+      setQuantity(1);
     }
   };
 
-  const onAddToWishList = () => {
-    addToWishlist(id);
-  };
-
   const onChangeQuantity = (isIncrement: boolean) => {
+    if (!selectedSize) {
+      setIsSizeError(true);
+      return;
+    }
+
     if (isIncrement) {
-      if (
-        item?.stock!.find((stock) => stock.size[0]._id === selectedSize)
-          ?.quantity! <= quantity
-      ) {
-        setIsQuantityError(true);
-      } else {
         setQuantity((prev) => prev + 1);
-      }
     } else {
       if (quantity >= 2) setQuantity((prev) => prev - 1);
     }

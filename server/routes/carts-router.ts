@@ -1,29 +1,46 @@
 import { Request, Response, Router } from "express";
 import Cart from "../models/cart";
 import mongoose from "mongoose";
+import { CartItem } from "../utils/types";
 
 const cartsRouter = Router();
-
 cartsRouter.post("/addItem", async (req: Request, res: Response) => {
   let item;
  
   try {
     const { item: itemToAdd, size, quantity } = req.body;
-    const newItem = { item: new mongoose.Types.ObjectId(itemToAdd._id), size, quantity };
-
-    item = await Cart.updateOne(
-      {
+    const cart = (await Cart.findOne({userId: req.userId, "items.item": itemToAdd._id, "items.size": size}).populate('items.item').lean());
+    const cartItem = cart?.items.find(item => item.item._id.toString() === itemToAdd._id && item.size.toString() === size._id);
+    
+    if(cartItem ){
+      await Cart.updateOne({
         userId: req.userId,
+        "items.item": itemToAdd._id,
+        "items.size": size._id
       },
       {
-        $push: { items: newItem, quantity, size },
-      },
-      {
-        upsert: true,
+        $set: {
+          "items.$.quantity" : quantity + cartItem.quantity
+        }
+      })
+    } else{
+
+      const newItem = { item: new mongoose.Types.ObjectId(itemToAdd._id), size, quantity };
+      
+      item = await Cart.updateOne(
+        {
+          userId: req.userId,
+        },
+        {
+          $push: { items: newItem, quantity, size },
+        },
+        {
+          upsert: true,
+        }
+        );
       }
-    );
-  } catch (e) {
-    res.status(500).send(e);
+      } catch (e) {
+        res.status(500).send(e);
   }
 
   res.status(200).json(item);
@@ -54,12 +71,21 @@ cartsRouter.post("/removeItem", async (req: Request, res: Response) => {
 });
 
 cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
-  const cart = await Cart.find({uesrId: req.userId})
-  .populate([{path: 'items.item', model: 'item'},{path: 'items.size'}])
+  let totalValue = 0;
+  const cart = await Cart.findOne({userId: req.userId})
+  .populate([{path: 'items.item'},{path: 'items.size'}])
   .lean()
   .exec();
-  console.log(cart[0]?.items);
-  res.status(200).json(cart[0]?.items ||[]);
+
+
+  if(cart) {
+    const items = cart?.items as unknown as CartItem[];
+    totalValue = items.reduce((currSum,item) =>  (currSum + (item.item.price) * (item.quantity)),0);
+  }
+  
+
+  res.status(200).json({items: cart?.items || {}, value: totalValue});
 });
+
 
 export default cartsRouter;

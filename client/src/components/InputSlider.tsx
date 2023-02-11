@@ -7,6 +7,7 @@ import debounce from "lodash/debounce";
 import { Typography } from '@mui/material';
 
 interface InputSliderProps {
+  maxPriceFilter: number | number[];
   changeMaxPrice: (newMaxPrice: number | number[]) => void;
 }
 
@@ -15,10 +16,10 @@ const CustomSlider = styled(Slider)`
 `;
 
 const InputSlider: React.FC<InputSliderProps> = (props) => {
-  const {changeMaxPrice} = props;
+  const {changeMaxPrice, maxPriceFilter} = props;
   
   const [value, setValue] = React.useState<number | string | Array<number | string>>(
-    1000,
+    maxPriceFilter,
     );
     
     const [stateDebounceCallHttpRequest] = React.useState(() =>
