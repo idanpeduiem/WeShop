@@ -1,6 +1,5 @@
-import { Alert, Button, Divider, Grid, Paper, Snackbar, Typography } from "@mui/material";
+import {  Button, Divider, Grid, Paper, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "../App";
 import { useCartContext } from "../controller/cartController/cartContext";
