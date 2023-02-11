@@ -53,8 +53,6 @@ cartsRouter.post("/removeItem", async (req: Request, res: Response) => {
     const { itemId } = req.body;
     const userId = req.userId;
 
-    console.log(userId);
-    console.log(itemId);
     item = await Cart.updateOne(
       {
         userId,
