@@ -9,7 +9,7 @@ import { Axios } from "axios";
 export const getAllItems = async (activePage: number, activeFilters: Filter[], maxPriceFilter: number | number[]) => {
   const filtersQuery: string = activeFilters.reduce(
     (acc: string, filter: Filter) =>  acc.concat(`&${filter.filterSubject}=${filter.filterValue}`), '');
-  
+
   return AxiosInstance.get(`/items?page=${activePage}${filtersQuery}&maxPrice=${maxPriceFilter}`)
     .then((itemsRes) => itemsRes.data)
     .catch(() => []);
@@ -18,7 +18,7 @@ export const getAllItems = async (activePage: number, activeFilters: Filter[], m
 export const getNumOfPages = async (activeFilters: Filter[], maxPriceFilter: number | number[]) => {
   const filtersQuery: string = activeFilters.reduce(
     (acc: string, filter: Filter) => acc.concat(`${filter.filterSubject}=${filter.filterValue}&`), '');
-  
+
   return AxiosInstance.get(`/items/numOfPages?${filtersQuery}&maxPrice=${maxPriceFilter}`)
   .then((numOfPagesRes) => numOfPagesRes.data)
   .catch(() => []);
@@ -41,8 +41,8 @@ export const getItemQuery = async (id: string): Promise<ItemDetails> =>
 
 // cart
 
-export const getItemsFromCart = (userId: User["uid"]) =>
-  AxiosInstance.get(`/carts/items/${userId}`)
+export const getItemsFromCart = () =>
+  AxiosInstance.get(`/carts/items/`)
     .then((itemData) => itemData.data)
     .catch(() => []);
 
@@ -51,18 +51,16 @@ export const addItemToCart = async (cartItem: CartItem) =>
     () => new Error("something went wrong")
   );
 
-export const getCartTotalValue = () => 
+export const getCartTotalValue = () =>
      AxiosInstance.get('/carts/totalValue')
     .then(valueResp => valueResp.data)
     .catch(() =>  new Error('couldnt get cart value'));
-  
+
 
 // wishlist
 
-export const getItemsFromWishlist = (
-  userId: User["uid"]
-): Promise<ItemDetails[]> =>
-  AxiosInstance.get(`/wish-lists/items/${userId}`)
+export const getItemsFromWishlist = (): Promise<ItemDetails[]> =>
+  AxiosInstance.get(`/wish-lists/items/`)
     .then((itemData) => itemData.data)
     .catch(() => []);
 
@@ -89,6 +87,6 @@ export const getAllUserOrders = async () =>
     .then((ordersRes) => ordersRes.data)
     .catch(() => []);
 
-export const saveOrder = async (address: string) => 
+export const saveOrder = async (address: string) =>
  await AxiosInstance.post("/orders", {address})
  .catch(() => new Error('couldnt save order'));

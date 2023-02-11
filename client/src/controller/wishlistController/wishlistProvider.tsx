@@ -19,7 +19,7 @@ const WishlistProvider = ({ children }: PropsWithChildren) => {
 
   const { refetch: fetchGetItems } = useQuery<ItemDetails[]>(
     ["wishlistItems"],
-    () => getItemsFromWishlist(user?.uid!),
+    () => getItemsFromWishlist(),
     {
       enabled: !!user,
       onSuccess: (data) => setWishlistItems(data),

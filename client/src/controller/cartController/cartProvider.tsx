@@ -17,7 +17,7 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
   const [cartItems, setCartItems] = useState<Cart['items']>([]);
   const [cartValue, setCartValue] = useState(0);
 
-  const { data , refetch: fetchGetItems } = useQuery<CartResponse>(["cartItems"], () => getItemsFromCart(user?.uid!),
+  const { data , refetch: fetchGetItems } = useQuery<CartResponse>(["cartItems"], () => getItemsFromCart(),
    { enabled: !!user, onSuccess: (data) => {
     setCartItems(data.items);
     setCartValue(data.value);

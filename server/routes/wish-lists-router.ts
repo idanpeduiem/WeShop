@@ -4,8 +4,8 @@ import mongoose from "mongoose";
 
 const wishListsRoute = Router();
 
-wishListsRoute.get("/items/:userId", async (req: Request, res: Response) => {
-  const { userId } = req.params;
+wishListsRoute.get("/items/", async (req: Request, res: Response) => {
+  const userId = req.userId;
   const items = await WishList.aggregate([
     {
       $match: {
@@ -28,14 +28,14 @@ wishListsRoute.get("/items/:userId", async (req: Request, res: Response) => {
   ]).exec();
 
   res.status(200).json(items[0]?.wishlist_items || []);
-
 });
 
 wishListsRoute.post("/addItem", async (req: Request, res: Response) => {
   let item;
 
   try {
-    const { userId, itemId } = req.body;
+    const { itemId } = req.body;
+    const userId = req.userId;
 
     item = await WishList.updateOne(
       {

@@ -50,7 +50,9 @@ cartsRouter.post("/removeItem", async (req: Request, res: Response) => {
   let item;
 
   try {
-    const { userId, itemId } = req.body;
+    const { itemId } = req.body;
+    const userId = req.userId;
+
     console.log(userId);
     console.log(itemId);
     item = await Cart.updateOne(
@@ -58,7 +60,7 @@ cartsRouter.post("/removeItem", async (req: Request, res: Response) => {
         userId,
       },
       {
-        $pullAll: {
+        $pull: {
           items: { itemId: new mongoose.Types.ObjectId(itemId) },
         },
       }
@@ -70,7 +72,7 @@ cartsRouter.post("/removeItem", async (req: Request, res: Response) => {
   res.status(200).json(item);
 });
 
-cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
+cartsRouter.get("/items/", async (req: Request, res: Response) => {
   let totalValue = 0;
   const cart = await Cart.findOne({userId: req.userId})
   .populate([{path: 'items.item'},{path: 'items.size'}])
