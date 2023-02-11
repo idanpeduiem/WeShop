@@ -6,12 +6,12 @@ import { CartItem } from "../utils/types";
 const cartsRouter = Router();
 cartsRouter.post("/addItem", async (req: Request, res: Response) => {
   let item;
- 
+
   try {
     const { item: itemToAdd, size, quantity } = req.body;
     const cart = (await Cart.findOne({userId: req.userId, "items.item": itemToAdd._id, "items.size": size}).populate('items.item').lean());
     const cartItem = cart?.items.find(item => item.item._id.toString() === itemToAdd._id && item.size.toString() === size._id);
-    
+
     if(cartItem ){
       await Cart.updateOne({
         userId: req.userId,
@@ -26,7 +26,7 @@ cartsRouter.post("/addItem", async (req: Request, res: Response) => {
     } else{
 
       const newItem = { item: new mongoose.Types.ObjectId(itemToAdd._id), size, quantity };
-      
+
       item = await Cart.updateOne(
         {
           userId: req.userId,
@@ -82,9 +82,9 @@ cartsRouter.get("/items/:userId", async (req: Request, res: Response) => {
     const items = cart?.items as unknown as CartItem[];
     totalValue = items.reduce((currSum,item) =>  (currSum + (item.item.price) * (item.quantity)),0);
   }
-  
 
-  res.status(200).json({items: cart?.items || {}, value: totalValue});
+
+  res.status(200).json({items: cart?.items || [], value: totalValue});
 });
 
 
