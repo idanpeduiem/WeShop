@@ -1,11 +1,11 @@
 import React, { createContext, useContext } from "react";
-import {CartItem, Item, ItemDetails } from "../../utils/types";
+import {CartItem, ItemDetails, Size} from "../../utils/types";
 
 interface CartContextProps {
   cartItems: CartItem[];
   cartValue: number,
   addItem: (cartItem: CartItem) => void;
-  removeItem: (id: Item["_id"]) => void;
+  removeItem: (id: ItemDetails["_id"], sizeId: Size['_id']) => void;
 }
 
 const defaultValue: CartContextProps = {

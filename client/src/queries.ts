@@ -1,5 +1,5 @@
 import AxiosInstance from "./utils/axiosInstance";
-import { Cart, CartItem, Filter, ItemDetails } from "./utils/types";
+import {Cart, CartItem, Filter, ItemDetails, Size} from "./utils/types";
 import { User } from "firebase/auth";
 import { wishlistItem } from "./controller/wishlistController/wishlistProvider";
 import { Axios } from "axios";
@@ -68,8 +68,8 @@ export const addItemToCart = async (cartItem: CartItem) =>
     () => new Error("something went wrong")
   );
 
-export const removeItemFromCart = async (itemId: ItemDetails["_id"]) =>
-  await AxiosInstance.post(`/carts/removeItem`, { itemId }).catch(
+export const removeItemFromCart = async (itemId: ItemDetails["_id"], sizeId: Size['_id']) =>
+  await AxiosInstance.post(`/carts/removeItem`, { itemId, sizeId }).catch(
     () => new Error("something went wrong")
   );
 
