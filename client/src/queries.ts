@@ -6,23 +6,40 @@ import { Axios } from "axios";
 
 // items
 
-export const getAllItems = async (activePage: number, activeFilters: Filter[], maxPriceFilter: number | number[]) => {
+export const getAllItems = async (
+  activePage: number,
+  activeFilters: Filter[],
+  maxPriceFilter: number | number[]
+) => {
   const filtersQuery: string = activeFilters.reduce(
-    (acc: string, filter: Filter) =>  acc.concat(`&${filter.filterSubject}=${filter.filterValue}`), '');
-  
-  return AxiosInstance.get(`/items?page=${activePage}${filtersQuery}&maxPrice=${maxPriceFilter}`)
+    (acc: string, filter: Filter) =>
+      acc.concat(`&${filter.filterSubject}=${filter.filterValue}`),
+    ""
+  );
+
+  return AxiosInstance.get(
+    `/items?page=${activePage}${filtersQuery}&maxPrice=${maxPriceFilter}`
+  )
     .then((itemsRes) => itemsRes.data)
     .catch(() => []);
-}
+};
 
-export const getNumOfPages = async (activeFilters: Filter[], maxPriceFilter: number | number[]) => {
+export const getNumOfPages = async (
+  activeFilters: Filter[],
+  maxPriceFilter: number | number[]
+) => {
   const filtersQuery: string = activeFilters.reduce(
-    (acc: string, filter: Filter) => acc.concat(`${filter.filterSubject}=${filter.filterValue}&`), '');
-  
-  return AxiosInstance.get(`/items/numOfPages?${filtersQuery}&maxPrice=${maxPriceFilter}`)
-  .then((numOfPagesRes) => numOfPagesRes.data)
-  .catch(() => []);
-}
+    (acc: string, filter: Filter) =>
+      acc.concat(`${filter.filterSubject}=${filter.filterValue}&`),
+    ""
+  );
+
+  return AxiosInstance.get(
+    `/items/numOfPages?${filtersQuery}&maxPrice=${maxPriceFilter}`
+  )
+    .then((numOfPagesRes) => numOfPagesRes.data)
+    .catch(() => []);
+};
 
 export const getAllItemsDesc = async (searchStr: string) => {
   const { data } = await AxiosInstance.get(`/items/desc?search=` + searchStr);
@@ -41,8 +58,8 @@ export const getItemQuery = async (id: string): Promise<ItemDetails> =>
 
 // cart
 
-export const getItemsFromCart = (userId: User["uid"]) =>
-  AxiosInstance.get(`/carts/items/${userId}`)
+export const getItemsFromCart = () =>
+  AxiosInstance.get(`/carts/items/`)
     .then((itemData) => itemData.data)
     .catch(() => []);
 
@@ -51,23 +68,23 @@ export const addItemToCart = async (cartItem: CartItem) =>
     () => new Error("something went wrong")
   );
 
-export const getCartTotalValue = () => 
-     AxiosInstance.get('/carts/totalValue')
-    .then(valueResp => valueResp.data)
-    .catch(() =>  new Error('couldnt get cart value'));
-  
+export const removeItemFromCart = async (itemId: ItemDetails["_id"]) =>
+  await AxiosInstance.post(`/carts/removeItem`, { itemId }).catch(
+    () => new Error("something went wrong")
+  );
 
 // wishlist
 
-export const getItemsFromWishlist = (
-  userId: User["uid"]
-): Promise<ItemDetails[]> =>
-  AxiosInstance.get(`/wish-lists/items/${userId}`)
+export const getItemsFromWishlist = (): Promise<ItemDetails[]> =>
+  AxiosInstance.get(`/wish-lists/items/`)
     .then((itemData) => itemData.data)
     .catch(() => []);
 
 export const addItemToWishlist = (wishlistItem: wishlistItem) =>
   AxiosInstance.post(`/wish-lists/addItem`, { ...wishlistItem });
+
+export const removeItemFromWishlist = (itemId: ItemDetails['_id']) =>
+  AxiosInstance.post(`/wish-lists/removeItem`, { itemId });
 
 // departments
 
@@ -89,6 +106,7 @@ export const getAllUserOrders = async () =>
     .then((ordersRes) => ordersRes.data)
     .catch(() => []);
 
-export const saveOrder = async (address: string) => 
- await AxiosInstance.post("/orders", {address})
- .catch(() => new Error('couldnt save order'));
+export const saveOrder = async (address: string) =>
+  await AxiosInstance.post("/orders", { address }).catch(
+    () => new Error("couldnt save order")
+  );

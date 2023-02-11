@@ -3,7 +3,11 @@ import { PropsWithChildren, useState } from "react";
 import { useSnackbar } from "notistack";
 import { useUserContext } from "../userController/userContext";
 import { ItemDetails } from "../../utils/types";
-import { addItemToWishlist, getItemsFromWishlist } from "../../queries";
+import {
+  addItemToWishlist,
+  getItemsFromWishlist,
+  removeItemFromWishlist,
+} from "../../queries";
 import { useQuery } from "react-query";
 import { User } from "firebase/auth";
 
@@ -19,7 +23,7 @@ const WishlistProvider = ({ children }: PropsWithChildren) => {
 
   const { refetch: fetchGetItems } = useQuery<ItemDetails[]>(
     ["wishlistItems"],
-    () => getItemsFromWishlist(user?.uid!),
+    () => getItemsFromWishlist(),
     {
       enabled: !!user,
       onSuccess: (data) => setWishlistItems(data),
@@ -39,8 +43,15 @@ const WishlistProvider = ({ children }: PropsWithChildren) => {
       });
   };
 
-  const removeItem = (id: ItemDetails["_id"]) => {
-    snackbar.enqueueSnackbar("item removed");
+  const removeItem = (itemId: ItemDetails["_id"]) => {
+    removeItemFromWishlist(itemId)
+      .then(() => {
+        snackbar.enqueueSnackbar("item removed from wishlist");
+        fetchGetItems();
+      })
+      .catch(() => {
+        snackbar.enqueueSnackbar("Failed", { variant: "error" });
+      });
   };
 
   return (
