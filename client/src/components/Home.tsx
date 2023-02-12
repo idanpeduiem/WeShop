@@ -61,11 +61,16 @@ const Home = () => {
         <Grid item xs={9} height="inherit" overflow="auto">
           <Paper variant="outlined">
             <Grid container spacing={2} padding={2} height="inherit">
-              {itemsList?.map((item: ItemDetails) => (
+              {
+              itemsList?.length ?
+              itemsList?.map((item: ItemDetails) => (
                 <Grid item xs={3} key={item._id}>
                   <ItemCard item={item} />
                 </Grid>
-              ))}
+              ))
+              :
+              <Typography align={"center"}>No items found</Typography>
+              }
             </Grid>
           </Paper>
         </Grid>
