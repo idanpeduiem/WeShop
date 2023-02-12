@@ -20,6 +20,10 @@ const updateItemsStock = async (cartItem: CartItem) => {
             throw new Error(`Something went wrong with finding item stock`);
          }
 
+         if(itemStock.quantity === 0){
+            throw new Error(`item ${cartItem.item.description} out of stock - remove from cart`)
+         }
+
          if(itemStock.quantity < cartItem.quantity){
             throw new Error(`only ${itemStock?.quantity} left in ${cartItem.item.description}`)
          }
