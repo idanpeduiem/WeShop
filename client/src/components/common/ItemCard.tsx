@@ -46,7 +46,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
       <CardMedia image={image} component="img" />
       <CardContent>
         <Typography variant="h6">{description}</Typography>
-        <Typography variant="body2">{price}</Typography>
+        <Typography variant="body2">{price}₪</Typography>
         {cartData && (
           <Typography variant="body2">
             {cartData.size.description} X {cartData.quantity}
