@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
-import debounce from "lodash/debounce";
 import { Typography } from '@mui/material';
 
 interface InputSliderProps {
@@ -17,35 +16,23 @@ const CustomSlider = styled(Slider)`
 
 const InputSlider: React.FC<InputSliderProps> = (props) => {
   const {changeMaxPrice, maxPriceFilter} = props;
-  
-  const [value, setValue] = React.useState<number | string | Array<number | string>>(
-    maxPriceFilter,
-    );
-    
-    const [stateDebounceCallHttpRequest] = React.useState(() =>
-    debounce(changeMaxPrice, 300, {
-      leading: false,
-      trailing: true
-    })
-  );
 
-  const handleChangeUsingStateDebounce = (event: Event, newValue: number | number[]) => {
-    setValue(newValue);
-    stateDebounceCallHttpRequest(newValue);
+  const handleChange = (event: Event, newValue: number | number[]) => {
+    changeMaxPrice(newValue);
   };
 
   return (
     <Box sx={{ width: 250 }}>
       <Grid container spacing={2} alignItems="center">
         <Grid item>
-            <Typography>{value}</Typography>
+            <Typography>{maxPriceFilter}</Typography>
         </Grid>
         <Grid item xs>
           <CustomSlider
-            value={typeof value === 'number' ? value : 0}
+            value={typeof maxPriceFilter === 'number' ? maxPriceFilter : 0}
             min={0}
             max={1000}
-            onChange={handleChangeUsingStateDebounce}
+            onChange={handleChange}
             aria-labelledby="input-slider"
           />
         </Grid>
