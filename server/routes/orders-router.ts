@@ -5,7 +5,7 @@ import Size from '../models/size';
 import Cart from '../models/cart';
 import { CartItem } from "../utils/types";
 import ItemStock from "../models/item-stock";
-import itemsRoute from "./items-router";
+
 
 const ordersRouter = Router();
 
@@ -19,7 +19,11 @@ const updateItemsStock = async (cartItem: CartItem) => {
          if(!itemStock){
             throw new Error(`Something went wrong with finding item stock`);
          }
-         
+
+         if(itemStock.quantity === 0){
+            throw new Error(`item ${cartItem.item.description} out of stock - remove from cart`)
+         }
+
          if(itemStock.quantity < cartItem.quantity){
             throw new Error(`only ${itemStock?.quantity} left in ${cartItem.item.description}`)
          }
@@ -54,17 +58,14 @@ ordersRouter.post('/',async (req:Request, res:Response) => {
         
     try{
         await session.withTransaction(async () => {
+           await Promise.all(items.map(item => updateItemsStock(item)))
            await Order.create({
                 userId: req.userId,
                 totalPrice: totalValue,
                 items: cart.items,
                 address
             })
-        
-             await Promise.all(items.map(item => updateItemsStock(item)))
              await Cart.deleteOne({userId: req.userId});
-            
-             session.commitTransaction();
         })
         
         res.sendStatus(200);
