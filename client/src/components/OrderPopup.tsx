@@ -7,13 +7,14 @@ import { Routes, useNavigate } from "react-router-dom";
 import { RoutePaths } from "../App";
 import { saveOrder } from "../queries";
 import Spinner from "../utils/spinner";
+import { useSnackbar } from "notistack";
 
 const OrderPopup: React.FC = () => {
     const navigate = useNavigate();
+    const {enqueueSnackbar} = useSnackbar();
     const [isOpen,setIsOpen] = useState(false);
     const [address, setAddress] = useState('');
     const [isLoading,setIsLoading] = useState(false);
-    const [isError,setIsError] = useState(false);
     const [isSuccess,setIsSuccess] = useState(false);
 
 
@@ -31,15 +32,18 @@ const OrderPopup: React.FC = () => {
         setIsLoading(false);
         onSuccess();
         })
-      .catch(() => setIsError(true))
+      .catch((error) => {
+          enqueueSnackbar(error.message || 'something went wrong',{variant: "error"})
+          setIsOpen(false);
+          setIsLoading(false)
+      })
     }
 
     const getDialogContent = () => {
         if(isLoading){
             return <Spinner/>;
-        } else if(isError){
-            return <h2> Something went wrong try again later</h2>
-        } else if(isSuccess){
+        }
+       else if(isSuccess){
             return (
                 <div style={{textAlign: 'center'}}>
                  <Fab
