@@ -35,6 +35,7 @@ const OrderPopup: React.FC = () => {
       .catch((error) => {
           enqueueSnackbar(error.message || 'something went wrong',{variant: "error"})
           setIsOpen(false);
+          setIsLoading(false)
       })
     }
 
