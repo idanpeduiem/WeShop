@@ -21,7 +21,7 @@ const OrderPopup: React.FC = () => {
    const onSuccess = () => {
      setIsSuccess(true);
      setTimeout(() => {
-        // location.reload();
+        location.reload();
      },700)
    }
 
