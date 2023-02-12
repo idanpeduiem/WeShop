@@ -108,5 +108,6 @@ export const getAllUserOrders = async () =>
 
 export const saveOrder = async (address: string) =>
   await AxiosInstance.post("/orders", { address }).catch(
-    () => new Error("couldnt save order")
+    (error) => {console.log(error);
+       throw new Error(error.response.data.errMessage || 'Couldnt save order')}
   );
