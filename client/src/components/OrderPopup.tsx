@@ -1,16 +1,12 @@
 /* eslint-disable no-restricted-globals */
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions, Fab } from "@mui/material";
-import { loadavg } from "os";
 import { useState } from "react";
 import CheckIcon from '@mui/icons-material/Check';
-import { Routes, useNavigate } from "react-router-dom";
-import { RoutePaths } from "../App";
 import { saveOrder } from "../queries";
 import Spinner from "../utils/spinner";
 import { useSnackbar } from "notistack";
 
 const OrderPopup: React.FC = () => {
-    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
     const [isOpen,setIsOpen] = useState(false);
     const [address, setAddress] = useState('');

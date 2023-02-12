@@ -1,8 +1,6 @@
 import AxiosInstance from "./utils/axiosInstance";
-import {Cart, CartItem, Filter, ItemDetails, Size} from "./utils/types";
-import { User } from "firebase/auth";
+import { CartItem, Filter, ItemDetails, Size} from "./utils/types";
 import { wishlistItem } from "./controller/wishlistController/wishlistProvider";
-import { Axios } from "axios";
 
 // items
 
